@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.activities.MainActivity;
+import com.mhealthkenya.psurvey.activities.QuestionsActivity;
 import com.mhealthkenya.psurvey.depedancies.Constants;
 
 import com.mhealthkenya.psurvey.models.auth;
@@ -210,6 +211,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.has("auth_token")){
 
                             Intent mint = new Intent(LoginActivity.this, MainActivity.class);
+                           // Intent mint = new Intent(LoginActivity.this, QuestionsActivity.class);
                             mint.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(mint);
 

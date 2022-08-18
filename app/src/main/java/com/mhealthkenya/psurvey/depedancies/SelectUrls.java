@@ -49,7 +49,7 @@ public class SelectUrls extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_urls);
-
+        setScreen();
         SharedPreferences sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -59,9 +59,9 @@ public class SelectUrls extends AppCompatActivity {
 
         spinner1 =findViewById(R.id.spCompany);
         geturls1();
-        if (base_url!=null){
+        /* (base_url!=null){
             setScreen();
-        }
+        }*/
 
 
 
@@ -80,11 +80,11 @@ public class SelectUrls extends AppCompatActivity {
                 if (getValue.equals("defaultValue")){
                     Toast.makeText(SelectUrls.this, "Invalid", Toast.LENGTH_LONG).show();
                 }else {
-                    //Toast.makeText(SelectUrls.this, getValue, Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SelectUrls.this, Constants.class);
+                    Toast.makeText(SelectUrls.this, getValue, Toast.LENGTH_LONG).show();
+    /*            Intent intent = new Intent(SelectUrls.this, Constants.class);
                     intent.putExtra("url", getValue);
                     intent.putExtra("stage_key", stage_name);
-                    startActivity(intent);
+                    startActivity(intent);    */
                 }
 
 

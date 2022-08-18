@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.activities.auth.LoginActivity;
+import com.mhealthkenya.psurvey.depedancies.SelectUrls;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -21,7 +22,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 try {
                     Thread.sleep(1000);
 
-                    startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+                    startActivity(new Intent(SplashScreenActivity.this, SelectUrls.class));
                     finish();
                 }catch (Exception e){
                     e.printStackTrace();

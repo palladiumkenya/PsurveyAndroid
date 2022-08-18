@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white_greyish"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
+
         android:textAllCaps="true"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"

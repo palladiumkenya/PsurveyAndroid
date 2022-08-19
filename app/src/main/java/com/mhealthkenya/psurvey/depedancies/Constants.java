@@ -59,13 +59,21 @@ public class Constants extends AppCompatActivity {
     /*MODELS*/
     public static String AUTH_TOKEN = "";
 
+
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+    }
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_constants);
 
         TextView x =findViewById(R.id.show);
-        Button xx =findViewById(R.id.show1);
+       // Button xx =findViewById(R.id.show1);
 
         //String z;
 

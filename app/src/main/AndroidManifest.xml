@@ -20,6 +20,12 @@
         <activity
             android:name=".depedancies.SelectUrls"
             android:exported="false" />
+
+        <activity
+            android:name=".depedancies.Constants"
+            android:exported="false" />
+
+
         <activity
             android:name=".SingleQuestions"
             android:exported="false" />

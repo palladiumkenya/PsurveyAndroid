@@ -24,6 +24,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.mhealthkenya.psurvey.R;
+import com.mhealthkenya.psurvey.activities.PrivacyActivity;
 import com.mhealthkenya.psurvey.activities.auth.LoginActivity;
 import com.mhealthkenya.psurvey.models.urlModel;
 
@@ -50,6 +51,8 @@ public class SelectUrls extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_urls);
         setScreen();
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -59,11 +62,6 @@ public class SelectUrls extends AppCompatActivity {
 
         spinner1 =findViewById(R.id.spCompany);
         geturls1();
-        /* (base_url!=null){
-            setScreen();
-        }*/
-
-
 
 
         btn_prcd.setOnClickListener(new View.OnClickListener() {
@@ -80,11 +78,11 @@ public class SelectUrls extends AppCompatActivity {
                 if (getValue.equals("defaultValue")){
                     Toast.makeText(SelectUrls.this, "Invalid", Toast.LENGTH_LONG).show();
                 }else {
-                    Toast.makeText(SelectUrls.this, getValue, Toast.LENGTH_LONG).show();
-    /*            Intent intent = new Intent(SelectUrls.this, Constants.class);
+                    //Toast.makeText(SelectUrls.this, getValue, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(SelectUrls.this, Constants.class);
                     intent.putExtra("url", getValue);
                     intent.putExtra("stage_key", stage_name);
-                    startActivity(intent);    */
+                    startActivity(intent);
                 }
 
 
@@ -94,23 +92,6 @@ public class SelectUrls extends AppCompatActivity {
 
 
 
-    }
-
-
-    private void setScreen(){
-        SharedPreferences preferencesS =getSharedPreferences("PREFERENCE", MODE_PRIVATE);
-
-        String FirstTime =preferencesS.getString("FirstTimeInstall", "");
-
-        if (FirstTime.equals("Yes") && base_url!=null){
-            Intent intent1 =new Intent(SelectUrls.this, LoginActivity.class);
-            startActivity(intent1);
-
-        }else{
-            SharedPreferences.Editor editor =preferencesS.edit();
-            editor.putString("FirstTimeInstall", "Yes");
-            editor.apply();
-        }
     }
 
     public void geturls1(){
@@ -144,22 +125,6 @@ public class SelectUrls extends AppCompatActivity {
 
                     }
 
-
-                    /*for (int i=0; i<response.length(); i++){
-
-
-                        JSONObject jsonObject =response.getJSONObject(i);
-
-                        int url_id = jsonObject.getInt("id");
-                        String url_stage =jsonObject.getString("stage");
-                        String main_urls =jsonObject.getString("url");
-
-                        url_Model = new urlModel(url_id, url_stage, main_urls);
-                        names.add(url_Model);
-                        urlModelArrayList.add(url_Model.getStage());
-
-                    }*/
-
                     names.add(new urlModel(0, "", "--Select the system to connect to--"));
                     urlModelArrayList.add("--Select the system to connect to--");
 
@@ -184,6 +149,10 @@ public class SelectUrls extends AppCompatActivity {
 
                                 stage_name =names.get(position).getStage();
 
+
+                                //Toast.makeText(SelectUrls.this, base_url, Toast.LENGTH_LONG).show();
+
+                                // Toast.makeText(SelectUrls.this, "zero", Toast.LENGTH_LONG).show();
                             }
                             else if(dataId==6){
 
@@ -217,4 +186,20 @@ public class SelectUrls extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(SelectUrls.this);
         requestQueue.add(jsonObjectRequest);
     }
+    private void setScreen(){
+        SharedPreferences preferencesS =getSharedPreferences("PREFERENCE", MODE_PRIVATE);
+
+        String FirstTime =preferencesS.getString("FirstTimeInstall", "");
+
+        if (FirstTime.equals("Yes")){
+            Intent intent1 =new Intent(SelectUrls.this, LoginActivity.class);
+            startActivity(intent1);
+
+        }else{
+            SharedPreferences.Editor editor =preferencesS.edit();
+            editor.putString("FirstTimeInstall", "Yes");
+            editor.apply();
+        }
+    }
 }
+

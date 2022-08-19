@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -63,11 +64,18 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private Button btn_login;
-    private TextView sign_up;
+    private TextView sign_up, connect;
     private TextView forgot_password;
     private TextInputEditText phoneNumber;
     private TextInputEditText password;
     private ProgressDialog pDialog;
+
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        finishAffinity();
+    }
 
 
     @Override
@@ -77,6 +85,8 @@ public class LoginActivity extends AppCompatActivity {
         LoginActivity loginActivity =new LoginActivity();
         //loginActivity.
         setContentView(R.layout.activity_login);
+
+        //Toast.makeText(this, Constants.ENDPOINT, Toast.LENGTH_LONG).show();
 
 
         Stash.init(this);
@@ -156,6 +166,9 @@ public class LoginActivity extends AppCompatActivity {
 
         phoneNumber = (TextInputEditText) findViewById(R.id.edtxt_phone_no);
         password = (TextInputEditText) findViewById(R.id.edtxt_pass);
+        connect =findViewById(R.id.connected_to);
+        connect.setText(Constants.STAGE_NAME);
+        connect.setTextColor(Color.parseColor("#F32013"));
 
     }
 

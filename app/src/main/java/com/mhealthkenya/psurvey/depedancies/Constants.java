@@ -93,7 +93,8 @@ public class Constants extends AppCompatActivity {
         builder1.setIcon(android.R.drawable.ic_dialog_alert);
         builder1.setTitle("You are connected to");
         builder1.setMessage( STAGE_NAME + " " + "Server!");
-        builder1.setCancelable(true);
+        builder1.setCancelable(false);
+       // builder1.setCancelable(true);
 
         builder1.setPositiveButton(
                 "Proceed",

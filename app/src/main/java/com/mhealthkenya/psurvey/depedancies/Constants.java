@@ -7,9 +7,9 @@ public class Constants {
 
     /*ENDPOINT*/
 
-  public static String ENDPOINT ="https://psurveyapi.kenyahmis.org/";
+  //public static String ENDPOINT ="https://psurveyapi.kenyahmis.org/";
 
-  //public static String ENDPOINT =" https://psurveyapitest.kenyahmis.org/";
+  public static String ENDPOINT =" https://psurveyapitest.kenyahmis.org/";
 
 
     //AUTH

@@ -24,6 +24,8 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
     private  String option;
     private  String Quetion_A;
 
+    private String uniqueIdentifier;
+
 
     public UserResponseEntity() {
     }
@@ -105,6 +107,14 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
 
     public void setQuetion_A(String quetion_A) {
         Quetion_A = quetion_A;
+    }
+
+    public String getUniqueIdentifier() {
+        return uniqueIdentifier;
+    }
+
+    public void setUniqueIdentifier(String uniqueIdentifier) {
+        this.uniqueIdentifier = uniqueIdentifier;
     }
 
     @Override

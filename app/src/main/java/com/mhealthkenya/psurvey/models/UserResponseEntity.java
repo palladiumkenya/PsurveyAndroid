@@ -1,13 +1,19 @@
 package com.mhealthkenya.psurvey.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.orm.SugarRecord;
 
+import java.io.Serializable;
+
 @Entity(tableName ="user_responses")
-public class UserResponseEntity extends SugarRecord {
+public class UserResponseEntity extends SugarRecord implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int idA;
@@ -30,6 +36,27 @@ public class UserResponseEntity extends SugarRecord {
         this.option = option;
         this.Quetion_A= Quetion_A;
     }
+
+    protected UserResponseEntity(Parcel in) {
+        idA = in.readInt();
+        questionnaireId = in.readInt();
+        questionId = in.readInt();
+        answerId = in.readInt();
+        option = in.readString();
+        Quetion_A = in.readString();
+    }
+
+    public static final Creator<UserResponseEntity> CREATOR = new Creator<UserResponseEntity>() {
+        @Override
+        public UserResponseEntity createFromParcel(Parcel in) {
+            return new UserResponseEntity(in);
+        }
+
+        @Override
+        public UserResponseEntity[] newArray(int size) {
+            return new UserResponseEntity[size];
+        }
+    };
 
     public int getQuestionnaireId() {
         return questionnaireId;
@@ -78,5 +105,20 @@ public class UserResponseEntity extends SugarRecord {
 
     public void setQuetion_A(String quetion_A) {
         Quetion_A = quetion_A;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(idA);
+        dest.writeInt(questionnaireId);
+        dest.writeInt(questionId);
+        dest.writeInt(answerId);
+        dest.writeString(option);
+        dest.writeString(Quetion_A);
     }
 }

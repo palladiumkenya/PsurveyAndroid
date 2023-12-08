@@ -79,6 +79,9 @@ public class ResponseData extends AppCompatActivity {
     ArrayList<UserResponseEntity> answerList = new ArrayList<>();
 
     public ArrayList<UserResponseEntity> userResponseEntities;
+
+    public List<UserResponseEntity> userResponseEntities1;
+
     RecyclerView recyclerView1;
     public  UserResponseAdapter adapter;
 
@@ -122,6 +125,7 @@ public class ResponseData extends AppCompatActivity {
       //  Toast.makeText(ResponseData.this, "ID Is"+IDvalue, Toast.LENGTH_SHORT).show();
         recyclerView1 = findViewById(R.id.recyclerViewResponse);
         userResponseEntities= new ArrayList<>();
+       // userResponseEntities1= new ArrayList<>();
 
 
 
@@ -167,9 +171,12 @@ public class ResponseData extends AppCompatActivity {
 
     public void getResponses1(){
         userResponses = allQuestionDatabase.userResponseDao().getUserResponsesForQuestionnaire(IDvalue);
+       // userResponseEntities1.add(userResponses);
+        Log.d("RESPONSE SIZE", String.valueOf(userResponses.size()));
+
         //try
 
-        for (UserResponseEntity userResponseEntity:userResponses) {
+       for (UserResponseEntity userResponseEntity:userResponses) {
             Log.d("QuetionnaireID", String.valueOf(userResponseEntity.getQuestionnaireId()));
             Log.d("QuetionID", String.valueOf(userResponseEntity.getQuestionId()));
             Log.d("Option", String.valueOf(userResponseEntity.getOption()));

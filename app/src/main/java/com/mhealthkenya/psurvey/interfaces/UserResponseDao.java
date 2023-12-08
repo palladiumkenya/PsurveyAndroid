@@ -1,5 +1,6 @@
 package com.mhealthkenya.psurvey.interfaces;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -21,4 +22,6 @@ public interface UserResponseDao {
     List<UserResponseEntity> getUserResponsesForQuestionnaire(int questionnaireId);
 
     // Add more queries and operations as needed
+    @Query("SELECT * FROM user_responses WHERE questionnaireId = :questionnaireId")
+    LiveData<List<UserResponseEntity>> getDraftAnswers(int questionnaireId);
 }

@@ -17,6 +17,7 @@ public interface UserResponseDao {
     @Insert
     void insertResponse(UserResponseEntity userResponse);
 
+
     @Update
     void updateResponse(UserResponseEntity userResponse);
 
@@ -27,8 +28,15 @@ public interface UserResponseDao {
     @Update
     Void updateResponse1(UserResponseEntity userResponseEntity);
 
+//list quetionnaires then responses
     @Query("SELECT * FROM user_responses WHERE questionnaireId = :questionnaireId")
     List<UserResponseEntity> getUserResponsesForQuestionnaire(int questionnaireId);
+
+    //list UUID then responses
+    //display responses based on quetionnaire
+    //select * from user_response where UUID=:
+
+
 
     // Add more queries and operations as needed
     @Query("SELECT * FROM user_responses WHERE questionnaireId = :questionnaireId")

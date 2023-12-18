@@ -51,6 +51,7 @@ import com.mhealthkenya.psurvey.interfaces.QuestionnaireDao;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
+import com.mhealthkenya.psurvey.models.SessionOffline;
 import com.mhealthkenya.psurvey.models.SurveyID;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.auth;
@@ -62,6 +63,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Query2 extends AppCompatActivity {
     ProgressBar progressBar;
@@ -164,6 +166,17 @@ public class Query2 extends AppCompatActivity {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+
+               /* long startTime = System.currentTimeMillis();
+                SessionOffline sessionEntity = new SessionOffline();
+                sessionEntity.setStartTime(startTime);
+                allQuestionDatabase.sessionDao().insertsession(sessionEntity);*/
+
+
+                String sessionIdentifier = UUID.randomUUID().toString();
+                long startTimestamp = System.currentTimeMillis();
+                SessionOffline sessionEntity = new SessionOffline(sessionIdentifier, questionnaireEntity.getId(), startTimestamp);
+                allQuestionDatabase.sessionDao().insertsession(sessionEntity);
 
 
                 Intent ii=new Intent(Query2.this, QuetionsOffline.class);

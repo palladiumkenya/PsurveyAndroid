@@ -48,6 +48,7 @@ import com.mhealthkenya.psurvey.depedancies.Constants;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
+import com.mhealthkenya.psurvey.models.SessionOffline;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
 import com.mhealthkenya.psurvey.models.auth;
@@ -83,6 +84,8 @@ public class ResponseData extends AppCompatActivity {
 
 
     List<UserResponseEntity> userResponses;
+
+    List<SessionOffline> sessionOfflines;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,7 +141,8 @@ public class ResponseData extends AppCompatActivity {
 
         recyclerView1.setAdapter(adapter);
 
-        getResponses1();
+   //     getResponses1();
+        getSessions();
         //getResponsesA();
         //recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
        // recyclerView1.setHasFixedSize(true);
@@ -156,7 +160,8 @@ public class ResponseData extends AppCompatActivity {
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ResponseData.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(ResponseData.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+                getSessions();
 
 
                // callSubmit();
@@ -177,6 +182,8 @@ public class ResponseData extends AppCompatActivity {
             Log.d("QuetionID", String.valueOf(userResponseEntity.getQuestionId()));
             Log.d("Option", String.valueOf(userResponseEntity.getOption()));
 
+           Log.d("SESSIONid", String.valueOf(userResponseEntity.getSessionid()));
+
             int questionnaireId = userResponseEntity.getQuestionnaireId();
             int questionId =  userResponseEntity.getQuestionId();
             String answer = userResponseEntity.getOption();
@@ -193,6 +200,17 @@ public class ResponseData extends AppCompatActivity {
         if (userResponseEntities.isEmpty()){
             getAlert();
            // Toast.makeText(ResponseData.this, "No Responses for this Quetionnaire", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getSessions(){
+
+        sessionOfflines =allQuestionDatabase.sessionDao().getSessionForQuestionnaire(IDvalue);
+        for (SessionOffline session : sessionOfflines) {
+            String sessionIdentifier = session.getSessionIdentifier();
+            Log.d("SESSIONID", sessionIdentifier);
+            Toast.makeText(ResponseData.this, "SESSIONID"+sessionIdentifier, Toast.LENGTH_SHORT).show();
+            // Update UI with sessionIdentifier
         }
     }
 

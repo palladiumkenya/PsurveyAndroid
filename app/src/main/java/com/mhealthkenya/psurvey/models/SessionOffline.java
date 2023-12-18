@@ -13,6 +13,10 @@ public class SessionOffline{
 
     @PrimaryKey(autoGenerate = true)
     private int Sessionid;
+    private int questionnaireId;
+
+    @ColumnInfo(name = "sessionIdentifier")
+    private String sessionIdentifier;
 
     @ColumnInfo(name = "start_time")
     private long startTime; // Use timestamp to store start time
@@ -23,9 +27,16 @@ public class SessionOffline{
     // Add other fields like user ID, session duration, etc. as needed
 
     // Constructor
-    public SessionOffline(long startTime, long endTime) {
+
+
+    public SessionOffline() {
+    }
+
+    public SessionOffline(String sessionIdentifier, int questionnaireId, long startTime) {
+        this.sessionIdentifier = sessionIdentifier;
         this.startTime = startTime;
-        this.endTime =endTime;
+        this.questionnaireId =questionnaireId;
+      //  this.endTime =endTime;
     }
 
     // Getters and setters
@@ -52,6 +63,28 @@ public class SessionOffline{
     }
 
     public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
+    public int getQuestionnaireId() {
+        return questionnaireId;
+    }
+
+    public void setQuestionnaireId(int questionnaireId) {
+        this.questionnaireId = questionnaireId;
+    }
+
+    public String getSessionIdentifier() {
+        return sessionIdentifier;
+    }
+
+    public void setSessionIdentifier(String sessionIdentifier) {
+        this.sessionIdentifier = sessionIdentifier;
+    }
+
+
+    // Set endTimestamp when the session ends
+    public void endSession(long endTime) {
         this.endTime = endTime;
     }
 }

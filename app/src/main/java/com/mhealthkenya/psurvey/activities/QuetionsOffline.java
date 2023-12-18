@@ -36,6 +36,7 @@ import com.mhealthkenya.psurvey.models.Answer;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
 import com.mhealthkenya.psurvey.models.Completed;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
+import com.mhealthkenya.psurvey.models.SessionOffline;
 import com.mhealthkenya.psurvey.models.SurveyID;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
 import com.mhealthkenya.psurvey.models.repeat_count;
@@ -423,6 +424,12 @@ public class QuetionsOffline extends AppCompatActivity {
    //     draftAnswers = intent1.getParcelableArrayListExtra("draftAnswers");
         // Display the question based on the index
         displayQuestion(currentQuestionIndex);
+
+        // Generate a session
+     /*   String sessionIdentifier = UUID.randomUUID().toString();
+        long startTimestamp = System.currentTimeMillis();
+        SessionOffline sessionEntity = new SessionOffline(sessionIdentifier, savedquestionnaireId, startTimestamp);
+        allQuestionDatabase.sessionDao().insertsession(sessionEntity);*/
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1331,6 +1338,11 @@ else
             startActivity(intent);
             // displayQuestion(currentQuestionIndex);
         }else{
+
+            long endTime = System.currentTimeMillis();
+            SessionOffline sessionEntity = new SessionOffline();
+            sessionEntity.setEndTime(endTime);
+            allQuestionDatabase.sessionDao().insertsession(sessionEntity);
            // Toast.makeText(QuetionsOffline.this, "index is" + currentQuestionIndex, Toast.LENGTH_LONG).show();
             //btnNext.setEnabled(false);
 
@@ -1372,6 +1384,29 @@ else
             // Save the updated response back to the database
             allQuestionDatabase.userResponseDao().updateResponse(response);
         }
+    }
+
+
+
+
+
+    public void startSession() {
+        long startTime = System.currentTimeMillis();
+        SessionOffline sessionEntity = new SessionOffline();
+        sessionEntity.setStartTime(startTime);
+        allQuestionDatabase.sessionDao().insertsession(sessionEntity);
+
+
+
+       // SessionOffline sessionEntity = new SessionOffline(startTime);
+       // long sessionId = allQuestionDatabase.sessionDao().insertsession(sessionEntity);
+        // You can store the sessionId or do other actions as needed.
+    }
+
+    public void endSession(long sessionId) {
+        long endTime = System.currentTimeMillis();
+        //sessionDao.updateEndTime(sessionId, endTime);
+        //allQuestionDatabase.sessionDao().updateEndTime(sessionId, endTime);
     }
 
    /* @Override

@@ -108,7 +108,8 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
            // view.surveyID.setText( String.valueOf(obj.getQuestionnaireId()));
             view.surveyID.setText(obj.getQuetion_A());
           //  view.queryID.setText(String.valueOf(obj.getQuestionId()));
-            view.btnOpen.setText(obj.getOption());
+           view.btnOpen.setText(obj.getOption());
+  //          view.btnOpen.setText(String.valueOf(obj.getSessionid()));
 
           /*  view.lyt_parent.setOnClickListener(new View.OnClickListener() {
                 @Override

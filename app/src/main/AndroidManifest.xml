@@ -18,6 +18,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="DATABASE"
+            android:value="psurvey.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="2" />
         <activity
             android:name=".activities.LastConsentData"
             android:exported="false" />

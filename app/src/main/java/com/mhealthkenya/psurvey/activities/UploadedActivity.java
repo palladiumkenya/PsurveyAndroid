@@ -48,6 +48,7 @@ import com.mhealthkenya.psurvey.depedancies.Constants;
 import com.mhealthkenya.psurvey.fragments.HomeFragment;
 import com.mhealthkenya.psurvey.fragments.Test;
 import com.mhealthkenya.psurvey.models.ActiveSurveys;
+import com.mhealthkenya.psurvey.models.MflCode;
 import com.mhealthkenya.psurvey.models.UploadModel;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.auth;
@@ -70,6 +71,8 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
     private ActionBar actionBar;
     private EditText edtxt_search1;
     JSONArray jsonArray1;
+
+    //int z;
 
     private Context context;
    /* @BindView(R.id.fabtodays)
@@ -105,7 +108,7 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
     JSONArray jsonarray;
 
     long  diffdate;
-    String z, dates, phone;
+       String z, dates, phone;
 
      List<UploadModel> mymesslist = new ArrayList<>();
     List<UploadModel> upilist= new ArrayList<>();
@@ -122,6 +125,7 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
    ActiveSurveys activeSurveys;
 
     View rootView;
+    int mfld;
 
 
 
@@ -177,11 +181,32 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
         if (arguments != null) {
             activeSurveys = (ActiveSurveys) arguments.getSerializable("questionnaire");
         }*/
-        MFLcode = Stash.getInt(String.valueOf(Constants.MFL_CODE));
+//        MFLcode = Stash.getInt(String.valueOf(Constants.MFL_CODE));
 
         Log.d("activeSurveys ", String.valueOf(activeSurveys.getId()));
-        Log.d("MFLCODEEE", String.valueOf(MFLcode));
+       // Log.d("MFLCODEEE", String.valueOf(MFLcode));
        // Toast.makeText(UploadedActivity.this, "MFL CODE: "+MFLcode, Toast.LENGTH_SHORT).show();
+
+        try {
+
+            List<MflCode> _mfl =MflCode.findWithQuery(MflCode.class, "SELECT *from MFL_CODE ORDER BY id DESC LIMIT 1");
+            if (_mfl.size()==1){
+                for (int x=0; x<_mfl.size(); x++){
+                    mfld=_mfl.get(x).getMfl();
+
+                    Log.d("MFLCODEEE", String.valueOf(mfld));
+
+
+
+               //     Toast.makeText(UploadedActivity.this, "MFL IS" + " " + String.valueOf(zz), Toast.LENGTH_LONG).show();
+
+
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         passedUname="";
         passedPassword="";
@@ -441,9 +466,9 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
         }
 
 //     /99/12345/
+//int mf =mfld;
 
-
-        AndroidNetworking.get(z+Constants.UPLOADEDDATA+activeSurveys.getId()+"/"+MFLcode)
+        AndroidNetworking.get(z+Constants.UPLOADEDDATA+activeSurveys.getId()+"/"+mfld)
                 .addHeaders("Authorization","Token "+ auth_token)
                 .addHeaders("Content-Type", "application.json")
                 .addHeaders("Accept", "*/*")
@@ -465,10 +490,10 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
                         try {
 
                            jsonArray1 = response.getJSONArray("data");
-                            if (jsonArray1.length()==0){
+                          /*  if (jsonArray1.length()==0){
                                 Toast.makeText(context, "No Data for Clients", Toast.LENGTH_SHORT).show();
                             }
-
+*/
                             for (int i = 0; i < jsonArray1.length(); i++) {
                                 JSONObject jsonObject = jsonArray1.getJSONObject(i);
 
@@ -494,6 +519,9 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    /*    if (jsonArray1.length()==0){
+                            Toast.makeText(context, "No Data for Clients", Toast.LENGTH_SHORT).show();
+                        }*/
 
                     }
 

@@ -28,6 +28,7 @@ import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.adapters.activeSurveyAdapter;
 import com.mhealthkenya.psurvey.depedancies.Constants;
 import com.mhealthkenya.psurvey.models.ActiveSurveys;
+import com.mhealthkenya.psurvey.models.MflCode;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.auth;
 
@@ -129,6 +130,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
 
               //  NavHostFragment.findNavController(HomeFragment.this).navigate(R.id.nav_questionnaire);
+                //Snackbar.make(root.findViewById(R.id.frag_home), "Errorssss: ", Snackbar.LENGTH_LONG).show();
 
             }
         });
@@ -199,7 +201,12 @@ public class HomeFragment extends Fragment {
                             tv_active_surveys.setText(activeQuestionnaires);
                             tv_completed_surveys.setText(completedSurveys);
 
-                            Stash.put(String.valueOf(Constants.MFL_CODE), mflCode);
+                        //    Stash.put(String.valueOf(Constants.MFL_CODE), mflCode);
+                            MflCode.deleteAll(MflCode.class);
+                            MflCode mflCode1 =new MflCode(mflCode);
+                            mflCode1.save();
+
+
 
 
 

@@ -22,6 +22,11 @@ public interface SessionDao {
     @Query("SELECT * FROM SessionOffline WHERE questionnaireId = :questionnaireId")
     List<SessionOffline> getSessionForQuestionnaire(int questionnaireId);
 
+
+    @Query("SELECT * FROM SessionOffline WHERE questionnaireId = :questionnaireId AND end_time IS NOT NULL ORDER BY start_time DESC")
+    List<SessionOffline> getCompletedSessionsByQuestionnaireId(int questionnaireId);
+
+
     @Query("SELECT * FROM SessionOffline ORDER BY start_time DESC")
     List<SessionOffline> getAllSessions();
 }

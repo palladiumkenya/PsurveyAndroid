@@ -205,7 +205,7 @@ public class ResponseData extends AppCompatActivity {
 
     public void getSessions(){
 
-        sessionOfflines =allQuestionDatabase.sessionDao().getSessionForQuestionnaire(IDvalue);
+        sessionOfflines =allQuestionDatabase.sessionDao().getCompletedSessionsByQuestionnaireId(IDvalue);
         for (SessionOffline session : sessionOfflines) {
             String sessionIdentifier = session.getSessionIdentifier();
             Log.d("SESSIONID", sessionIdentifier);

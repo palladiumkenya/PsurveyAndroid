@@ -53,6 +53,7 @@ import com.mhealthkenya.psurvey.models.QuestionEntity;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
 import com.mhealthkenya.psurvey.models.SessionOffline;
 import com.mhealthkenya.psurvey.models.SurveyID;
+import com.mhealthkenya.psurvey.models.SurveyUnique;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.auth;
 import com.orm.SugarContext;
@@ -156,12 +157,18 @@ public class Query2 extends AppCompatActivity {
         questionnairesAdapterOffline.setOnItemClickListener(new QuestionnairesAdapterOffline.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                String sessionIdentifier = UUID.randomUUID().toString();
 
                 QuestionnaireEntity questionnaireEntity =questionnaireEntities.get(position);
                 try {
                     SurveyID.deleteAll(SurveyID.class);
                     SurveyID surveyID = new SurveyID( questionnaireEntity.getId());
                     surveyID.save();
+
+
+                    SurveyUnique.deleteAll(SurveyUnique.class);
+                    SurveyUnique surveyUnique = new SurveyUnique(sessionIdentifier);
+                    surveyUnique.save();
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -173,10 +180,10 @@ public class Query2 extends AppCompatActivity {
                 allQuestionDatabase.sessionDao().insertsession(sessionEntity);*/
 
 
-                String sessionIdentifier = UUID.randomUUID().toString();
+      /*          String sessionIdentifier = UUID.randomUUID().toString();
                 long startTimestamp = System.currentTimeMillis();
                 SessionOffline sessionEntity = new SessionOffline(sessionIdentifier, questionnaireEntity.getId(), startTimestamp);
-                allQuestionDatabase.sessionDao().insertsession(sessionEntity);
+                allQuestionDatabase.sessionDao().insertsession(sessionEntity);*/
 
 
                 Intent ii=new Intent(Query2.this, QuetionsOffline.class);

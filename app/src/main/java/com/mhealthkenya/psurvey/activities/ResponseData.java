@@ -141,8 +141,8 @@ public class ResponseData extends AppCompatActivity {
 
         recyclerView1.setAdapter(adapter);
 
-   //     getResponses1();
-        getSessions();
+        getResponses1();
+  //      getSessions();
         //getResponsesA();
         //recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
        // recyclerView1.setHasFixedSize(true);
@@ -187,11 +187,12 @@ public class ResponseData extends AppCompatActivity {
             int questionnaireId = userResponseEntity.getQuestionnaireId();
             int questionId =  userResponseEntity.getQuestionId();
             String answer = userResponseEntity.getOption();
+            String uniq = userResponseEntity.getUniqueIdentifier();
             String quetion = userResponseEntity.getQuetion_A();
             int session = userResponseEntity.getSessionid();
 
             // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, questionnaireId, questionId, answer,quetion);
+            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session,uniq, questionnaireId, questionId, answer,quetion);
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
             userResponseEntities.add(userResponseEntity1);
 
@@ -291,10 +292,11 @@ public class ResponseData extends AppCompatActivity {
                     int questionId =  userResponseEntity.getQuestionId();
                     String answer = userResponseEntity.getOption();
                     String quetion = userResponseEntity.getQuetion_A();
+                    String uniq = userResponseEntity.getUniqueIdentifier();
                     int session = userResponseEntity.getSessionid();
 
                     // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-                    UserResponseEntity userResponseEntity1 = new UserResponseEntity(session,questionnaireId, questionId, answer, quetion);
+                    UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, uniq,questionnaireId, questionId, answer, quetion);
                     // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
                     userResponseEntities.add(userResponseEntity1);
 

@@ -8,6 +8,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
+import com.mhealthkenya.psurvey.models.UniqueIdentifierEntity;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
 
 import java.util.List;
@@ -31,6 +32,23 @@ public interface UserResponseDao {
 //list quetionnaires then responses
     @Query("SELECT * FROM user_responses WHERE questionnaireId = :questionnaireId")
     List<UserResponseEntity> getUserResponsesForQuestionnaire(int questionnaireId);
+
+
+    @Query("SELECT * FROM user_responses WHERE  uniqueIdentifier = :uniqueIdentifier")
+    List<UserResponseEntity> getUserResponsesForuniqueIdentifier(String uniqueIdentifier);
+
+
+
+    @Query("SELECT DISTINCT uniqueIdentifier FROM user_responses WHERE questionnaireId = :questionnaireId")
+    List<UniqueIdentifierEntity> getSessions(int questionnaireId);
+
+
+
+
+
+
+
+    //   uniqueIdentifier
 
     //list UUID then responses
     //display responses based on quetionnaire

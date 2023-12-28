@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
             // z= _url.base_url1;
             // zz =_url.stage_name1;
-            if (zz==null){
+           if (zz==null){
                // dialogs.showErrorDialog("System not selected", "Please select the system to connect to");
                 Toast.makeText(LoginActivity.this, "You are not connected to", Toast.LENGTH_LONG).show();
 
@@ -129,9 +129,10 @@ public class LoginActivity extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                Intent intent = new Intent(LoginActivity.this, SelectUrls.class);
+                              /*  Intent intent = new Intent(LoginActivity.this, SelectUrls.class);
                                 startActivity(intent);
-                                finish();
+                                finish();*/
+                                onBackPressed();
 
                                 //dialog.cancel();
                             }

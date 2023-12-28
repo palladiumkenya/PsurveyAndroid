@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.activities.ResponseData;
+import com.mhealthkenya.psurvey.activities.SessionList;
 import com.mhealthkenya.psurvey.depedancies.Tools;
 import com.mhealthkenya.psurvey.depedancies.ViewAnimation;
 import com.mhealthkenya.psurvey.models.ActiveSurveys;
@@ -125,7 +126,7 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
                 public void onClick(View v) {
                    /* boolean show = toggleLayoutExpand(!obj.expanded, v, view.lyt_expand);
                     questionnaireEntities.get(position).expanded = show;*/
-                    Intent intent = new Intent(context, ResponseData.class);
+                    Intent intent = new Intent(context, SessionList.class);
                     intent.putExtra("Quetionnaire_ID", obj.getId());
                     context.startActivity(intent);
                     Toast.makeText(context, "ID is" + obj.getId(), Toast.LENGTH_LONG).show();

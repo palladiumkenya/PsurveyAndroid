@@ -31,7 +31,8 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
     public UserResponseEntity() {
     }
 
-    public UserResponseEntity(int Sessionid, String uniqueIdentifier, int questionnaireId, int questionId,  String option, String Quetion_A) {
+
+    public UserResponseEntity(int Sessionid, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
 
         this.questionnaireId = questionnaireId;
         this.uniqueIdentifier =uniqueIdentifier;
@@ -42,13 +43,19 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
         this.Quetion_A= Quetion_A;
     }
 
+    public UserResponseEntity(String uniqueIdentifier) {
+        this.uniqueIdentifier = uniqueIdentifier;
+    }
+
     protected UserResponseEntity(Parcel in) {
         idA = in.readInt();
+        Sessionid = in.readInt();
         questionnaireId = in.readInt();
         questionId = in.readInt();
         answerId = in.readInt();
         option = in.readString();
         Quetion_A = in.readString();
+        uniqueIdentifier = in.readString();
     }
 
     public static final Creator<UserResponseEntity> CREATOR = new Creator<UserResponseEntity>() {
@@ -140,8 +147,10 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
         dest.writeInt(idA);
         dest.writeInt(questionnaireId);
         dest.writeInt(questionId);
+        dest.writeInt(questionId);
         dest.writeInt(answerId);
         dest.writeString(option);
         dest.writeString(Quetion_A);
+        dest.writeString(uniqueIdentifier);
     }
 }

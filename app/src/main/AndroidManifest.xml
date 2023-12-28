@@ -22,6 +22,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activities.SessionList"
+            android:exported="false" />
+        <activity
             android:name=".activities.offlineHome"
             android:exported="false" />
 
@@ -30,7 +33,7 @@
             android:value="userAuth.db" />
         <meta-data
             android:name="VERSION"
-            android:value="17" />
+            android:value="20" />
 
         <activity
             android:name=".activities.Query3"

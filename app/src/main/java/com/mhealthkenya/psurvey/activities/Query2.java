@@ -2,6 +2,7 @@ package com.mhealthkenya.psurvey.activities;
 
 import static com.mhealthkenya.psurvey.depedancies.AppController.TAG;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -62,6 +64,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -155,9 +159,24 @@ public class Query2 extends AppCompatActivity {
         recyclerView.setAdapter(questionnairesAdapterOffline);
 
         questionnairesAdapterOffline.setOnItemClickListener(new QuestionnairesAdapterOffline.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onItemClick(int position) {
-                String sessionIdentifier = UUID.randomUUID().toString();
+                String sessionIdentifier2 = UUID.randomUUID().toString();
+
+
+                // Get current date and time
+                LocalDateTime now = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    now = LocalDateTime.now();
+                }
+
+                // Format date and time
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd_HH:mm:ss");
+                String formattedDateTime = now.format(formatter);
+
+                // Append formatted date and time to UUID
+                String sessionIdentifier1 = sessionIdentifier2 + "_" + formattedDateTime;
 
                 QuestionnaireEntity questionnaireEntity =questionnaireEntities.get(position);
                 try {
@@ -167,7 +186,7 @@ public class Query2 extends AppCompatActivity {
 
 
                     SurveyUnique.deleteAll(SurveyUnique.class);
-                    SurveyUnique surveyUnique = new SurveyUnique(sessionIdentifier);
+                    SurveyUnique surveyUnique = new SurveyUnique(sessionIdentifier1);
                     surveyUnique.save();
 
                 }catch (Exception e){

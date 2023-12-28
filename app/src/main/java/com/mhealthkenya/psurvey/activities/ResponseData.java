@@ -68,6 +68,8 @@ public class ResponseData extends AppCompatActivity {
 
     Button btnsubmit;
     int IDvalue;
+
+    String SesssionValue;
     AllQuestionDatabase allQuestionDatabase;
 
 
@@ -120,6 +122,8 @@ public class ResponseData extends AppCompatActivity {
          Intent mIntent = getIntent();
         IDvalue = mIntent.getIntExtra("Quetionnaire_ID", 0);
 
+        SesssionValue=mIntent.getStringExtra("Session_ID");
+
 
       //  Toast.makeText(ResponseData.this, "ID Is"+IDvalue, Toast.LENGTH_SHORT).show();
         recyclerView1 = findViewById(R.id.recyclerViewResponse);
@@ -140,8 +144,9 @@ public class ResponseData extends AppCompatActivity {
         recyclerView1.addItemDecoration(dividerItemDecoration);
 
         recyclerView1.setAdapter(adapter);
+        getResponses2();
 
-        getResponses1();
+   //     getResponses1();
   //      getSessions();
         //getResponsesA();
         //recyclerView1.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false));
@@ -201,6 +206,43 @@ public class ResponseData extends AppCompatActivity {
         if (userResponseEntities.isEmpty()){
             getAlert();
            // Toast.makeText(ResponseData.this, "No Responses for this Quetionnaire", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    //get Response 2
+
+    public void getResponses2(){
+        userResponses = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
+        // userResponseEntities1.add(userResponses);
+        Log.d("RESPONSE SIZE", String.valueOf(userResponses.size()));
+
+        //try
+
+        for (UserResponseEntity userResponseEntity:userResponses) {
+            Log.d("QuetionnaireID", String.valueOf(userResponseEntity.getQuestionnaireId()));
+            Log.d("QuetionID", String.valueOf(userResponseEntity.getQuestionId()));
+            Log.d("Option", String.valueOf(userResponseEntity.getOption()));
+
+            Log.d("SESSIONid", String.valueOf(userResponseEntity.getSessionid()));
+
+            int questionnaireId = userResponseEntity.getQuestionnaireId();
+            int questionId =  userResponseEntity.getQuestionId();
+            String answer = userResponseEntity.getOption();
+            String uniq = userResponseEntity.getUniqueIdentifier();
+            String quetion = userResponseEntity.getQuetion_A();
+            int session = userResponseEntity.getSessionid();
+
+            // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
+            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session,uniq, questionnaireId, questionId, answer,quetion);
+            // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
+            userResponseEntities.add(userResponseEntity1);
+
+            adapter.setUser2(userResponseEntities);
+        }
+        if (userResponseEntities.isEmpty()){
+            getAlert();
+            // Toast.makeText(ResponseData.this, "No Responses for this Quetionnaire", Toast.LENGTH_SHORT).show();
         }
     }
 

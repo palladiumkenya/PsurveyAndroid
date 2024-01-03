@@ -324,5 +324,11 @@ public class SelectUrls extends AppCompatActivity {
         return haveConnectedWifi || haveConnectedMobile;
     }
 
+    @Override
+    public void onBackPressed() {
+
+        finishAffinity();
+    }
+
 
     }

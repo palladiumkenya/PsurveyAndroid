@@ -709,4 +709,16 @@ public class Query2 extends AppCompatActivity {
         dialog.getWindow().setAttributes(lp);
 
     }
+
+
+
+    @Override
+    public void onBackPressed() {
+
+            Intent intent = new Intent(Query2.this, offlineHome.class);
+            startActivity(intent);
+            //        super.onBackPressed();
+
+
+    }
 }

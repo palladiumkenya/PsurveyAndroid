@@ -457,6 +457,7 @@ public class QuetionsOffline extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+ //               Toast.makeText(QuetionsOffline.this, "index is" + " "+currentQuestionIndex, Toast.LENGTH_SHORT).show();
 
 
                     //Agreed
@@ -1448,4 +1449,24 @@ else
         currentQuestionIndex = savedInstanceState.getInt("currentQuestionIndex");
         draftAnswers = savedInstanceState.getParcelableArrayList("draftAnswers");
     }*/
+   @Override
+   public void onBackPressed() {
+       // Decrement currentQuestionIndex when the back button is pressed
+       // Decrement currentQuestionIndex when the back button is pressed
+       if (currentQuestionIndex > 0) {
+           currentQuestionIndex--;
+
+           // Create a new intent with the decremented questionIndex
+           Intent intent = new Intent(QuetionsOffline.this, QuetionsOffline.class);
+           intent.putExtra("questionIndex", currentQuestionIndex); // Pass the decremented index
+           startActivity(intent);
+
+       } else {
+           // Handle the case where the first question is already displayed
+           Intent intent = new Intent(QuetionsOffline.this, Query2.class);
+           startActivity(intent);
+   //        super.onBackPressed();
+       }
+
+   }
 }

@@ -586,5 +586,15 @@ public class offlineHome extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = new Intent(offlineHome.this, LoginActivity.class);
+        startActivity(intent);
+        //        super.onBackPressed();
+
+
+    }
+
 
 }

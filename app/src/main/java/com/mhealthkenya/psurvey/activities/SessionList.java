@@ -1,10 +1,12 @@
 package com.mhealthkenya.psurvey.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -114,8 +116,36 @@ public class SessionList extends AppCompatActivity {
             sessionListAdapter.setUser(userResponseEntities);
         }
         if (userResponseEntities.isEmpty()){
-     //       getAlert();
+            getAlert();
             // Toast.makeText(ResponseData.this, "No Responses for this Quetionnaire", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //Alert
+    private void getAlert(){
+
+
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(SessionList.this);
+        builder1.setIcon(R.drawable.logo);
+        builder1.setTitle("No Responses for This Questionnaire");
+        // builder1.setMessage( zz);
+        builder1.setCancelable(false);
+
+        builder1.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        Intent intent = new Intent(SessionList.this, Query2.class);
+                        startActivity(intent);
+                 //       finish();
+
+                        //dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+
     }
 }

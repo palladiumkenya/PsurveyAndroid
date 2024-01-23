@@ -175,8 +175,19 @@ public class Query2 extends AppCompatActivity {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd_HH:mm:ss");
                 String formattedDateTime = now.format(formatter);
 
+                // Format date and time2
+                DateTimeFormatter formatter22 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                String formattedDateTime22 = now.format(formatter22);
+
+                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
+                String formattedDateTime2b = now.format(formatter2);
+
+
+
                 // Append formatted date and time to UUID
                 String sessionIdentifier1 = sessionIdentifier2 + "_" + formattedDateTime;
+
+                String sessionIdentifier22 = "Survey Administered on " + " " + formattedDateTime22 + " " + "at"+ " "+ formattedDateTime2b ;
 
                 QuestionnaireEntity questionnaireEntity =questionnaireEntities.get(position);
                 try {
@@ -186,7 +197,7 @@ public class Query2 extends AppCompatActivity {
 
 
                     SurveyUnique.deleteAll(SurveyUnique.class);
-                    SurveyUnique surveyUnique = new SurveyUnique(sessionIdentifier1);
+                    SurveyUnique surveyUnique = new SurveyUnique(sessionIdentifier22);
                     surveyUnique.save();
 
                 }catch (Exception e){

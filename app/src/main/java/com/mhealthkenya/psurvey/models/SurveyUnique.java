@@ -7,6 +7,8 @@ import com.orm.dsl.Table;
 @Table(name = " SurveyUnique")
 public class SurveyUnique extends SugarRecord {
 
+    int id;
+
     String surveyUnik;
 
     public SurveyUnique() {
@@ -23,4 +25,6 @@ public class SurveyUnique extends SugarRecord {
     public void setSurveyUnik(String surveyUnik) {
         this.surveyUnik = surveyUnik;
     }
+
+
 }

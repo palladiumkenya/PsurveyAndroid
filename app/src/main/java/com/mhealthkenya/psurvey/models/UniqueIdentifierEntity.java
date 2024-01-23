@@ -1,6 +1,10 @@
 package com.mhealthkenya.psurvey.models;
 
+import androidx.room.PrimaryKey;
+
 public class UniqueIdentifierEntity {
+
+
 
     private String uniqueIdentifier;
 

@@ -44,7 +44,8 @@ import butterknife.Unbinder;
 
 import static com.mhealthkenya.psurvey.depedancies.AppController.TAG;
 
-public class HomeFragment extends Fragment {
+public class
+HomeFragment extends Fragment {
 
 
 

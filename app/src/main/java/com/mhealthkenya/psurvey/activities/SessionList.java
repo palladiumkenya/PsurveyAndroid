@@ -50,7 +50,7 @@ public class SessionList extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Session List");
+        getSupportActionBar().setTitle("Response List");
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -52,6 +54,7 @@ import com.mhealthkenya.psurvey.adapters.activeSurveyAdapter;
 import com.mhealthkenya.psurvey.depedancies.Constants;
 import com.mhealthkenya.psurvey.models.ActiveSurveys;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
+import com.mhealthkenya.psurvey.models.Available;
 import com.mhealthkenya.psurvey.models.Completed;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
@@ -75,11 +78,18 @@ public class offlineHome extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
 
+    QuestionEntity questionEntity;
+    AnswerEntity answerEntity;
+
+    AllQuestionDatabase allQuestionDatabase;
+
 
     JSONObject jsonObject;
     private RequestQueue requestQueue;
 
     int questionnaireId;
+
+    int active2;
 
 
     public ArrayList<QuestionnaireEntity> questionnaireEntities;
@@ -103,10 +113,6 @@ public class offlineHome extends AppCompatActivity {
 
     int countS;
 
-
-
-
-
     TextView tv_completed_surveys1, tv_active_surveys;
 
     CardView surveysID1, available;
@@ -124,6 +130,7 @@ public class offlineHome extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("pSurvey");
+        allQuestionDatabase = AllQuestionDatabase.getInstance(this);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -172,12 +179,35 @@ public class offlineHome extends AppCompatActivity {
 
 
         tv_completed_surveys1 = findViewById(R.id.tv_completed_surveys);
-        try2();
         tv_active_surveys = findViewById(R.id.tv_active_surveys);
 
+        if (isConnected(offlineHome.this)){
+            try2();
+        }else{
+            progressDialog.dismiss();
 
 
-       // tv_completed_surveys1.setText("");
+            try {
+
+                List<Available> _url = Available.findWithQuery(Available.class, "SELECT *from Available ORDER BY id DESC LIMIT 1");
+                if (_url.size() == 1) {
+                    for (int x = 0; x < _url.size(); x++) {
+                        active2 = _url.get(x).getAvailable();
+
+                        Log.d("Active SURVEYS", String.valueOf(active2));
+
+                        //   Select.from(Completed.class).orderBy("ID DESC").first();
+
+
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            tv_active_surveys.setText(String.valueOf(active2));
+
+        }
+
 
 
         surveysID1 = findViewById(R.id.surveysID);
@@ -198,9 +228,6 @@ public class offlineHome extends AppCompatActivity {
 
         try {
 
-            // UrlTable _url = SugarRecord.findById(UrlTable.class, 4);
-            //select *from getLastRecord ORDER BY id DESC LIMIT 1;
-
             List<Completed> _url = Completed.findWithQuery(Completed.class, "SELECT *from Completed ORDER BY id DESC LIMIT 1");
             if (_url.size() == 1) {
                 for (int x = 0; x < _url.size(); x++) {
@@ -219,35 +246,7 @@ public class offlineHome extends AppCompatActivity {
         }
         tv_completed_surveys1.setText(String.valueOf(countS));
 
-
-        //if (countS==0)
-        /*countS = getLastIndex();
-        tv_completed_surveys1.setText(String.valueOf(countS));*/
-
-
-
-
-
-
-        //end
     }
-
-    private int getLastIndex() {
-        // Use Sugar ORM's Select to query the last value inserted for index
-        Completed lastCompleted = Select.from(Completed.class).orderBy("ID DESC").first();
-
-        if (lastCompleted != null) {
-            // If a record is found, return the index value
-            return lastCompleted.getComplete();
-        } else {
-            // Handle the case where no record is found (e.g., set a default value)
-            return -1;
-        }
-    }
-
-
-
-
 
 
 
@@ -385,16 +384,72 @@ public class offlineHome extends AppCompatActivity {
                         questionnaireEntity2.setResponsesTableName(null); // You may set this as needed
                         questionnaireEntity2.setIsPublished(null); // You may set this as needed
                         questionnaireEntity2.setCreatedBy(14); // Y
-                        // ou may set this as needed
+                        // you may set this as needed
 
                         QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-
                         questionnaireEntities.add(questionnaireEntity);
 
+                        allQuestionDatabase.questionnaireDao().insert(questionnaireEntity2);
+
+                        //questions
+                        JSONArray jsonArray = jsonObject.getJSONArray("questions");
+
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject questionObject = jsonArray.getJSONObject(j);
+
+                            int questionId = questionObject.getInt("id");
+                            String questionText = questionObject.getString("question");
+                            int questionType = questionObject.getInt("question_type");
+                            int questionOrder = questionObject.getInt("question_order");
+                            boolean isRequired = questionObject.getBoolean("is_required");
+
+                            // Create and insert the QuestionEntity
+                            questionEntity = new QuestionEntity();
+                            questionEntity.setId(questionId);
+                            questionEntity.setQuestionnaireId(questionnaireId);
+                            questionEntity.setQuestion(questionText);
+                            questionEntity.setQuestionType(questionType);
+                            questionEntity.setQuestionOrder(questionOrder);
+                            questionEntity.setRequired(isRequired);
+                            questionEntity.setDateValidation(null); // You may set this as needed
+                            questionEntity.setRepeatable(false); // You may set this as needed
+                            questionEntity.setResponseColName(null); // You may set this as needed
+                            questionEntity.setCreatedAt(questionObject.getString("created_at"));
+                            questionEntity.setCreatedBy(questionObject.getInt("created_by"));
+
+                            // Insert the QuestionEntity into the Room database
+                            allQuestionDatabase.questionDao().insert(questionEntity);
 
 
+                            // Parse and insert answers
+                            JSONArray answersArray = questionObject.getJSONArray("answers");
+                            // JSONArray answersArray = jsonObject.getJSONArray("answers");
+                            for (int k = 0; k < answersArray.length(); k++) {
+                                JSONObject answerObject = answersArray.getJSONObject(k);
 
-                        // RetrieveQuestionnaire();
+                                int answerId = answerObject.getInt("id");
+                                String answerOption = answerObject.getString("option");
+
+                                Log.d("ANSWER OPTION", answerOption);
+
+                                // Create and insert the AnswerEntity
+                                answerEntity = new AnswerEntity();
+                                answerEntity.setId(answerId);
+                                answerEntity.setQuestionId(questionId);
+                                answerEntity.setQuestionnaireId(questionnaireId);
+                                answerEntity.setOption(answerOption);
+                                answerEntity.setCreatedAt(answerObject.getString("created_at"));
+                                answerEntity.setCreatedBy(answerObject.getInt("created_by"));
+
+
+                                allQuestionDatabase.answerDao().insert(answerEntity);
+
+                                // Insert the AnswerEntity into the Room database
+
+                            }}
+
+
+                            // RetrieveQuestionnaire();
                         // myAsyncTask1.execute();
 
                         //RetrieveQuestionnaire();
@@ -404,6 +459,9 @@ public class offlineHome extends AppCompatActivity {
                 }
                 //   progressBar.setVisibility(View.GONE);
                 tv_active_surveys.setText(String.valueOf(questionnaireEntities.size()));
+
+                Available available1 =new Available(questionnaireEntities.size());
+                available1.save();
                 progressDialog.dismiss();
                // Toast.makeText(offlineHome.this, "nOMBERSUrveys"+""+String.valueOf(questionnaireEntities.size()), Toast.LENGTH_LONG).show();
 
@@ -593,6 +651,21 @@ public class offlineHome extends AppCompatActivity {
         startActivity(intent);
         //        super.onBackPressed();
 
+
+    }
+
+    private  boolean isConnected(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(connectivityManager.TYPE_WIFI);
+        NetworkInfo mobileInfo =connectivityManager.getNetworkInfo(connectivityManager.TYPE_MOBILE);
+
+        if((wifiInfo !=null && wifiInfo.isConnected())|| (mobileInfo !=null && mobileInfo.isConnected())){
+            return true;
+        }
+        else{
+            return false;
+        }
 
     }
 

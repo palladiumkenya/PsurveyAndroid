@@ -4,6 +4,7 @@ import static android.R.layout.simple_spinner_item;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.room.Delete;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -34,6 +35,7 @@ import com.android.volley.toolbox.Volley;
 import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.activities.auth.LoginActivity;
 import com.mhealthkenya.psurvey.depedancies.Constants;
+import com.mhealthkenya.psurvey.models.Completed;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.urlModel;
 
@@ -102,6 +104,12 @@ public class SelectUrls extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferencesS.edit();
                 editor.putString("FirstTimeInstall", "Yes");
                 editor.apply();
+                Completed.deleteAll(Completed.class);
+
+                //Delete.Complete(Completed.class);
+
+
+
             }
         }catch(Exception e){
 

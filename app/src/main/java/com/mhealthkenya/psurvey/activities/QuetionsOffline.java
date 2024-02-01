@@ -361,22 +361,6 @@ public class QuetionsOffline extends AppCompatActivity {
         btnNext = (Button) findViewById(R.id.btn_next);
         allQuestionDatabase = AllQuestionDatabase.getInstance(this);
 
-        /*Intent mIntent = getIntent();
-        IDvalue = mIntent.getIntExtra("ID", 0);
-        questionnaireId = IDvalue;/
-
-        // Initialize your Room database
-        allQuestionDatabase = AllQuestionDatabase.getInstance(this);
-
-
-        /*try {
-            SurveyID.deleteAll(SurveyID.class);
-            SurveyID surveyID = new SurveyID(questionnaireId);
-            surveyID.save();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }*/
 
         try {
 
@@ -421,15 +405,6 @@ public class QuetionsOffline extends AppCompatActivity {
 
         questions = allQuestionDatabase.questionDao().getQuestionsByQuestionnaireId(savedquestionnaireId);
 
-        //thread
-       /* Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                // update the ui from here
-                questions = allQuestionDatabase.questionDao().getQuestionsByQuestionnaireId(savedquestionnaireId);
-            }
-        });*/
 
 
 
@@ -448,11 +423,7 @@ public class QuetionsOffline extends AppCompatActivity {
         // Display the question based on the index
         displayQuestion(currentQuestionIndex);
 
-        // Generate a session
-     /*   String sessionIdentifier = UUID.randomUUID().toString();
-        long startTimestamp = System.currentTimeMillis();
-        SessionOffline sessionEntity = new SessionOffline(sessionIdentifier, savedquestionnaireId, startTimestamp);
-        allQuestionDatabase.sessionDao().insertsession(sessionEntity);*/
+
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1295,47 +1266,7 @@ else
 
     }
 
-    // Save current answers to the draft
-    public void saveAnswersToDraft(int Sessionid, String uniqueIdentifier, int questionnaireId1, int questionId1, String option1, String quetion1) {
-        draftAnswers = new ArrayList<>();
-        // Code to save the current answers to the draft
-        // For example, iterate through the answers on the current question and add them to draftAnswers
-        UserResponseEntity draftAnswer = new UserResponseEntity(Sessionid,  uniqueIdentifier, questionnaireId1, questionId1, option1, quetion1);
-        draftAnswers.add(draftAnswer);
-        currentQuestionIndex++;
 
-
-        if (currentQuestionIndex < questions.size()) {
-            Intent intent = new Intent(QuetionsOffline.this, QuetionsOffline.class);
-            intent.putExtra("questionIndex", currentQuestionIndex); // Pass the index
-            intent.putParcelableArrayListExtra("draftAnswers", new ArrayList<>(draftAnswers));
-            startActivity(intent);
-            // displayQuestion(currentQuestionIndex);
-        }else{
-            saveDraftToUserResponse();
-           /* Intent intent = new Intent(QuetionsOffline.this, CompleteSurvey.class);
-            startActivity(intent);*/
-            Log.d("Ansers,", String.valueOf(draftAnswers.size()));
-            Toast.makeText(QuetionsOffline.this, "LIST SIZE" +String.valueOf(draftAnswers.size()), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    // Save all draft answers to UserResponseEntity
-    public void saveDraftToUserResponse() {
-        // Iterate through draftAnswers and save them to UserResponseEntity
-        for (UserResponseEntity draftAnswer : draftAnswers) {
-            
-
-
-            // Save draftAnswer to UserResponseEntity
-      //      allQuestionDatabase.userResponseDao().insert(draftAnswer);
-
-            allQuestionDatabase.userResponseDao().insertResponse(draftAnswer);
-        }
-
-        // Clear the draft after saving
-        draftAnswers.clear();
-    }
 
     public void SaveAnswers(int Sessionid, String uniqueIdentifier, int questionnaireId1, int questionId1, String option1, String quetion1){
 
@@ -1368,15 +1299,6 @@ else
             SessionOffline sessionEntity = new SessionOffline();
             sessionEntity.setEndTime(endTime);
             allQuestionDatabase.sessionDao().insertsession(sessionEntity);
-           // Toast.makeText(QuetionsOffline.this, "index is" + currentQuestionIndex, Toast.LENGTH_LONG).show();
-            //btnNext.setEnabled(false);
-
-          //  Constants.counter++;
-
-           // Completed.deleteAll(Completed.class);
-           /* index++;
-            Completed completed =new Completed(index);
-            completed.save();*/
 
 
 
@@ -1402,38 +1324,6 @@ else
 
     }
 
-    private void generateAndAssignUniqueIdentifiersForResponses(List<UserResponseEntity> responses) {
-        for (UserResponseEntity response : responses) {
-            String uniqueIdentifier = UUID.randomUUID().toString();
-            response.setUniqueIdentifier(uniqueIdentifier);
-            // Save the updated response back to the database
-            allQuestionDatabase.userResponseDao().updateResponse(response);
-        }
-    }
-
-
-
-
-
-    public void startSession() {
-        long startTime = System.currentTimeMillis();
-        SessionOffline sessionEntity = new SessionOffline();
-        sessionEntity.setStartTime(startTime);
-        allQuestionDatabase.sessionDao().insertsession(sessionEntity);
-
-
-
-       // SessionOffline sessionEntity = new SessionOffline(startTime);
-       // long sessionId = allQuestionDatabase.sessionDao().insertsession(sessionEntity);
-        // You can store the sessionId or do other actions as needed.
-    }
-
-    public void endSession(long sessionId) {
-        long endTime = System.currentTimeMillis();
-        //sessionDao.updateEndTime(sessionId, endTime);
-        //allQuestionDatabase.sessionDao().updateEndTime(sessionId, endTime);
-    }
-
    /* @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -1449,7 +1339,7 @@ else
         currentQuestionIndex = savedInstanceState.getInt("currentQuestionIndex");
         draftAnswers = savedInstanceState.getParcelableArrayList("draftAnswers");
     }*/
-   @Override
+/*   @Override
    public void onBackPressed() {
        // Decrement currentQuestionIndex when the back button is pressed
        // Decrement currentQuestionIndex when the back button is pressed
@@ -1457,6 +1347,8 @@ else
            currentQuestionIndex--;
 
            // Create a new intent with the decremented questionIndex
+
+
            Intent intent = new Intent(QuetionsOffline.this, QuetionsOffline.class);
            intent.putExtra("questionIndex", currentQuestionIndex); // Pass the decremented index
            startActivity(intent);
@@ -1465,8 +1357,24 @@ else
            // Handle the case where the first question is already displayed
            Intent intent = new Intent(QuetionsOffline.this, Query2.class);
            startActivity(intent);
-   //        super.onBackPressed();
+           super.onBackPressed();
        }
 
-   }
+   }*/
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("currentQuestionIndex", currentQuestionIndex);
+        // Save other necessary data here
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        currentQuestionIndex = savedInstanceState.getInt("currentQuestionIndex");
+        // Restore other necessary data here
+    }
+
+
 }

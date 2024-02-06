@@ -37,13 +37,6 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         this. onItemClickListener = Listener;
 
     }
-
-  /*  public  UserResponseAdapter (Context context){
-
-        this.context = context;
-
-
-    }*/
     // Constructor to initialize userResponses
     public UserResponseAdapter(Context context) {
         this.context = context;
@@ -51,8 +44,6 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void setUser2(List<UserResponseEntity> userResponseEntities){
         this.userResponseEntities = userResponseEntities;
-        //notifyDataSetChanged();
-        //notifyAll();
         notifyDataSetChanged();
     }
 
@@ -109,34 +100,15 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             view.surveyID.setText(obj.getQuetion_A());
             view.btnOpen.setText(obj.getOption());
 
-//            view.btnOpen.setText(obj.getUniqueIdentifier());
-          //  view.queryID.setText(String.valueOf(obj.getQuestionId()));
-          // view.btnOpen.setText(obj.getOption());
-  //          view.btnOpen.setText(String.valueOf(obj.getSessionid()));
 
-          /*  view.lyt_parent.setOnClickListener(new View.OnClickListener() {
+            view.surveyID.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    //This  is onclick implementation
-                    if (onItemClickListener != null) {
-                        //Toast.makeText(context,items.get(position).getLogo(), Toast.LENGTH_LONG).show();
-                        onItemClickListener.onItemClick(position);
-                    }
+                public void onClick(View v) {
+
                 }
             });
 
 
-            view.bt_expand.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   /* boolean show = toggleLayoutExpand(!obj.expanded, v, view.lyt_expand);
-                    questionnaireEntities.get(position).expanded = show;*/
-                  /*  Intent intent = new Intent(context, ResponseData.class);
-                    intent.putExtra("Quetionnaire_ID", obj.getId());
-                    context.startActivity(intent);
-                   // Toast.makeText(context, "ID is" + obj.getId(), Toast.LENGTH_LONG).show();
-                }
-            });*/
 }}
 
     @Override

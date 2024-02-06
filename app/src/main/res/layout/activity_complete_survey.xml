@@ -72,7 +72,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/spacing_medium"
                             android:layout_weight="1"
-                            android:visibility="gone"
+
                             android:text="@string/new_query"
                             style="@style/Widget.MaterialComponents.Button.TextButton"/>
 

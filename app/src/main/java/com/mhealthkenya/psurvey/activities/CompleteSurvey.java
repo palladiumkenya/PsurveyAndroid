@@ -13,7 +13,7 @@ import com.orm.query.Select;
 
 public class CompleteSurvey extends AppCompatActivity {
 
-    Button btn;
+    Button btn, btn_new_survey1;
     public int index =0;
 
     @Override
@@ -21,6 +21,7 @@ public class CompleteSurvey extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_survey);
         btn =findViewById(R.id.btn_done);
+        btn_new_survey1=findViewById(R.id.btn_new_survey);
 
         index = getLastIndex();
 
@@ -38,6 +39,20 @@ public class CompleteSurvey extends AppCompatActivity {
 
                 Intent intent =new Intent(CompleteSurvey.this, offlineHome.class);
                 startActivity(intent);
+            }
+        });
+
+        btn_new_survey1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                index++;
+                Completed completed =new Completed(index);
+                completed.save();
+
+                Intent intent =new Intent(CompleteSurvey.this, Query2.class);
+                startActivity(intent);
+
             }
         });
     }

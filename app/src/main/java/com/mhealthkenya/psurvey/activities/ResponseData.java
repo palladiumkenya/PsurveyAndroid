@@ -685,8 +685,8 @@ public class ResponseData extends AppCompatActivity {
                     // Iterate over the list of question answers for each response
                     for (UserResponseEntity questionAnswer : userResponses) {
                         JSONObject questionAnswerObj = new JSONObject();
-                        questionAnswerObj.put("question", questionAnswer.getQuestionId());
-                        questionAnswerObj.put("answer", questionAnswer.getIdA());
+                        questionAnswerObj.put("question", questionAnswer.getSessionid());
+                        questionAnswerObj.put("answer", questionAnswer.getAnswerId());
                         questionAnswerObj.put("open_text", "");
                         questionAnswersArray.put(questionAnswerObj);
                     }

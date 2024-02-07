@@ -162,52 +162,15 @@ public class ResponseData extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             //    Toast.makeText(ResponseData.this, "Coming Soon", Toast.LENGTH_SHORT).show();
-              //  getSessions();
                 sendAnswersToServer();
 
-
-               // callSubmit();
             }
         });
 
     }
 
-    public void getResponses1(){
-        userResponses = allQuestionDatabase.userResponseDao().getUserResponsesForQuestionnaire(IDvalue);
-       // userResponseEntities1.add(userResponses);
-        Log.d("RESPONSE SIZE", String.valueOf(userResponses.size()));
 
-        //try
-
-       for (UserResponseEntity userResponseEntity:userResponses) {
-            Log.d("QuetionnaireID", String.valueOf(userResponseEntity.getQuestionnaireId()));
-            Log.d("QuetionID", String.valueOf(userResponseEntity.getQuestionId()));
-            Log.d("Option", String.valueOf(userResponseEntity.getOption()));
-
-           Log.d("SESSIONid", String.valueOf(userResponseEntity.getSessionid()));
-
-            int questionnaireId = userResponseEntity.getQuestionnaireId();
-            int questionId =  userResponseEntity.getQuestionId();
-            String answer = userResponseEntity.getOption();
-            String uniq = userResponseEntity.getUniqueIdentifier();
-            String quetion = userResponseEntity.getQuetion_A();
-            int session = userResponseEntity.getSessionid();
-
-            // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session,uniq, questionnaireId, questionId, answer,quetion);
-            // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
-            userResponseEntities.add(userResponseEntity1);
-
-            adapter.setUser2(userResponseEntities);
-        }
-        if (userResponseEntities.isEmpty()){
-            getAlert();
-           // Toast.makeText(ResponseData.this, "No Responses for this Quetionnaire", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    //get Response 2
+    //get Response
 
     public void getResponses2(){
         userResponses = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
@@ -226,12 +189,13 @@ public class ResponseData extends AppCompatActivity {
             int questionnaireId = userResponseEntity.getQuestionnaireId();
             int questionId =  userResponseEntity.getQuestionId();
             String answer = userResponseEntity.getOption();
+            int answeiD =userResponseEntity.getAnswerId();
             String uniq = userResponseEntity.getUniqueIdentifier();
             String quetion = userResponseEntity.getQuetion_A();
             int session = userResponseEntity.getSessionid();
 
             // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session,uniq, questionnaireId, questionId, answer,quetion);
+            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, answeiD, uniq, questionnaireId, questionId, answer,quetion);
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
             userResponseEntities.add(userResponseEntity1);
 
@@ -242,126 +206,6 @@ public class ResponseData extends AppCompatActivity {
             // Toast.makeText(ResponseData.this, "No Responses for this Quetionnaire", Toast.LENGTH_SHORT).show();
         }
     }
-
-    public void getSessions(){
-
-        sessionOfflines =allQuestionDatabase.sessionDao().getCompletedSessionsByQuestionnaireId(IDvalue);
-        for (SessionOffline session : sessionOfflines) {
-            String sessionIdentifier = session.getSessionIdentifier();
-            Log.d("SESSIONID", sessionIdentifier);
-  //          Toast.makeText(ResponseData.this, "SESSIONID"+sessionIdentifier, Toast.LENGTH_SHORT).show();
-            // Update UI with sessionIdentifier
-        }
-    }
-
-    private void submitUserResponseToServer(UserResponseEntity userResponse) {
-        // Replace the following URL with your server endpoint
-        String url = "submitUserResponse";
-
-        // Create JSONObject with user response data
-        JSONObject jsonUserResponse = new JSONObject();
-        try {
-            jsonUserResponse.put("questionnaireId", userResponse.getQuestionnaireId());
-            jsonUserResponse.put("questionId", userResponse.getQuestionId());
-            jsonUserResponse.put("answerId", userResponse.getOption());
-
-            // Add other fields as needed
-        } catch ( JSONException e) {
-            e.printStackTrace();
-        }
-
-        // Create JsonObjectRequest
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                jsonUserResponse,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Handle the server response on success
-                        Log.d("Volley Response", response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle errors
-                        Log.e("Volley Error", "Error submitting user response to server: " + error.toString());
-                    }
-                }
-        );
-
-        // Add the request to the Volley request queue
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
-
-    private void submitUserResponsesToServer() {
-        // Iterate through userResponses and submit each response to the server
-        for (UserResponseEntity userResponse : userResponses) {
-           submitUserResponseToServer(userResponse);
-        }
-    }
-
-
-
-    //background call
-    private void getResponsesA() {
-        // Show the progress bar
-       // ProgressBar progressBar = findViewById(R.id.progress);
-        //progressBar.setVisibility(View.VISIBLE);
-        //currentProgress =currentProgress + 10;
-        //progressBar.setProgress(currentProgress);
-        //progressBar.setMax(100);
-
-
-        // Use AsyncTask to perform network request in the background
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-               // getAll();
-                userResponses = allQuestionDatabase.userResponseDao().getUserResponsesForQuestionnaire(IDvalue);
-                //try
-
-                for (UserResponseEntity userResponseEntity:userResponses) {
-                    Log.d("QuetionnaireID", String.valueOf(userResponseEntity.getQuestionnaireId()));
-                    Log.d("QuetionID", String.valueOf(userResponseEntity.getQuestionId()));
-                    Log.d("Option", String.valueOf(userResponseEntity.getOption()));
-
-                    int questionnaireId = userResponseEntity.getQuestionnaireId();
-                    int questionId =  userResponseEntity.getQuestionId();
-                    String answer = userResponseEntity.getOption();
-                    String quetion = userResponseEntity.getQuetion_A();
-                    String uniq = userResponseEntity.getUniqueIdentifier();
-                    int session = userResponseEntity.getSessionid();
-
-                    // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-                    UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, uniq,questionnaireId, questionId, answer, quetion);
-                    // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
-                    userResponseEntities.add(userResponseEntity1);
-
-                    // adapter.setUser(userResponseEntities);
-                    // adapter.setUser(userResponseEntities);
-                    adapter.setUser2(userResponseEntities);
-                }
-                if (userResponseEntities.isEmpty()){
-                    Toast.makeText(ResponseData.this, "No Responses for this Quetionnaire", Toast.LENGTH_SHORT).show();
-                }
-                // Perform your network request here
-                // This runs in a background thread
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                // Hide the progress bar when data fetching is complete
-               // progressBar.setVisibility(View.GONE);
-
-
-                // Update your UI with the fetched data
-            }
-        }.execute();
-    }
-
 
 
     //Alert
@@ -401,94 +245,6 @@ public class ResponseData extends AppCompatActivity {
         AlertDialog alert11 = builder1.create();
         alert11.show();
 
-    }
-    public void callSubmit(){
-
-        // Assume userResponses is a List<UserResponseEntity> containing your responses
-
-// Create the main JSON object
-        JSONObject mainJsonObject = new JSONObject();
-        try {
-            mainJsonObject.put("questionnaire_id", 55);
-
-            // Create the responses array
-            JSONArray responsesArray = new JSONArray();
-
-            // Iterate through userResponses and create JSON objects for each response
-            for (UserResponseEntity userResponse : userResponses) {
-                JSONObject responseObj = new JSONObject();
-
-                // Set values for responseObj (adjust these according to your data model)
-                responseObj.put("ccc_number", "12345678");
-                responseObj.put("first_name", "");
-                responseObj.put("questionnaire_participant_id", 1);
-                responseObj.put("informed_consent", true);
-                responseObj.put("privacy_policy", true);
-                responseObj.put("interviewer_statement", true);
-
-                // Create the question_answers array
-                JSONArray questionAnswersArray = new JSONArray();
-
-                // Add question-answer pairs to the question_answers array
-                // Adjust these according to your data model
-          //      questionAnswersArray.put(createQuestionAnswer("430", String.valueOf(userResponse.getQuestionId()), ""));
-
-                questionAnswersArray.put(createQuestionAnswer("430", String.valueOf(userResponse.getQuestionId()), userResponse.getOption()));
-
-                // Add question_answers array to the responseObj
-                responseObj.put("question_answers", questionAnswersArray);
-
-                // Add responseObj to the responses array
-                responsesArray.put(responseObj);
-            }
-
-            // Add responses array to the main JSON object
-            mainJsonObject.put("responses", responsesArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-// Create a JsonObjectRequest
-        String url = "https://psurveyapitest.kenyahmis.org/api/questions/answers/all/"; // Replace with your server endpoint
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                mainJsonObject,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Handle the response from the server
-                        // You may want to update UI or perform other actions here
-                        Log.d("success", response.toString());
-
-                        Toast.makeText(ResponseData.this, "Success", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Errror", "OnError");
-                        // Handle errors
-                    }
-                }
-        );
-
-// Add the request to the Volley request queue
-       // requestQueue.add(jsonObjectRequest);
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-
-
-
-    }
-
-
-    // Helper method to create a question answer JSONObject
-    private JSONObject createQuestionAnswer(String question, String answer, String openText) throws JSONException {
-        JSONObject questionAnswerObject = new JSONObject();
-        questionAnswerObject.put("question", question);
-        questionAnswerObject.put("answer", answer);
-        questionAnswerObject.put("open_text", openText);
-        return questionAnswerObject;
     }
 
 
@@ -659,12 +415,6 @@ public class ResponseData extends AppCompatActivity {
     }
     // submit data
 
-  //  public static class AnswerSender {
-
- //       private static final String URL = "YOUR_SERVER_URL";
-  /*  userResponses = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
-    UserResponseEntity userResponseEntity:userResponses*/
-
         public  void sendAnswersToServer() {
             String auth_token = loggedInUser.getAuth_token();
             try {
@@ -687,7 +437,7 @@ public class ResponseData extends AppCompatActivity {
                         JSONObject questionAnswerObj = new JSONObject();
                         questionAnswerObj.put("question", questionAnswer.getSessionid());
                         questionAnswerObj.put("answer", questionAnswer.getAnswerId());
-                        questionAnswerObj.put("open_text", "");
+                        questionAnswerObj.put("open_text", questionAnswer.getOption());
                         questionAnswersArray.put(questionAnswerObj);
                     }
                     responseObj.put("question_answers", questionAnswersArray);
@@ -730,11 +480,7 @@ public class ResponseData extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-                            //    Log.d("SUCESS", );
-                                //Toast.makeText(ResponseData.this, "Success", Toast.LENGTH_SHORT).show();
 
-
-                                // Handle response from the server
                            // }
                         }, new Response.ErrorListener() {
                     @Override

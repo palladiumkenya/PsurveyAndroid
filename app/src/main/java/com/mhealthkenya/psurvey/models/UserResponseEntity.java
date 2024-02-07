@@ -32,11 +32,12 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
     }
 
 
-    public UserResponseEntity(int Sessionid, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
+    public UserResponseEntity(int Sessionid, int answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
 
         this.questionnaireId = questionnaireId;
         this.uniqueIdentifier =uniqueIdentifier;
         this.Sessionid = Sessionid;
+        this.answerId =answerId;
         this.questionId = questionId;
 
         this.option = option;

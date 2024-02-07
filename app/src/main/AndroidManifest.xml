@@ -38,7 +38,7 @@
             android:value="userAuth.db" />
         <meta-data
             android:name="VERSION"
-            android:value="22" />
+            android:value="23" />
 
         <activity
             android:name=".activities.Query3"

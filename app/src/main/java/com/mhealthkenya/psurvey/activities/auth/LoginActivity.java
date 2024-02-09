@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
             // z= _url.base_url1;
             // zz =_url.stage_name1;
-           if (zz==null){
+ /*          if (zz==null){
                // dialogs.showErrorDialog("System not selected", "Please select the system to connect to");
                 Toast.makeText(LoginActivity.this, "You are not connected to", Toast.LENGTH_LONG).show();
 
@@ -132,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                               /*  Intent intent = new Intent(LoginActivity.this, SelectUrls.class);
                                 startActivity(intent);
                                 finish();*/
-                                onBackPressed();
+ /*                               onBackPressed();
 
                                 //dialog.cancel();
                             }
@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
             }else{
             Toast.makeText(LoginActivity.this, "You are connected to" + " " +zz, Toast.LENGTH_LONG).show();
            // connect.setText(zz);
-            }
+            }*/
             //connect.setTextColor(Color.parseColor("#F32013"));}
 
         }catch (Exception e){
@@ -459,12 +459,5 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-
-        Intent intent = new Intent(LoginActivity.this, SelectUrls.class);
-        startActivity(intent);
-        //        super.onBackPressed();
-    }
 
 }

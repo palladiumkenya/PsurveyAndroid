@@ -29,6 +29,9 @@ public interface UserResponseDao {
     @Update
     Void updateResponse1(UserResponseEntity userResponseEntity);
 
+    @Query("SELECT * FROM user_responses WHERE Sessionid = :Sessionid")
+    UserResponseEntity getUserResponseById(int Sessionid);
+
 //list quetionnaires then responses
     @Query("SELECT * FROM user_responses WHERE questionnaireId = :questionnaireId")
     List<UserResponseEntity> getUserResponsesForQuestionnaire(int questionnaireId);

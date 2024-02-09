@@ -18,30 +18,42 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int idA;
     private int Sessionid;
-
     private int questionnaireId;
     private int questionId;
     private int answerId;
     private  String option;
     private  String Quetion_A;
-
     private String uniqueIdentifier;
+
+    private int questionType;
+    private boolean isRequired;
+    private String dateValidation;
+    private boolean isRepeatable;
 
 
     public UserResponseEntity() {
     }
 
 
-    public UserResponseEntity(int Sessionid, int answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
+    public UserResponseEntity(int Sessionid,int questionType, boolean isRequired, String dateValidation, boolean isRepeatable,  int answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
 
         this.questionnaireId = questionnaireId;
         this.uniqueIdentifier =uniqueIdentifier;
         this.Sessionid = Sessionid;
         this.answerId =answerId;
         this.questionId = questionId;
-
         this.option = option;
         this.Quetion_A= Quetion_A;
+
+        this.questionType= questionType;
+
+        this.isRequired=isRequired;
+        this.dateValidation=dateValidation;
+        this.isRepeatable=isRepeatable;
+
+
+
+
     }
 
     public UserResponseEntity(String uniqueIdentifier) {
@@ -136,7 +148,37 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
         Sessionid = sessionid;
     }
 
+    public int getQuestionType() {
+        return questionType;
+    }
 
+    public void setQuestionType(int questionType) {
+        this.questionType = questionType;
+    }
+
+    public boolean isRequired() {
+        return isRequired;
+    }
+
+    public void setRequired(boolean required) {
+        isRequired = required;
+    }
+
+    public String getDateValidation() {
+        return dateValidation;
+    }
+
+    public void setDateValidation(String dateValidation) {
+        this.dateValidation = dateValidation;
+    }
+
+    public boolean isRepeatable() {
+        return isRepeatable;
+    }
+
+    public void setRepeatable(boolean repeatable) {
+        isRepeatable = repeatable;
+    }
 
     @Override
     public int describeContents() {

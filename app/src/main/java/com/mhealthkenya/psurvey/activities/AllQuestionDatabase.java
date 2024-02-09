@@ -18,7 +18,7 @@ import com.mhealthkenya.psurvey.models.SessionOffline;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
 
 
-@Database(entities = {QuestionnaireEntity.class,QuestionEntity.class, AnswerEntity.class, UserResponseEntity.class, SessionOffline.class}, version =23)
+@Database(entities = {QuestionnaireEntity.class,QuestionEntity.class, AnswerEntity.class, UserResponseEntity.class, SessionOffline.class}, version =24)
 public abstract class AllQuestionDatabase extends RoomDatabase {
 
     public abstract QuestionnaireDao questionnaireDao();

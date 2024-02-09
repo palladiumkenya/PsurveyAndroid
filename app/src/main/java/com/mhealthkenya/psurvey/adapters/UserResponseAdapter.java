@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mhealthkenya.psurvey.R;
+import com.mhealthkenya.psurvey.activities.EditActivity;
 import com.mhealthkenya.psurvey.activities.ResponseData;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
@@ -104,6 +105,28 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             view.surveyID.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    if (onItemClickListener != null) {
+                       // Toast.makeText(context,"clicked"+obj.getQuestionType(), Toast.LENGTH_LONG).show();
+               //         onItemClickListener.onItemClick(position);
+
+                        Intent ii=new Intent(context, EditActivity.class);
+                        ii.putExtra("ID",  obj.getIdA());   //PK
+                        ii.putExtra("Quetion",  obj.getQuetion_A());
+                        ii.putExtra("Option",  obj.getOption());
+                        ii.putExtra("Session",  obj.getSessionid());
+                        ii.putExtra("UniqueIdentifier",  obj.getUniqueIdentifier());
+                        ii.putExtra("AnswerID",  obj.getAnswerId());
+                        ii.putExtra("quetionnaireID",  obj.getQuestionnaireId());
+                        ii.putExtra("quetionID",  obj.getQuestionId());
+
+                        ii.putExtra("QuetionType",  obj.getQuestionType());
+                        ii.putExtra("isRequired",  obj.isRequired());
+                        ii.putExtra("datevalidation",  obj.getDateValidation());
+                        ii.putExtra("isRepeatable", obj.isRepeatable());
+
+                        context.startActivity(ii);
+                    }
 
                 }
             });

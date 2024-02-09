@@ -147,6 +147,24 @@ public class ResponseData extends AppCompatActivity {
         adapter = new UserResponseAdapter(this);
        // recyclerView1.addItemDecoration(new DividerItemDecoration(recyclerView1.getContext()));
 
+        adapter.setOnItemClickListener(new UserResponseAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+
+                Toast.makeText(ResponseData.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+
+              /*  Intent ii=new Intent(ResponseData.this, QuetionsOffline.class);
+                ii.putExtra("ID",  userResponseEntity.getIdA());
+                ii.putExtra("Quetion",  userResponseEntity.getQuetion_A());
+                ii.putExtra("Answer",  userResponseEntity.getOption());
+              //  ii.putExtra("Answer",  userResponseEntity.getQ);
+
+                startActivity(ii);*/
+
+            }
+        });
+
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView1.getContext(), layoutManager.getOrientation());
                // layoutManager.getOrientation());
         recyclerView1.addItemDecoration(dividerItemDecoration);
@@ -194,8 +212,13 @@ public class ResponseData extends AppCompatActivity {
             String quetion = userResponseEntity.getQuetion_A();
             int session = userResponseEntity.getSessionid();
 
+            int questionType= userResponseEntity.getQuestionType();
+            boolean isRequired =userResponseEntity.isRequired();
+            String dateValidation =userResponseEntity.getDateValidation();
+            boolean isRepeatable =userResponseEntity.isRepeatable();
+
             // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
             userResponseEntities.add(userResponseEntity1);
 

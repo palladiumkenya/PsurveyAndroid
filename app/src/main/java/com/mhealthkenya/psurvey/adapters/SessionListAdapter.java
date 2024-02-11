@@ -18,6 +18,7 @@ import com.mhealthkenya.psurvey.activities.SessionList;
 import com.mhealthkenya.psurvey.depedancies.Tools;
 import com.mhealthkenya.psurvey.depedancies.ViewAnimation;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
+import com.mhealthkenya.psurvey.models.SessionID;
 import com.mhealthkenya.psurvey.models.UniqueIdentifierEntity;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
 
@@ -103,9 +104,13 @@ public class SessionListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
                    /* boolean show = toggleLayoutExpand(!obj.expanded, v, view.lyt_expand);
                     questionnaireEntities.get(position).expanded = show;*/
                     Intent intent = new Intent(context, ResponseData.class);
-                    intent.putExtra("Session_ID", obj.getUniqueIdentifier());
+                //    intent.putExtra("Session_ID", obj.getUniqueIdentifier());
+
+                    SessionID.deleteAll(SessionID.class);
+                    SessionID sessionID = new SessionID(obj.getUniqueIdentifier());
+                    sessionID.save();
                     context.startActivity(intent);
-                    Toast.makeText(context, "ID is" + obj.getUniqueIdentifier(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(context, "ID is" + obj.getUniqueIdentifier(), Toast.LENGTH_LONG).show();
                 }
             });
 

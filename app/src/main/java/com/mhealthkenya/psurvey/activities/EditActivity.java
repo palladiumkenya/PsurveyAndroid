@@ -28,6 +28,7 @@ import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.models.Answer;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
+import com.mhealthkenya.psurvey.models.ResponseIntent;
 import com.mhealthkenya.psurvey.models.SessionOffline;
 import com.mhealthkenya.psurvey.models.SurveyID;
 import com.mhealthkenya.psurvey.models.SurveyUnique;
@@ -189,41 +190,40 @@ public class EditActivity extends AppCompatActivity {
     String Quetion_extra, Option_extra, UniqueIdentifier_extra, dateValidation_extra;
     boolean isRequired_extra, isRepeatable_extra;
 
-
-
-
-
-
-
-
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        Intent intent2 = getIntent();
+
+        try {
+
+            List<ResponseIntent> savedID = ResponseIntent.findWithQuery(ResponseIntent.class, "SELECT *from RESPONSE_INTENT ORDER BY id DESC LIMIT 1");
+            if (savedID.size()==1){
+                for (int x=0; x<savedID.size(); x++) {
+                    ID_extra = savedID.get(x).getID_extra();
+                    session_extra = savedID.get(x).getSession_extra();
+                    answID_extra = savedID.get(x).getAnswID_extra();
+                    quetnID_extra = savedID.get(x).getQuetnID_extra();
+                    qtype_extra = savedID.get(x).getQtype_extra();
+                    QuestionnaireId_extra = savedID.get(x).getQuestionnaireId_extra();
+                    Log.d("SURVEYIDS", String.valueOf(QuestionnaireId_extra));
+
+                    Quetion_extra = savedID.get(x).getQuetion_extra();
+                    Option_extra = savedID.get(x).getOption_extra();
+                    UniqueIdentifier_extra = savedID.get(x).getUniqueIdentifier_extra();
+                    dateValidation_extra = savedID.get(x).getDateValidation_extra();
+                    isRequired_extra = savedID.get(x).isRequired_extra();;
+                    isRepeatable_extra = savedID.get(x).isRepeatable_extra();
+
+                }
 
 
-        ID_extra = intent2.getIntExtra("ID", 0); // Default to 0
-        session_extra = intent2.getIntExtra("Session", 0); // Default to 0
-        answID_extra = intent2.getIntExtra("AnswerID", 0); // Default to 0
-        quetnID_extra = intent2.getIntExtra("quetionID", 0); // Default to 0
-        qtype_extra = intent2.getIntExtra("QuetionType", 0); // Default to 0
-        QuestionnaireId_extra = intent2.getIntExtra("quetionnaireID", 0); // Default to 0
+            }
 
-        Quetion_extra = intent2.getStringExtra(  "Quetion");
-        Option_extra = intent2.getStringExtra(  "Option");
-        UniqueIdentifier_extra = intent2.getStringExtra(  "UniqueIdentifier");
-        dateValidation_extra = intent2.getStringExtra(  "datevalidation");
-        isRequired_extra = intent2.getBooleanExtra(  "isRequired", true);
-        isRepeatable_extra = intent2.getBooleanExtra(  "isRepeatable", true);
-
-
-
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         answerEntity = new AnswerEntity();
 
@@ -379,23 +379,7 @@ public class EditActivity extends AppCompatActivity {
         allQuestionDatabase = AllQuestionDatabase.getInstance(this);
 
 
-        try {
 
-            List<SurveyID> savedID = SurveyID.findWithQuery(SurveyID.class, "SELECT *from SurveyID ORDER BY id DESC LIMIT 1");
-            if (savedID.size()==1){
-                for (int x=0; x<savedID.size(); x++) {
-                    savedquestionnaireId = savedID.get(x).getQuetionereID();
-                    //  Toast.makeText(QuetionsOffline.this, "surveyID" + " " +savedquestionnaireId, Toast.LENGTH_LONG).show();
-                    Log.d("SURVEYIDS", String.valueOf(savedquestionnaireId));
-
-                }
-
-
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
 
         //Retrieve survey unique identifiers
@@ -420,7 +404,7 @@ public class EditActivity extends AppCompatActivity {
 
         // Retrieve questions for the specified questionnaire
 
-        questions = allQuestionDatabase.questionDao().getQuestionsByQuestionnaireId(savedquestionnaireId);
+        questions = allQuestionDatabase.questionDao().getQuestionsByQuestionnaireId(QuestionnaireId_extra);
 
 
 
@@ -434,22 +418,6 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 QuestionEntity question = questions.get(currentQuestionIndex);
-
-
-                ID_extra = intent2.getIntExtra("ID", 0); // Default to 0
-                session_extra = intent2.getIntExtra("Session", 0); // Default to 0
-                answID_extra = intent2.getIntExtra("AnswerID", 0); // Default to 0
-                quetnID_extra = intent2.getIntExtra("quetionID", 0); // Default to 0
-                qtype_extra = intent2.getIntExtra("QuetionType", 0); // Default to 0
-                QuestionnaireId_extra = intent2.getIntExtra("quetionnaireID", 0); // Default to 0
-
-                Quetion_extra = intent2.getStringExtra(  "Quetion");
-                Option_extra = intent2.getStringExtra(  "Option");
-                UniqueIdentifier_extra = intent2.getStringExtra(  "UniqueIdentifier");
-                dateValidation_extra = intent2.getStringExtra(  "datevalidation");
-                isRequired_extra = intent2.getBooleanExtra(  "isRequired", true);
-                isRepeatable_extra = intent2.getBooleanExtra(  "isRepeatable", true);
-
 
 
 
@@ -965,6 +933,7 @@ public class EditActivity extends AppCompatActivity {
 
             if (qtype_extra == 1) {
                 openTextTil.setVisibility(View.VISIBLE);
+                openTextEtxt.setText(Option_extra);
 
             } else if (qtype_extra == 2) {
 

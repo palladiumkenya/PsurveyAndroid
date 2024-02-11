@@ -51,6 +51,9 @@ import com.mhealthkenya.psurvey.depedancies.Constants;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
+import com.mhealthkenya.psurvey.models.QuetionnaireID;
+import com.mhealthkenya.psurvey.models.ResponseIntent;
+import com.mhealthkenya.psurvey.models.SessionID;
 import com.mhealthkenya.psurvey.models.SessionOffline;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
@@ -127,10 +130,61 @@ public class ResponseData extends AppCompatActivity {
         allQuestionDatabase = AllQuestionDatabase.getInstance(this);
         //userResponseEntities =allQuestionDatabase.userResponseDao().getUserResponsesForQuestionnaire()
 
-         Intent mIntent = getIntent();
-        IDvalue = mIntent.getIntExtra("Quetionnaire_ID", 0);
+     //    Intent mIntent = getIntent();
+     //   IDvalue = mIntent.getIntExtra("Quetionnaire_ID", 0);
+        try {
 
-        SesssionValue=mIntent.getStringExtra("Session_ID");
+            //from QUETIONNAIRE_ID
+
+
+            List<QuetionnaireID> _url =QuetionnaireID.findWithQuery(QuetionnaireID.class, "SELECT *from QUETIONNAIRE_ID ORDER BY id DESC LIMIT 1");
+            if (_url.size()==1){
+                for (int x=0; x<_url.size(); x++){
+                    IDvalue=_url.get(x).getQuetioonareID();
+
+                    Toast.makeText(ResponseData.this, "Your Quetionnaire_ID is" + " " +IDvalue, Toast.LENGTH_LONG).show();
+                }
+            }
+        }catch (Exception e){
+            Log.d(" IDvalue", e.getMessage());
+        }
+
+
+        //    SesssionValue=mIntent.getStringExtra("Session_ID");
+        try {
+
+
+            List<SessionID> _url =SessionID.findWithQuery(SessionID.class, "SELECT *from SESSION_ID ORDER BY id DESC LIMIT 1");
+            if (_url.size()==1){
+                for (int x=0; x<_url.size(); x++){
+                    SesssionValue=_url.get(x).getUniqueIdentifier();
+
+                    Toast.makeText(ResponseData.this, "Your session is" + " " +SesssionValue, Toast.LENGTH_LONG).show();
+                }
+            }
+        }catch (Exception e){
+            Log.d("SesssionValue", e.getMessage());
+        }
+
+
+   /*     try {
+
+            List<ResponseIntent> savedID = ResponseIntent.findWithQuery(ResponseIntent.class, "SELECT *from RESPONSE_INTENT ORDER BY id DESC LIMIT 1");
+            if (savedID.size()==1){
+                for (int x=0; x<savedID.size(); x++) {
+
+                    IDvalue = savedID.get(x).getID_extra();
+                 //
+                    //   SesssionValue = savedID.get(x).getSession_extra();
+
+                    SesssionValue = savedID.get(x).getUniqueIdentifier_extra();
+
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
 
 
       //  Toast.makeText(ResponseData.this, "ID Is"+IDvalue, Toast.LENGTH_SHORT).show();

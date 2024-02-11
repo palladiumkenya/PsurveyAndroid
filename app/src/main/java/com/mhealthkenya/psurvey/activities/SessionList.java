@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.adapters.QuestionnairesAdapterOffline;
@@ -18,6 +19,8 @@ import com.mhealthkenya.psurvey.adapters.SessionListAdapter;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
+import com.mhealthkenya.psurvey.models.QuetionnaireID;
+import com.mhealthkenya.psurvey.models.ResponseIntent;
 import com.mhealthkenya.psurvey.models.UniqueIdentifierEntity;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
 
@@ -67,8 +70,40 @@ public class SessionList extends AppCompatActivity {
 
         allQuestionDatabase = AllQuestionDatabase.getInstance(this);
 
-        Intent mIntent = getIntent();
-        IDvalue = mIntent.getIntExtra("Quetionnaire_ID", 0);
+       // Intent mIntent = getIntent();
+        //IDvalue = mIntent.getIntExtra("Quetionnaire_ID", 0);
+
+        try {
+
+
+            List<QuetionnaireID> _url =QuetionnaireID.findWithQuery(QuetionnaireID.class, "SELECT *from QUETIONNAIRE_ID ORDER BY id DESC LIMIT 1");
+            if (_url.size()==1){
+                for (int x=0; x<_url.size(); x++){
+                    IDvalue=_url.get(x).getQuetioonareID();
+
+                    Toast.makeText(SessionList.this, "Your Quetionnaire_ID is" + " " +IDvalue, Toast.LENGTH_LONG).show();
+                }
+            }
+        }catch (Exception e){
+            Log.d(" IDvalue", e.getMessage());
+        }
+
+     /*   try {
+
+            List<ResponseIntent> savedID = ResponseIntent.findWithQuery(ResponseIntent.class, "SELECT *from RESPONSE_INTENT ORDER BY id DESC LIMIT 1");
+            if (savedID.size()==1) {
+                for (int x = 0; x < savedID.size(); x++) {
+
+                    IDvalue = savedID.get(x).getID_extra();
+
+                    Toast.makeText(SessionList.this, "No Responses for this Quetionnaire"+IDvalue, Toast.LENGTH_SHORT).show();
+
+
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
 
         //adapter
         recyclerView=findViewById(R.id.recyclerViewSession);
@@ -127,7 +162,7 @@ public class SessionList extends AppCompatActivity {
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(SessionList.this);
         builder1.setIcon(R.drawable.logo);
-        builder1.setTitle("No Responses for This Questionnaire");
+        builder1.setTitle("No Responses for This Questionnaire"+IDvalue);
         // builder1.setMessage( zz);
         builder1.setCancelable(false);
 

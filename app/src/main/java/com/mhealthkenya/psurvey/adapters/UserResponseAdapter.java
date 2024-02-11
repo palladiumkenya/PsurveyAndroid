@@ -17,6 +17,7 @@ import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.activities.EditActivity;
 import com.mhealthkenya.psurvey.activities.ResponseData;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
+import com.mhealthkenya.psurvey.models.ResponseIntent;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
 
 import java.util.ArrayList;
@@ -111,20 +112,8 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                //         onItemClickListener.onItemClick(position);
 
                         Intent ii=new Intent(context, EditActivity.class);
-                        ii.putExtra("ID",  obj.getIdA());   //PK
-                        ii.putExtra("Quetion",  obj.getQuetion_A());
-                        ii.putExtra("Option",  obj.getOption());
-                        ii.putExtra("Session",  obj.getSessionid());
-                        ii.putExtra("UniqueIdentifier",  obj.getUniqueIdentifier());
-                        ii.putExtra("AnswerID",  obj.getAnswerId());
-                        ii.putExtra("quetionnaireID",  obj.getQuestionnaireId());
-                        ii.putExtra("quetionID",  obj.getQuestionId());
-
-                        ii.putExtra("QuetionType",  obj.getQuestionType());
-                        ii.putExtra("isRequired",  obj.isRequired());
-                        ii.putExtra("datevalidation",  obj.getDateValidation());
-                        ii.putExtra("isRepeatable", obj.isRepeatable());
-
+                         ResponseIntent responseIntent = new ResponseIntent(obj.getIdA(), obj.getSessionid(), obj.getAnswerId(), obj.getQuestionId(), obj.getQuestionType(), obj.getQuestionnaireId(), obj.getQuetion_A(), obj.getOption(), obj.getUniqueIdentifier(), obj.getDateValidation(), obj.isRequired(), obj.isRepeatable());
+                         responseIntent.save();
                         context.startActivity(ii);
                     }
 

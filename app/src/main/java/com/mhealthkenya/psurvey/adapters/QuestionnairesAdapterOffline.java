@@ -2,6 +2,7 @@ package com.mhealthkenya.psurvey.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.mhealthkenya.psurvey.depedancies.Tools;
 import com.mhealthkenya.psurvey.depedancies.ViewAnimation;
 import com.mhealthkenya.psurvey.models.ActiveSurveys;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
+import com.mhealthkenya.psurvey.models.QuetionnaireID;
+import com.mhealthkenya.psurvey.models.SessionID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
     public List<QuestionnaireEntity> questionnaireEntities= new ArrayList<>();
     public Context context;
 
+    int   IDvalue;
     public OnItemClickListener onItemClickListener;
 
     public  interface OnItemClickListener{
@@ -127,7 +131,13 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
                    /* boolean show = toggleLayoutExpand(!obj.expanded, v, view.lyt_expand);
                     questionnaireEntities.get(position).expanded = show;*/
                     Intent intent = new Intent(context, SessionList.class);
-                    intent.putExtra("Quetionnaire_ID", obj.getId());
+                  //  intent.putExtra("Quetionnaire_ID", obj.getId());
+
+                   // QuetionnaireID.deleteAll(QuetionnaireID.class);
+                    QuetionnaireID quetionnaireID = new QuetionnaireID(obj.getId());
+                    quetionnaireID.save();
+
+
                     context.startActivity(intent);
                     Toast.makeText(context, "ID is" + obj.getId(), Toast.LENGTH_LONG).show();
                 }
@@ -135,14 +145,17 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
             view.bt_expand2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean show = toggleLayoutExpand(!obj.expanded1, v, view.lyt_expand);
-                    questionnaireEntities.get(position).expanded1 = show;
+                   boolean show = toggleLayoutExpand(!obj.expanded1, v, view.lyt_expand);
+                  questionnaireEntities.get(position).expanded1 = show;
+
+
                 }
             });
 
 
             if (obj.expanded1) {
                 view.lyt_expand.setVisibility(View.VISIBLE);
+                Toast.makeText(context, "Your Quetionnaire_ID is" + " " + String.valueOf(IDvalue), Toast.LENGTH_LONG).show();
             } else {
                 view.lyt_expand.setVisibility(View.GONE);
             }

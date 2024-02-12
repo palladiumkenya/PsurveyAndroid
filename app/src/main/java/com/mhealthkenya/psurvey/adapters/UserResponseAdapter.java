@@ -58,26 +58,20 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public View lyt_parent;
 
 
+        public ImageButton editbt;
+        public ImageButton deletebt;
+
+
 
         public OriginalViewHolder(View v) {
             super(v);
             surveyID = (TextView) v.findViewById(R.id.tv_survey_id);
             queryID = (TextView) v.findViewById(R.id.tv_query_id);
             btnOpen = (TextView) v.findViewById(R.id.tv_open_id);
-            bt_expand = (Button) v.findViewById(R.id.tv_btn);
+          //  bt_expand = (Button) v.findViewById(R.id.tv_btn);
 
-
-            bt_expand.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position =getAdapterPosition();
-                    if (onItemClickListener !=null && position != RecyclerView.NO_POSITION);
-                    // onItemClickListener.onItemClick(questionnaireEntities.get(position));
-                    onItemClickListener.onItemClick(position);
-                }
-            });
-
-
+            editbt = (ImageButton) v.findViewById(R.id.bt_edit);
+            deletebt = (ImageButton) v.findViewById(R.id.bt_delete);
         }
     }
 
@@ -103,18 +97,30 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             view.btnOpen.setText(obj.getOption());
 
 
-            view.surveyID.setOnClickListener(new View.OnClickListener() {
+            view.editbt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     if (onItemClickListener != null) {
-                       // Toast.makeText(context,"clicked"+obj.getQuestionType(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"Edit"+obj.getQuestionType(), Toast.LENGTH_LONG).show();
                //         onItemClickListener.onItemClick(position);
 
                         Intent ii=new Intent(context, EditActivity.class);
                          ResponseIntent responseIntent = new ResponseIntent(obj.getIdA(), obj.getSessionid(), obj.getAnswerId(), obj.getQuestionId(), obj.getQuestionType(), obj.getQuestionnaireId(), obj.getQuetion_A(), obj.getOption(), obj.getUniqueIdentifier(), obj.getDateValidation(), obj.isRequired(), obj.isRepeatable());
                          responseIntent.save();
                         context.startActivity(ii);
+                    }
+
+                }
+            });
+
+
+            view.deletebt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (onItemClickListener != null) {
+                         Toast.makeText(context,"delete"+obj.getOption(), Toast.LENGTH_LONG).show();
                     }
 
                 }

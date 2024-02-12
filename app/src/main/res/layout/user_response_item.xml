@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -29,6 +30,24 @@
         android:text="Get SurveyID"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         />
+
+
+        <ImageButton
+            android:id="@+id/bt_delete"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_delete"
+            app:tint="@color/colorPrimary" />
+
+
+        <ImageButton
+            android:id="@+id/bt_edit"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_edit"
+            app:tint="@color/colorPrimary" />
     </LinearLayout>
 
 
@@ -104,15 +123,6 @@
     </LinearLayout>
 
 
-    <Button
-        android:id="@+id/tv_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="submit"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        />
 
 
 

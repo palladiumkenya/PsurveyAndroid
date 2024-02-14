@@ -120,7 +120,7 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View v) {
 
                     if (onItemClickListener != null) {
-                         Toast.makeText(context,"delete"+obj.getOption(), Toast.LENGTH_LONG).show();
+                         Toast.makeText(context,"delete"+obj.getAnswerId(), Toast.LENGTH_LONG).show();
                     }
 
                 }

@@ -447,7 +447,7 @@ public class QuetionsOffline extends AppCompatActivity {
                            // int questionType, boolean isRequired, String dateValidation, boolean isRepeatable
                         } else {
                            SaveAnswers(question.getQuestionOrder(),question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(),  openTextEtxt.getText().toString(), question.getQuestion());
-                            //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
+                          //  SaveAnswers(question.getQuestionOrder(), question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, questionnaireId, question.getId(), String.valueOf(multiAnswerList), question.getQuestion());                            //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
 
                         }
                     } else if (question.getQuestionType() == 1) {
@@ -857,7 +857,7 @@ public class QuetionsOffline extends AppCompatActivity {
                         //aNSER TYPE 3
 
                         //SaveAnswers( questionnaireId, currentQuestionIndex, Integer.parseInt(String.valueOf(multiAnswerList)), openText);
-                        SaveAnswers(question.getQuestionOrder(), question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, questionnaireId, question.getId(), openText, question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(), question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), String.valueOf(multiAnswerList), question.getQuestion());
                        // saveAnswersToDraft(questionnaireId, currentQuestionIndex, openText, question.getQuestion());
                         //startActivity(new Intent(QuetionsOffline.this, QuetionsOffline.class));
 
@@ -1032,6 +1032,7 @@ public class QuetionsOffline extends AppCompatActivity {
             }
             //none
             else if (question.getQuestionType() == 5 && question.getDateValidation().equals("none") && question.isRepeatable() && repeat_count == 1) {
+
                 dateTextTil.setVisibility(View.VISIBLE);
             }
             //none not repeat

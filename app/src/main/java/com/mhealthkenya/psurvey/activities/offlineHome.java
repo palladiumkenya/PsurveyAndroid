@@ -399,9 +399,11 @@ public class offlineHome extends AppCompatActivity {
 
                             int questionId = questionObject.getInt("id");
                             String questionText = questionObject.getString("question");
+                            String date_validation = questionObject.getString("date_validation");
                             int questionType = questionObject.getInt("question_type");
                             int questionOrder = questionObject.getInt("question_order");
                             boolean isRequired = questionObject.getBoolean("is_required");
+                            boolean isRepeatable = questionObject.getBoolean("is_repeatable");
 
                             // Create and insert the QuestionEntity
                             questionEntity = new QuestionEntity();
@@ -411,8 +413,9 @@ public class offlineHome extends AppCompatActivity {
                             questionEntity.setQuestionType(questionType);
                             questionEntity.setQuestionOrder(questionOrder);
                             questionEntity.setRequired(isRequired);
-                            questionEntity.setDateValidation(null); // You may set this as needed
-                            questionEntity.setRepeatable(false); // You may set this as needed
+                           // questionEntity.setDateValidation(null); // You may set this as needed
+                            questionEntity.setDateValidation(date_validation); // You may set this as needed
+                            questionEntity.setRepeatable(isRepeatable); // You may set this as needed
                             questionEntity.setResponseColName(null); // You may set this as needed
                             questionEntity.setCreatedAt(questionObject.getString("created_at"));
                             questionEntity.setCreatedBy(questionObject.getInt("created_by"));

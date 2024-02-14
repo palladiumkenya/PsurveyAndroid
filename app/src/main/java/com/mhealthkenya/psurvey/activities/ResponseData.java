@@ -495,11 +495,12 @@ public class ResponseData extends AppCompatActivity {
         public  void sendAnswersToServer() {
             String auth_token = loggedInUser.getAuth_token();
             try {
-                JSONArray responsesArray = new JSONArray();
+              JSONArray responsesArray = new JSONArray();
 
                 // Iterate over the list of user responses and prepare JSON objects
                 for (UserResponseEntity userResponse : userResponses) {
                     quer_id = userResponse.getQuestionnaireId();
+
                     JSONObject responseObj = new JSONObject();
                     responseObj.put("ccc_number", "12345"); // Example field, replace with actual field names
                     responseObj.put("first_name", "victor");
@@ -509,7 +510,7 @@ public class ResponseData extends AppCompatActivity {
                     responseObj.put("interviewer_statement", "True");
 
                     JSONArray questionAnswersArray = new JSONArray();
-                    // Iterate over the list of question answers for each response
+
                     for (UserResponseEntity questionAnswer : userResponses) {
                         JSONObject questionAnswerObj = new JSONObject();
                        // questionAnswerObj.put("question", questionAnswer.getSessionid());
@@ -519,6 +520,7 @@ public class ResponseData extends AppCompatActivity {
                         questionAnswersArray.put(questionAnswerObj);
                     }
                     responseObj.put("question_answers", questionAnswersArray);
+         //           responseObj.put("question_answers", questionAnswersArray);
                     responsesArray.put(responseObj);
                 }
 

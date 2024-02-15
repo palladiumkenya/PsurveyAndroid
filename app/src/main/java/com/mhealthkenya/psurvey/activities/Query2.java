@@ -183,8 +183,12 @@ public class Query2 extends AppCompatActivity {
 
 
 
-                Intent ii=new Intent(Query2.this, QuetionsOffline.class);
+     /*           Intent ii=new Intent(Query2.this, QuetionsOffline.class);
              //   ii.putExtra("ID",  questionnaireEntity.getId());
+                startActivity(ii);*/
+
+                Intent ii=new Intent(Query2.this,LastConsentData.class);
+                //   ii.putExtra("ID",  questionnaireEntity.getId());
                 startActivity(ii);
 
 

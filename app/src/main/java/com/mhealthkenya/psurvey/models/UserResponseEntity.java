@@ -6,17 +6,25 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import com.orm.SugarRecord;
 
 import java.io.Serializable;
 
-@Entity(tableName ="user_responses")
-public class UserResponseEntity extends SugarRecord implements Parcelable {
+
+@Entity(tableName = "question_answers")
+       /* foreignKeys = @ForeignKey(entity = UserResponseEntity2.class,
+                parentColumns = "id",
+                childColumns = "id",
+                onDelete = ForeignKey.CASCADE))*/
+public class UserResponseEntity  {
 
     @PrimaryKey(autoGenerate = true)
     private int idA;
+
+    private int cccid;
     private int Sessionid;
     private int questionnaireId;
     private int questionId;
@@ -30,12 +38,14 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
     private String dateValidation;
     private boolean isRepeatable;
 
+    //quetionAnswers
+
 
     public UserResponseEntity() {
     }
 
 
-    public UserResponseEntity(int Sessionid,int questionType, boolean isRequired, String dateValidation, boolean isRepeatable,  int answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
+    public UserResponseEntity(int Sessionid,int cccid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable,  int answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
 
         this.questionnaireId = questionnaireId;
         this.uniqueIdentifier =uniqueIdentifier;
@@ -44,6 +54,8 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
         this.questionId = questionId;
         this.option = option;
         this.Quetion_A= Quetion_A;
+
+        this.cccid= cccid;
 
         this.questionType= questionType;
 
@@ -60,28 +72,8 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
         this.uniqueIdentifier = uniqueIdentifier;
     }
 
-    protected UserResponseEntity(Parcel in) {
-        idA = in.readInt();
-        Sessionid = in.readInt();
-        questionnaireId = in.readInt();
-        questionId = in.readInt();
-        answerId = in.readInt();
-        option = in.readString();
-        Quetion_A = in.readString();
-        uniqueIdentifier = in.readString();
-    }
 
-    public static final Creator<UserResponseEntity> CREATOR = new Creator<UserResponseEntity>() {
-        @Override
-        public UserResponseEntity createFromParcel(Parcel in) {
-            return new UserResponseEntity(in);
-        }
 
-        @Override
-        public UserResponseEntity[] newArray(int size) {
-            return new UserResponseEntity[size];
-        }
-    };
 
     public int getQuestionnaireId() {
         return questionnaireId;
@@ -180,20 +172,11 @@ public class UserResponseEntity extends SugarRecord implements Parcelable {
         isRepeatable = repeatable;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public int getCccid() {
+        return cccid;
     }
 
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(idA);
-        dest.writeInt(questionnaireId);
-        dest.writeInt(questionId);
-        dest.writeInt(questionId);
-        dest.writeInt(answerId);
-        dest.writeString(option);
-        dest.writeString(Quetion_A);
-        dest.writeString(uniqueIdentifier);
+    public void setCccid(int cccid) {
+        this.cccid = cccid;
     }
 }

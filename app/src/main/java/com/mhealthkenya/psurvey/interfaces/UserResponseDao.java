@@ -19,6 +19,9 @@ public interface UserResponseDao {
     @Insert
     void insertResponse(UserResponseEntity userResponse);
 
+    @Insert
+    long insertResponse2(UserResponseEntity2 userResponseEntity2);
+
 
     @Update
     void updateResponse(UserResponseEntity userResponse);
@@ -41,8 +44,8 @@ public interface UserResponseDao {
     @Query("SELECT * FROM question_answers WHERE  uniqueIdentifier = :uniqueIdentifier")
     List<UserResponseEntity> getUserResponsesForuniqueIdentifier(String uniqueIdentifier);
 
-    @Query("SELECT * FROM question_answers WHERE  uniqueIdentifier = :uniqueIdentifier")
-    List<UserResponseEntity> getUserResponsesForuniqueIdentifier2(String uniqueIdentifier);
+    @Query("SELECT * FROM user_responses WHERE  surveyUniqueID = :surveyUniqueID")
+    List<UserResponseEntity2> getUserResponsesForuniqueIdentifier2(String surveyUniqueID);
 
 
 

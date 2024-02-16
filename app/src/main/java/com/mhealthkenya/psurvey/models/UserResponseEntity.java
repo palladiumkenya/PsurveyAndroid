@@ -15,16 +15,13 @@ import java.io.Serializable;
 
 
 @Entity(tableName = "question_answers")
-       /* foreignKeys = @ForeignKey(entity = UserResponseEntity2.class,
-                parentColumns = "id",
-                childColumns = "id",
-                onDelete = ForeignKey.CASCADE))*/
+
 public class UserResponseEntity  {
 
     @PrimaryKey(autoGenerate = true)
     private int idA;
 
-    private int cccid;
+    private long cccid;
     private int Sessionid;
     private int questionnaireId;
     private int questionId;
@@ -45,7 +42,7 @@ public class UserResponseEntity  {
     }
 
 
-    public UserResponseEntity(int Sessionid,int cccid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable,  int answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
+    public UserResponseEntity(int Sessionid,long cccid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable,  int answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
 
         this.questionnaireId = questionnaireId;
         this.uniqueIdentifier =uniqueIdentifier;
@@ -172,11 +169,12 @@ public class UserResponseEntity  {
         isRepeatable = repeatable;
     }
 
-    public int getCccid() {
+    public long getCccid() {
         return cccid;
     }
 
-    public void setCccid(int cccid) {
+    public void setCccid(long cccid) {
         this.cccid = cccid;
+        //return this.cccid;
     }
 }

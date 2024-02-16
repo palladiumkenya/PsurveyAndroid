@@ -137,6 +137,7 @@ public class ResponseData extends AppCompatActivity {
         allQuestionDatabase = AllQuestionDatabase.getInstance(this);
         userResponsesB = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
        // userResponsesC = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier2(SesssionValue);
+
         //userResponseEntities =allQuestionDatabase.userResponseDao().getUserResponsesForQuestionnaire()
 
      //    Intent mIntent = getIntent();
@@ -174,6 +175,7 @@ public class ResponseData extends AppCompatActivity {
         }catch (Exception e){
             Log.d("SesssionValue", e.getMessage());
         }
+
 
 
    /*     try {
@@ -257,8 +259,8 @@ public class ResponseData extends AppCompatActivity {
 
     public void getResponses2(){
         userResponses = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
+        userResponsesC =allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier2(SesssionValue);
         // userResponseEntities1.add(userResponses);
-        Log.d("RESPONSE SIZE", String.valueOf(userResponses.size()));
 
         //try
 
@@ -272,7 +274,7 @@ public class ResponseData extends AppCompatActivity {
             int questionnaireId = userResponseEntity.getQuestionnaireId();
             int questionId =  userResponseEntity.getQuestionId();
             String answer = userResponseEntity.getOption();
-            int ccid = userResponseEntity.getCccid();
+            long ccid = userResponseEntity.getCccid();
             int answeiD =userResponseEntity.getAnswerId();
             String uniq = userResponseEntity.getUniqueIdentifier();
             String quetion = userResponseEntity.getQuetion_A();
@@ -284,7 +286,9 @@ public class ResponseData extends AppCompatActivity {
             boolean isRepeatable =userResponseEntity.isRepeatable();
 
             // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+           // UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+            UserResponseEntity userResponseEntity1 =new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
             userResponseEntities.add(userResponseEntity1);
 
@@ -603,6 +607,8 @@ public class ResponseData extends AppCompatActivity {
        // }
 }
     public void sendAnswersToServer1() {
+
+
         String auth_token = loggedInUser.getAuth_token();
         try {
 
@@ -622,14 +628,14 @@ public class ResponseData extends AppCompatActivity {
                 responseObj.put("ccc_number", "12345");
                 responseObj.put("first_name", "victor");
                 responseObj.put("questionnaire_participant_id", 1);
-                responseObj.put("informed_consent", "True");
-                responseObj.put("privacy_policy", "True");
-                responseObj.put("interviewer_statement", "True");
+                responseObj.put("informed_consent", userResponse.isInformedConsent());
+                responseObj.put("privacy_policy", userResponse.isPrivacyPolicy());
+                responseObj.put("interviewer_statement", userResponse.isInterviewerStatement());
 
                 JSONArray questionAnswersArray = new JSONArray();
 
                 // Iterate through each question answer in the UserResponseEntity
-                for (UserResponseEntity questionAnswer : userResponse.getQuestionAnswers()) {
+                for (UserResponseEntity questionAnswer : userResponses) {
                     quer_id = questionAnswer.getQuestionnaireId();
                     JSONObject questionAnswerObj = new JSONObject();
                     questionAnswerObj.put("question", questionAnswer.getQuestionId());
@@ -641,6 +647,7 @@ public class ResponseData extends AppCompatActivity {
 
                 // Add the question_answers array to the response object
                 responseObj.put("question_answers", questionAnswersArray);
+
 
                 // Add the response object to the responses array
                 responsesArray.put(responseObj);

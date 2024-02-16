@@ -22,6 +22,8 @@ import com.google.android.material.textview.MaterialTextView;
 import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.depedancies.Constants;
 import com.mhealthkenya.psurvey.models.ActiveSurveys;
+import com.mhealthkenya.psurvey.models.ConsentID;
+import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
 import com.mhealthkenya.psurvey.models.SurveyID;
 import com.mhealthkenya.psurvey.models.SurveyUnique;
 import com.mhealthkenya.psurvey.models.UserResponseEntity2;
@@ -35,6 +37,8 @@ import butterknife.BindView;
 
 public class LastConsentData extends AppCompatActivity {
     public String z;
+
+    AllQuestionDatabase allQuestionDatabase;
 
 
 
@@ -96,6 +100,7 @@ public class LastConsentData extends AppCompatActivity {
         setContentView(R.layout.activity_last_consent_data);
 
         loggedInUser = (auth) Stash.getObject(Constants.AUTH_TOKEN, auth.class);
+        allQuestionDatabase = AllQuestionDatabase.getInstance(this);
 
          tv_chosen_survey_title =findViewById(R.id.tv_chosen_survey_title);
         tv_chosen_survey_introduction =findViewById(R.id.tv_chosen_survey_introduction);
@@ -247,13 +252,23 @@ public class LastConsentData extends AppCompatActivity {
 
 
 
-                    save1(savedquestionnaireId, surveyUniqueID,"12345", "Vic", 1, informb, privacyb, stateb);
+                     long generatedId1 =save1(savedquestionnaireId, surveyUniqueID,"12345", "Vic", 1, informb, privacyb, stateb);
 
 
-                    //String cccNumber, String firstName, int questionnaireParticipantId,
-                    //                              boolean informedConsent, boolean privacyPolicy, boolean interviewerStatement
+
+
+                     try {
+                         ConsentID.deleteAll(ConsentID.class);
+                         ConsentID consentID = new ConsentID(generatedId1);
+                         consentID.save();
+
+
+                     }catch (Exception e){
+                         e.printStackTrace();
+                     }
 
                     Intent intent = new Intent(LastConsentData.this, QuetionsOffline.class);
+                   // intent.putExtra("generatedid", generatedId1);
                     startActivity(intent);
 
                 }
@@ -266,11 +281,12 @@ public class LastConsentData extends AppCompatActivity {
 
 
     }
-    public void save1(int savedquestionnaireId1, String surveyUniqueID1, String cccNumber, String firstName, int questionnaireParticipantId,
+    public long save1( int savedquestionnaireId1, String surveyUniqueID1, String cccNumber, String firstName, int questionnaireParticipantId,
                       boolean informedConsent, boolean privacyPolicy, boolean interviewerStatement){
 
         UserResponseEntity2 userResponseEntity2 =new UserResponseEntity2();
         userResponseEntity2.setCccNumber(cccNumber);
+       // userResponseEntity2.setCccid(ccid);
         userResponseEntity2.setSurveyUniqueID(surveyUniqueID1);
         userResponseEntity2.setSavedquestionnaireId(savedquestionnaireId1);
         userResponseEntity2.setInterviewerStatement(interviewerStatement);
@@ -278,6 +294,15 @@ public class LastConsentData extends AppCompatActivity {
         userResponseEntity2.setPrivacyPolicy(privacyPolicy);
         userResponseEntity2.setFirstName(firstName);
         userResponseEntity2.setQuestionnaireParticipantId(questionnaireParticipantId);
+
+       //  allQuestionDatabase.userResponseDao().insertResponse2(userResponseEntity2);
+
+        long generatedId = allQuestionDatabase.userResponseDao().insertResponse2(userResponseEntity2);
+
+
+
+        return generatedId;
+       // Toast.makeText("Data", String.valueOf(generatedId), Toast.LENGTH_LONG).show();
 
 
 

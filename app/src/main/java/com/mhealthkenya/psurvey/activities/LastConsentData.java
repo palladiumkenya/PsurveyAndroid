@@ -32,6 +32,7 @@ import com.mhealthkenya.psurvey.models.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 
@@ -252,7 +253,7 @@ public class LastConsentData extends AppCompatActivity {
 
 
 
-                     long generatedId1 =save1(savedquestionnaireId, surveyUniqueID,"12345", "Vic", 1, informb, privacyb, stateb);
+                     long generatedId1 =save1(savedquestionnaireId, surveyUniqueID, Objects.requireNonNull(etxt_ccc_no.getText()).toString(), etxt_first_name.getText().toString(), 1, informb, privacyb, stateb);
 
 
 

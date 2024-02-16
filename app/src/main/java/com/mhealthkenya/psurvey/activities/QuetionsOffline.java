@@ -68,6 +68,7 @@ public class QuetionsOffline extends AppCompatActivity {
     MaterialTextView surveyQuestion;
     Button nextButton;
     List<QuestionEntity> questions;
+    int answerEntity1;
     int currentQuestionIndex;
     int questionnaireId;
     AnswerEntity answerEntity;
@@ -430,6 +431,8 @@ public class QuetionsOffline extends AppCompatActivity {
 
         questions = allQuestionDatabase.questionDao().getQuestionsByQuestionnaireId(savedquestionnaireId);
 
+       // answerEntity =
+
 
 
 
@@ -438,14 +441,7 @@ public class QuetionsOffline extends AppCompatActivity {
         // Retrieve the question index from the intent
         Intent intent1 = getIntent();
         currentQuestionIndex = intent1.getIntExtra("questionIndex", 0); // Default to 0
-        /*if (draftAnswers == null) {
-            draftAnswers = new ArrayList<>(); // Assign your default value here
 
-        }else {
-              draftAnswers = intent1.getParcelableArrayListExtra("draftAnswers");
-        }*/
-   //     draftAnswers = intent1.getParcelableArrayListExtra("draftAnswers");
-        // Display the question based on the index
         displayQuestion(currentQuestionIndex);
 
 
@@ -456,11 +452,12 @@ public class QuetionsOffline extends AppCompatActivity {
  //               Toast.makeText(QuetionsOffline.this, "index is" + " "+currentQuestionIndex, Toast.LENGTH_SHORT).show();
 
 
-                    //Agreed
-
-                    //if (currentQuestionIndex < questions.size()){
 
                    QuestionEntity question = questions.get(currentQuestionIndex);
+                   //int quetionIDZ= question.getId();
+                answerEntity1= allQuestionDatabase.answerDao().getAnswerIdForQuestion(question.getQuestion());
+               // AnswerEntity answerEntity1 =answerss.get(question.getId());
+
 
 
                     if (question.getQuestionType() == 1 && question.isRequired()) {
@@ -469,13 +466,13 @@ public class QuetionsOffline extends AppCompatActivity {
                             Toast.makeText(QuetionsOffline.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                            // int questionType, boolean isRequired, String dateValidation, boolean isRepeatable
                         } else {
-                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(),  openTextEtxt.getText().toString(), question.getQuestion());
+                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(),  openTextEtxt.getText().toString(), question.getQuestion());
                           //  SaveAnswers(question.getQuestionOrder(), question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, questionnaireId, question.getId(), String.valueOf(multiAnswerList), question.getQuestion());                            //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
 
                         }
                     } else if (question.getQuestionType() == 1) {
 
-                          SaveAnswers(question.getQuestionOrder(), savedgeneratedId,  question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), openTextEtxt.getText().toString(), question.getQuestion());
+                          SaveAnswers(question.getQuestionOrder(), savedgeneratedId,  question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), openTextEtxt.getText().toString(), question.getQuestion());
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, openTextEtxt.getText().toString(), question.getQuestion());
 
                     } else if (question.getQuestionType() == 4 && question.isRequired()) {
@@ -483,12 +480,12 @@ public class QuetionsOffline extends AppCompatActivity {
                             Toast.makeText(QuetionsOffline.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                             // }else{
                         } else {
-                           SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), numericEditText.getText().toString(),question.getQuestion());
+                           SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), numericEditText.getText().toString(),question.getQuestion());
                             //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, numericEditText.getText().toString(),question.getQuestion());
                         }
                     } else if (question.getQuestionType() == 4) {
 
-                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), numericEditText.getText().toString(),question.getQuestion());
+                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), numericEditText.getText().toString(),question.getQuestion());
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, numericEditText.getText().toString(),question.getQuestion());
                     }
                     //datepicker none & not repeatable
@@ -498,13 +495,13 @@ public class QuetionsOffline extends AppCompatActivity {
                             //&& questions.getDate_validation().contentEquals("none")
                         }
                         {
-                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString(), question.getQuestion());
                            //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
 
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("none") && !question.isRepeatable()) {
-                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId,question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString(), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId,question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString(), question.getQuestion());
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
 
                     }
@@ -516,12 +513,12 @@ public class QuetionsOffline extends AppCompatActivity {
                             //&& questions.getDate_validation().contentEquals("none")
                         }
                         {
-                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString(), question.getQuestion());
                            //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("none") && question.isRepeatable() && repeat_count == 1) {
-                       SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString(), question.getQuestion());
+                       SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString(), question.getQuestion());
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
 
                     }
@@ -532,12 +529,12 @@ public class QuetionsOffline extends AppCompatActivity {
                             //&& questions.getDate_validation().contentEquals("none")
                         }
                         {
-                           SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
+                           SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
                            //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("none") && question.isRepeatable() && repeat_count == 2) {
-                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
 
                     }
@@ -549,7 +546,7 @@ public class QuetionsOffline extends AppCompatActivity {
                             //&& questions.getDate_validation().contentEquals("none")
                         }
                         {
-                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
                            //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
 
                         }
@@ -557,7 +554,7 @@ public class QuetionsOffline extends AppCompatActivity {
 
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("none") && question.isRepeatable() && repeat_count == 3) {
-                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
+                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
 
 
@@ -569,13 +566,13 @@ public class QuetionsOffline extends AppCompatActivity {
                             //&& questions.getDate_validation().contentEquals("none")
                         }
                         {
-                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
+                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
                            // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
 
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("none") && question.isRepeatable() && repeat_count1.getRepeat_count() == 4) {
-                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),answerEntity.getId(),  surveyUniqueID, savedquestionnaireId,question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),answerEntity1,  surveyUniqueID, savedquestionnaireId,question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
                     }
                     // datepicker none & repeatable count5
@@ -585,12 +582,12 @@ public class QuetionsOffline extends AppCompatActivity {
                             //&& questions.getDate_validation().contentEquals("none")
                         }
                         {
-                            SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
                            // saveAnswersToDraft(savedquestionnaireI d, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("none") && question.isRepeatable() && repeat_count == 5) {
-                      SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
+                      SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
 
 
@@ -604,12 +601,12 @@ public class QuetionsOffline extends AppCompatActivity {
                             //&& questions.getDate_validation().contentEquals("none")
                         }
                         {
-                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
                            //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("none") && question.isRepeatable() && repeat_count == 6) {
-                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
 
                     }
@@ -620,12 +617,12 @@ public class QuetionsOffline extends AppCompatActivity {
                         if (dobEditTextfuture.getText().toString().equals("")) {
                             Toast.makeText(QuetionsOffline.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         } else {
-                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString(), question.getQuestion());
+                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString(), question.getQuestion());
                            // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString(), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && !question.isRequired() && question.getDateValidation().equals("restrict_future") && !question.isRepeatable()) {
-                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString(), question.getQuestion());
+                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString(), question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString(), question.getQuestion());
 
                     }
@@ -641,7 +638,7 @@ public class QuetionsOffline extends AppCompatActivity {
                         }
 
                     } else if (question.getQuestionType() == 5 && !question.isRequired() && question.getDateValidation().equals("restrict_future") && question.isRepeatable() && repeat_count == 1) {
-                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString(), question.getQuestion());
+                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString(), question.getQuestion());
                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString(), question.getQuestion());
 
                     }
@@ -651,12 +648,12 @@ public class QuetionsOffline extends AppCompatActivity {
                         if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("")) {
                             Toast.makeText(QuetionsOffline.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         } else {
-                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
                            // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && !question.isRequired() && question.getDateValidation().equals("restrict_future") && question.isRepeatable() && repeat_count == 2) {
-                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
 
                     }
@@ -665,12 +662,12 @@ public class QuetionsOffline extends AppCompatActivity {
                         if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("") || dobEditTextfuture3.getText().toString().equals("")) {
                             Toast.makeText(QuetionsOffline.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         } else {
-                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(), question.getQuestion());
+                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(), question.getQuestion());
                            // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && !question.isRequired() && question.getDateValidation().equals("restrict_future") && question.isRepeatable() && repeat_count == 3) {
-                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(),question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(),question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(),question.getQuestion());
 
 
@@ -682,12 +679,12 @@ public class QuetionsOffline extends AppCompatActivity {
                         if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("") || dobEditTextfuture3.getText().toString().equals("") || dobEditTextfuture4.getText().toString().equals("")) {
                             Toast.makeText(QuetionsOffline.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         } else {
-                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
                             //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && !question.isRequired() && question.getDateValidation().equals("restrict_future") && question.isRepeatable() && repeat_count == 4) {
-                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
 
                     }
@@ -697,12 +694,12 @@ public class QuetionsOffline extends AppCompatActivity {
                         if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("") || dobEditTextfuture3.getText().toString().equals("") || dobEditTextfuture4.getText().toString().equals("") || dobEditTextfuture5.getText().toString().equals("")) {
                             Toast.makeText(QuetionsOffline.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         } else {
-                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
                            // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && !question.isRequired() && question.getDateValidation().equals("restrict_future") && question.isRepeatable() && repeat_count == 5) {
-                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
 
                     }
@@ -712,12 +709,12 @@ public class QuetionsOffline extends AppCompatActivity {
                         if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("") || dobEditTextfuture3.getText().toString().equals("") || dobEditTextfuture4.getText().toString().equals("") || dobEditTextfuture5.getText().toString().equals("") || dobEditTextfuture6.getText().toString().equals("")) {
                             Toast.makeText(QuetionsOffline.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         } else {
-                            SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
                             //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && !question.isRequired() && question.getDateValidation().equals("restrict_future") && question.isRepeatable() && repeat_count == 6) {
-                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
 
 
@@ -733,13 +730,13 @@ public class QuetionsOffline extends AppCompatActivity {
 
                         {
 
-                            SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString(), question.getQuestion());
                             //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString(), question.getQuestion());
 
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("restrict_past") && !question.isRepeatable()) {
-                       SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString(), question.getQuestion());
+                       SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString(), question.getQuestion());
 
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString(), question.getQuestion());
 
@@ -754,13 +751,13 @@ public class QuetionsOffline extends AppCompatActivity {
 
                         {
 
-                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
                            //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
 
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("restrict_past") && question.isRepeatable() && repeat_count == 2) {
-                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
+                       SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
                       //  saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
 
 
@@ -775,13 +772,13 @@ public class QuetionsOffline extends AppCompatActivity {
 
                         {
 
-                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
                            // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
 
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("restrict_past") && question.isRepeatable() && repeat_count == 3) {
-                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(),dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(),dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex,dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
 
 
@@ -795,12 +792,12 @@ public class QuetionsOffline extends AppCompatActivity {
 
                         {
 
-                           SaveAnswers(question.getQuestionOrder(), userResponseEntity2.getCccid(), question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
+                           SaveAnswers(question.getQuestionOrder(), userResponseEntity2.getCccid(), question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
                           //  saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("restrict_past") && question.isRepeatable() && repeat_count1.getRepeat_count() == 4) {
-                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),  answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(),  answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
 
                     }
@@ -813,13 +810,13 @@ public class QuetionsOffline extends AppCompatActivity {
 
                         {
 
-                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
+                           SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
                           //  saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
 
                         }
 
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("restrict_past") && question.isRepeatable() && repeat_count1.getRepeat_count() == 5) {
-                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
 
 
@@ -834,12 +831,12 @@ public class QuetionsOffline extends AppCompatActivity {
 
                         {
 
-                            SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
+                            SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
                             //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
 
                         }
                     } else if (question.getQuestionType() == 5 && question.getDateValidation().equals("restrict_past") && question.isRepeatable() && repeat_count == 6) {
-                       SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
+                       SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
 
 
@@ -858,7 +855,7 @@ public class QuetionsOffline extends AppCompatActivity {
 
 
                          //   SaveAnswers(savedquestionnaireId, currentQuestionIndex, openText);
-                           SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), String.valueOf(answerList.get(idx).getId()), question.getQuestion());
+                           SaveAnswers(question.getQuestionOrder(),savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), String.valueOf(answerList.get(idx).getId()), question.getQuestion());
                           //  saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, String.valueOf(answerList.get(idx).getId()), question.getQuestion());
 
                         }
@@ -881,7 +878,7 @@ public class QuetionsOffline extends AppCompatActivity {
                         //aNSER TYPE 3
 
                         //SaveAnswers( questionnaireId, currentQuestionIndex, Integer.parseInt(String.valueOf(multiAnswerList)), openText);
-                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, question.getId(), String.valueOf(multiAnswerList), question.getQuestion());
+                        SaveAnswers(question.getQuestionOrder(), savedgeneratedId, question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity1, surveyUniqueID, savedquestionnaireId, question.getId(), String.valueOf(multiAnswerList), question.getQuestion());
                        // saveAnswersToDraft(questionnaireId, currentQuestionIndex, openText, question.getQuestion());
                         //startActivity(new Intent(QuetionsOffline.this, QuetionsOffline.class));
 

@@ -625,8 +625,8 @@ public class ResponseData extends AppCompatActivity {
                 JSONObject responseObj = new JSONObject();
 
                 // Set common fields for each response
-                responseObj.put("ccc_number", "12345");
-                responseObj.put("first_name", "victor");
+                responseObj.put("ccc_number", userResponse.getCccNumber());
+                responseObj.put("first_name", userResponse.getFirstName());
                 responseObj.put("questionnaire_participant_id", 1);
                 responseObj.put("informed_consent", userResponse.isInformedConsent());
                 responseObj.put("privacy_policy", userResponse.isPrivacyPolicy());

@@ -36,14 +36,18 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.mhealthkenya.psurvey.R;
+import com.mhealthkenya.psurvey.activities.AllQuestionDatabase;
 import com.mhealthkenya.psurvey.activities.MainActivity;
 import com.mhealthkenya.psurvey.activities.Query2;
 import com.mhealthkenya.psurvey.activities.SelectUrls;
 import com.mhealthkenya.psurvey.activities.offlineHome;
 import com.mhealthkenya.psurvey.depedancies.Constants;
 
+import com.mhealthkenya.psurvey.interfaces.UserCredentialsDao;
 import com.mhealthkenya.psurvey.models.UrlTable;
+import com.mhealthkenya.psurvey.models.UserCredentials;
 import com.mhealthkenya.psurvey.models.auth;
+import com.mhealthkenya.psurvey.utils.PasswordHasher;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,20 +89,20 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
 
     public String z, zz;
+
+    private UserCredentialsDao userCredentialsDao;
+    private AllQuestionDatabase allQuestionDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        allQuestionDatabase = AllQuestionDatabase.getInstance(this);
+        userCredentialsDao = allQuestionDatabase.userCredentialsDao();
+
         LoginActivity loginActivity =new LoginActivity();
         //loginActivity.
         setContentView(R.layout.activity_login);
-
-
         try {
-
-            // UrlTable _url = SugarRecord.findById(UrlTable.class, 4);
-            //select *from getLastRecord ORDER BY id DESC LIMIT 1;
-
             List<UrlTable> _url =UrlTable.findWithQuery(UrlTable.class, "SELECT *from URL_TABLE ORDER BY id DESC LIMIT 1");
             if (_url.size()==1){
                 for (int x=0; x<_url.size(); x++){
@@ -110,51 +114,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
 
-            //UrlTable _url = SugarRecord.findById(UrlTable.class, 1);
-
-            // z= _url.base_url1;
-            // zz =_url.stage_name1;
- /*          if (zz==null){
-               // dialogs.showErrorDialog("System not selected", "Please select the system to connect to");
-                Toast.makeText(LoginActivity.this, "You are not connected to", Toast.LENGTH_LONG).show();
-
-                androidx.appcompat.app.AlertDialog.Builder builder1 = new androidx.appcompat.app.AlertDialog.Builder(LoginActivity.this);
-                builder1.setIcon(R.drawable.logo);
-                builder1.setTitle("You are not connected to any Server");
-                builder1.setMessage("");
-                builder1.setCancelable(false);
-
-                builder1.setPositiveButton(
-                        "Connect",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-
-                              /*  Intent intent = new Intent(LoginActivity.this, SelectUrls.class);
-                                startActivity(intent);
-                                finish();*/
- /*                               onBackPressed();
-
-                                //dialog.cancel();
-                            }
-                        });
-
-                androidx.appcompat.app.AlertDialog alert11 = builder1.create();
-                alert11.show();
-
-
-            }else{
-            Toast.makeText(LoginActivity.this, "You are connected to" + " " +zz, Toast.LENGTH_LONG).show();
-           // connect.setText(zz);
-            }*/
-            //connect.setTextColor(Color.parseColor("#F32013"));}
-
         }catch (Exception e){
             Log.d("No baseURL", e.getMessage());
         }
-
-        //Updateapp();
-
-
         Stash.init(this);
         setContentView(R.layout.activity_login);
 
@@ -171,45 +133,21 @@ public class LoginActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            if (!isConnected(LoginActivity.this)){
-                                //Toast.makeText(LoginActivity.this, "Please connect to internet", Toast.LENGTH_LONG).show();
-                                Snackbar.make(findViewById(R.id.login_lyt), "Please connect to internet", Snackbar.LENGTH_LONG).show();
-                            }
-                            if(phoneNumber.getText().toString().equals("")){
-                                Snackbar.make(findViewById(R.id.login_lyt), "Please enter phone number", Snackbar.LENGTH_LONG).show();
-                            }else if(password.getText().toString().equals("")){
-                                Snackbar.make(findViewById(R.id.login_lyt), "Please enter password", Snackbar.LENGTH_LONG).show();
-                            }
-                            pDialog.show();
-                            loginRequest();
-
-                        }catch (Exception e){
-                            e.printStackTrace();
-
+                        if (phoneNumber.getText().toString().isEmpty()) {
+                            Snackbar.make(findViewById(R.id.login_lyt), "Please enter phone number", Snackbar.LENGTH_LONG).show();
+                        } else if (password.getText().toString().isEmpty()) {
+                            Snackbar.make(findViewById(R.id.login_lyt), "Please enter password", Snackbar.LENGTH_LONG).show();
+                        } else {
+                            attemptLogin(phoneNumber.getText().toString(), password.getText().toString());
                         }
                     }
                 });
-
-                //pDialog.show();
-                //loginRequest();
-
             }
         });
-
-       /* forgot_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Toast.makeText(LoginActivity.this, "Forgot Password clicked!", Toast.LENGTH_SHORT).show();
-
-            }
-        });*/
 
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,14 +176,14 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void loginRequest() throws KeyManagementException {
+    private void loginRequest(String phoneNumber, String password) throws KeyManagementException {
         //private void loginRequest() {
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("msisdn", phoneNumber.getText().toString());
+            jsonObject.put("msisdn", phoneNumber);
             //jsonObject.put("msisdn", "0712311264");
-            jsonObject.put("password", password.getText().toString());
+            jsonObject.put("password", password);
             //jsonObject.put("password", "12345678");
 
         } catch (JSONException e) {
@@ -299,17 +237,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
                         if (response.has("auth_token")){
-
-                           /* Intent mint = new Intent(LoginActivity.this, MainActivity.class);
-                            mint.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(mint);*/
-
-                            Intent mint = new Intent(LoginActivity.this, offlineHome.class);
-                            mint.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(mint);
-
-
-                            Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                            saveUserCredentialsLocally(phoneNumber, password);
+                            successfulLogin();
                         }
                         else {
                             if (pDialog != null && pDialog.isShowing()) {
@@ -341,69 +270,10 @@ public class LoginActivity extends AppCompatActivity {
                         else {
 
                            // Snackbar.make(findViewById(R.id.login_lyt), "Error: " + error.getErrorCode(), Snackbar.LENGTH_LONG).show();
-
-
                         }
-
-
                     }
                 });
     }
-
-    /*private OkHttpClient myUnsafeHttpClient() {
-        try {
-
-            // Create a trust manager that does not validate certificate chains
-            final TrustManager[] trustAllCerts = new TrustManager[] {
-
-                    new X509TrustManager() {
-
-                        @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) { }
-                        @Override
-                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
-                        }
-                        @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return new java.security.cert.X509Certificate[]{};
-                        }
-                    }
-            };*/
-
-            //Using TLS 1_2 & 1_1 for HTTP/2 Server requests
-            // Note : Please change accordingly
-          /*  ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
-                    .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
-                    .cipherSuites(
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-                            CipherSuite.TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,
-                            CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,
-                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA)
-                    .build();*/
-
-            // Install the all-trusting trust manager
-            /*final SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());*/
-            // Create an ssl socket factory with our all-trusting manager
-            /*final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.sslSocketFactory(sslSocketFactory);
-            builder.connectionSpecs(Collections.singletonList(spec));
-            builder.hostnameVerifier((hostname, session) -> true);
-            return builder.build();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
     private  boolean isConnected(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -418,44 +288,51 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-    public void Updateapp(){
-        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
-        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+    private void saveUserCredentialsLocally(String phoneNumber, String password) {
+        UserCredentials userCredentials = new UserCredentials(phoneNumber, PasswordHasher.hashPassword(password));
+        userCredentialsDao.insert(userCredentials);
+        Log.i("-->Save User", "Saving User");
+    }
 
-        //Checks platform will allow type of update
+    private UserCredentials getUserCredentialsLocally() {
+        return userCredentialsDao.getUserCredentials();
+    }
 
-        appUpdateInfoTask.addOnSuccessListener(result -> {
+    private void clearUserCredentialsLocally() {
+        userCredentialsDao.deleteUserCredentials();
+    }
 
-            if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+    private void attemptLogin(String phoneNumber, String password){
+        if(isConnected(LoginActivity.this))
+        {
+            try {
+                loginRequest(phoneNumber, password);
+                Log.i("-->Login Online", "Remote Login");
+            } catch (KeyManagementException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            attemptOfflineLogin(phoneNumber, password);
+            Log.i("-->Login Offline", "Offline Login");
+        }
+    }
 
-                //requestUpdate(result);
+    private void attemptOfflineLogin(String phoneNumber, String password) {
+        UserCredentials storedCredentials = getUserCredentialsLocally();
+        if (storedCredentials != null && phoneNumber.equals(storedCredentials.getPhoneNumber())
+                && PasswordHasher.hashPassword(password).equals(storedCredentials.getPassword())) {
+            // If stored credentials match the input, simulate successful login
+            successfulLogin();
+        } else {
+            // If stored credentials do not match, show error message
+            Snackbar.make(findViewById(R.id.login_lyt), "Offline login failed. Please connect to the internet.", Snackbar.LENGTH_LONG).show();
+        }
+    }
 
-                // android.view.ContextThemeWrapper ctw = new android.view.ContextThemeWrapper(this, R.style.Theme_AlertDialog);
-                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
-                alertDialogBuilder.setTitle("pSurvey");
-                alertDialogBuilder.setCancelable(false);
-
-                alertDialogBuilder.setMessage("pSurvey Recommends That You Update To The Latest Version");
-                alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int id) {
-
-                        try {
-                            startActivity(new Intent("android.intent.action.View", Uri.parse("https://play.google.com/store/apps/details?id=com.mhealthkenya.psurvey")));
-
-                        } catch (ActivityNotFoundException e) {
-                            //e.printStackTrace();
-                            startActivity(new Intent("android.intent.action.View", Uri.parse("https://play.google.com/store/apps/details?id=com.mhealthkenya.psurvey")));
-
-                        }
-
-                    }
-                });
-                alertDialogBuilder.show();}
-
-
-
-
-        });
+    private void successfulLogin() {
+        Intent mint = new Intent(LoginActivity.this, offlineHome.class);
+        mint.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(mint);
+        Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
     }
 }

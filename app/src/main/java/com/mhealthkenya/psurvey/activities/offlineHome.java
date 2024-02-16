@@ -52,13 +52,17 @@ import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.activities.auth.LoginActivity;
 import com.mhealthkenya.psurvey.adapters.activeSurveyAdapter;
 import com.mhealthkenya.psurvey.depedancies.Constants;
+import com.mhealthkenya.psurvey.interfaces.CurrentUserCallback;
+import com.mhealthkenya.psurvey.interfaces.CurrentUserDao;
 import com.mhealthkenya.psurvey.models.ActiveSurveys;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
 import com.mhealthkenya.psurvey.models.Available;
 import com.mhealthkenya.psurvey.models.Completed;
+import com.mhealthkenya.psurvey.models.CurrentUser;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
 import com.mhealthkenya.psurvey.models.UrlTable;
+import com.mhealthkenya.psurvey.models.UserDetails;
 import com.mhealthkenya.psurvey.models.auth;
 import com.orm.query.Select;
 
@@ -72,7 +76,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.Unbinder;
 
-public class offlineHome extends AppCompatActivity {
+public class offlineHome extends AppCompatActivity implements CurrentUserCallback{
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -120,6 +124,8 @@ public class offlineHome extends AppCompatActivity {
     private ProgressDialog pDialog;
     ProgressDialog progressDialog;
 
+    private CurrentUserDao currentUserDao;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +137,7 @@ public class offlineHome extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("pSurvey");
         allQuestionDatabase = AllQuestionDatabase.getInstance(this);
+        currentUserDao = allQuestionDatabase.currentUserDao();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -222,7 +229,7 @@ public class offlineHome extends AppCompatActivity {
                 //Toast.makeText(offlineHome.this, "clicked", Toast.LENGTH_SHORT).show();
             }
         });
-        loadCurrentUser();
+        loadCurrentUser(this);
       //  try2();
 
 
@@ -249,92 +256,92 @@ public class offlineHome extends AppCompatActivity {
     }
 
 
+//    private void loadCurrentUser(){
+//
+//        String auth_token = loggedInUser.getAuth_token();
+//
+//        try{
+//            List<UrlTable> _url =UrlTable.findWithQuery(UrlTable.class, "SELECT *from URL_TABLE ORDER BY id DESC LIMIT 1");
+//            if (_url.size()==1){
+//                for (int x=0; x<_url.size(); x++){
+//                    z=_url.get(x).getBase_url1();
+//                }
+//            }
+//
+//        } catch(Exception e){
+//
+//        }
+//
+//
+//        AndroidNetworking.get(z+Constants.CURRENT_USER_DETAILED)
+//                .addHeaders("Authorization","Token "+ auth_token)
+//                .addHeaders("Content-Type", "application.json")
+//                .addHeaders("Accept", "*/*")
+//                .addHeaders("Accept", "gzip, deflate, br")
+//                .addHeaders("Connection","keep-alive")
+//                .setPriority(Priority.LOW)
+//                .build()
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//
+//                        // do anything with response
+////                        Log.e(TAG, response.toString());
+//
+//                        try {
+//
+//                            JSONObject user = response.getJSONObject("user");
+//
+//                            int id = user.has("id") ? user.getInt("id"): 0;
+//                            String msisdn = user.has("msisdn") ? user.getString("msisdn") : "";
+//                            String email = user.has("email") ? user.getString("email") : "";
+//                            String firstName = user.has("f_name") ? user.getString("f_name") : "";
+//                            String lastName = user.has("l_name") ? user.getString("l_name") : "";
+//                            JSONObject designation = user.getJSONObject("designation");
+//
+//                            int designationId = designation.has("id") ? designation.getInt("id"): 0;
+//                            String designationName = designation.has("name") ? designation.getString("name") : "";
+//
+//                            JSONObject facility = user.getJSONObject("facility");
+//
+//                            int facilityId = facility.has("id") ? facility.getInt("id"): 0;
+//                            int mflCode = facility.has("mfl_code") ? facility.getInt("mfl_code"): 0;
+//                            String facilityName = facility.has("name") ? facility.getString("name") : "";
+//                            String county = facility.has("county") ? facility.getString("county") : "";
+//                            String subCounty = facility.has("sub_county") ? facility.getString("sub_county") : "";
+//
+//                            String activeQuestionnaires = response.has("Active_questionnaires") ? response.getString("Active_questionnaires") : "";
+//                            String completedSurveys = response.has("Completed_surveys") ? response.getString("Completed_surveys") : "";
+//
+//
+//                            txt_name.setText(firstName + " " + lastName);
+//                            txt_email.setText(email);
+//                            tv_facility.setText(facilityName);
+//                            //tv_active_surveys.setText(activeQuestionnaires);
+//                            //tv_completed_surveys.setText(completedSurveys);
+//
+//                            Stash.put(String.valueOf(Constants.MFL_CODE), mflCode);
+//
+//
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//                    @Override
+//                    public void onError(ANError error) {
+//
+//                        // handle error
+////                        Log.e(TAG, error.getErrorBody());
+//
+//                        Snackbar.make(root.findViewById(R.id.frag_home), "Error: " + error.getErrorBody(), Snackbar.LENGTH_LONG).show();
+//
+//                    }
+//                });
+//
+//    }
 
-    private void loadCurrentUser(){
-
-        String auth_token = loggedInUser.getAuth_token();
-
-        try{
-            List<UrlTable> _url =UrlTable.findWithQuery(UrlTable.class, "SELECT *from URL_TABLE ORDER BY id DESC LIMIT 1");
-            if (_url.size()==1){
-                for (int x=0; x<_url.size(); x++){
-                    z=_url.get(x).getBase_url1();
-                }
-            }
-
-        } catch(Exception e){
-
-        }
-
-
-        AndroidNetworking.get(z+Constants.CURRENT_USER_DETAILED)
-                .addHeaders("Authorization","Token "+ auth_token)
-                .addHeaders("Content-Type", "application.json")
-                .addHeaders("Accept", "*/*")
-                .addHeaders("Accept", "gzip, deflate, br")
-                .addHeaders("Connection","keep-alive")
-                .setPriority(Priority.LOW)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        // do anything with response
-//                        Log.e(TAG, response.toString());
-
-                        try {
-
-                            JSONObject user = response.getJSONObject("user");
-
-                            int id = user.has("id") ? user.getInt("id"): 0;
-                            String msisdn = user.has("msisdn") ? user.getString("msisdn") : "";
-                            String email = user.has("email") ? user.getString("email") : "";
-                            String firstName = user.has("f_name") ? user.getString("f_name") : "";
-                            String lastName = user.has("l_name") ? user.getString("l_name") : "";
-                            JSONObject designation = user.getJSONObject("designation");
-
-                            int designationId = designation.has("id") ? designation.getInt("id"): 0;
-                            String designationName = designation.has("name") ? designation.getString("name") : "";
-
-                            JSONObject facility = user.getJSONObject("facility");
-
-                            int facilityId = facility.has("id") ? facility.getInt("id"): 0;
-                            int mflCode = facility.has("mfl_code") ? facility.getInt("mfl_code"): 0;
-                            String facilityName = facility.has("name") ? facility.getString("name") : "";
-                            String county = facility.has("county") ? facility.getString("county") : "";
-                            String subCounty = facility.has("sub_county") ? facility.getString("sub_county") : "";
-
-                            String activeQuestionnaires = response.has("Active_questionnaires") ? response.getString("Active_questionnaires") : "";
-                            String completedSurveys = response.has("Completed_surveys") ? response.getString("Completed_surveys") : "";
-
-
-                            txt_name.setText(firstName + " " + lastName);
-                            txt_email.setText(email);
-                            tv_facility.setText(facilityName);
-                            //tv_active_surveys.setText(activeQuestionnaires);
-                            //tv_completed_surveys.setText(completedSurveys);
-
-                            Stash.put(String.valueOf(Constants.MFL_CODE), mflCode);
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                    @Override
-                    public void onError(ANError error) {
-
-                        // handle error
-//                        Log.e(TAG, error.getErrorBody());
-
-                        Snackbar.make(root.findViewById(R.id.frag_home), "Error: " + error.getErrorBody(), Snackbar.LENGTH_LONG).show();
-
-                    }
-                });
-
-    }
 
     private void try2(){
 
@@ -672,5 +679,112 @@ public class offlineHome extends AppCompatActivity {
 
     }
 
+    private void loadCurrentUser(CurrentUserCallback callback) {
+        // Check if the current user details are already stored locally
+        UserDetails currentUser = currentUserDao.getCurrentUser();
+        if (currentUser != null) {
+            // User details are already stored locally, return them
+            callback.onCurrentUserLoaded(currentUser);
+            return;
+        }
 
+        String auth_token = loggedInUser.getAuth_token();
+
+        try {
+            List<UrlTable> _url = UrlTable.findWithQuery(UrlTable.class, "SELECT * FROM URL_TABLE ORDER BY id DESC LIMIT 1");
+            if (_url.size() == 1) {
+                for (int x = 0; x < _url.size(); x++) {
+                    z = _url.get(x).getBase_url1();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        AndroidNetworking.get(z + Constants.CURRENT_USER_DETAILED)
+                .addHeaders("Authorization", "Token " + auth_token)
+                .addHeaders("Content-Type", "application.json")
+                .addHeaders("Accept", "*/*")
+                .addHeaders("Accept", "gzip, deflate, br")
+                .addHeaders("Connection", "keep-alive")
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            // Parse the response and create a UserDetails object
+                            UserDetails userDetails = parseUserDetails(response);
+
+                            // Save the current user details locally in the Room database
+                            saveCurrentUserLocally(userDetails);
+
+                            // Notify the callback with the user details
+                            callback.onCurrentUserLoaded(userDetails);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            callback.onCurrentUserLoadFailed("Error parsing JSON response");
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError error) {
+                        callback.onCurrentUserLoadFailed("Error: " + error.getErrorBody());
+                    }
+                });
+    }
+
+    private void saveCurrentUserLocally(UserDetails userDetails) {
+
+        CurrentUser currentUser = new CurrentUser();
+        currentUser.setEmail(userDetails.getEmail());
+        currentUser.setFirstName(userDetails.getFirstName());
+        currentUser.setLastName(userDetails.getLastName());
+        currentUser.setMflCode(userDetails.getMflCode());
+        currentUser.setFacilityName(userDetails.getFacilityName());
+
+        // Insert the CurrentUser object into the Room database
+        allQuestionDatabase.currentUserDao().insertCurrentUser(currentUser);
+        Log.i("-->Save UserDetails ", currentUser.toString());
+    }
+
+    @Override
+    public void onCurrentUserLoaded(UserDetails currentUser) {
+        txt_name.setText(currentUser.getFirstName() + " " + currentUser.getLastName());
+        txt_email.setText(currentUser.getEmail());
+        tv_facility.setText(currentUser.getFacilityName());
+    }
+
+    @Override
+    public void onCurrentUserLoadFailed(String errorMessage) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private UserDetails parseUserDetails(JSONObject response) throws JSONException {
+        JSONObject user = response.getJSONObject("user");
+
+        UserDetails userDetails = new UserDetails();
+        userDetails.setId(user.has("id") ? user.getInt("id") : 0);
+//        userDetails.setMsisdn(user.has("msisdn") ? user.getString("msisdn") : "");
+        userDetails.setEmail(user.has("email") ? user.getString("email") : "");
+        userDetails.setFirstName(user.has("f_name") ? user.getString("f_name") : "");
+        userDetails.setLastName(user.has("l_name") ? user.getString("l_name") : "");
+
+//        JSONObject designation = user.getJSONObject("designation");
+//        userDetails.setDesignationId(designation.has("id") ? designation.getInt("id") : 0);
+//        userDetails.setDesignationName(designation.has("name") ? designation.getString("name") : "");
+
+        JSONObject facility = user.getJSONObject("facility");
+//        userDetails.setFacilityId(facility.has("id") ? facility.getInt("id") : 0);
+        userDetails.setMflCode(facility.has("mfl_code") ? facility.getInt("mfl_code") : 0);
+        userDetails.setFacilityName(facility.has("name") ? facility.getString("name") : "");
+//        userDetails.setCounty(facility.has("county") ? facility.getString("county") : "");
+//        userDetails.setSubCounty(facility.has("sub_county") ? facility.getString("sub_county") : "");
+//
+//        userDetails.setActiveQuestionnaires(response.has("Active_questionnaires") ? response.getString("Active_questionnaires") : "");
+//        userDetails.setCompletedSurveys(response.has("Completed_surveys") ? response.getString("Completed_surveys") : "");
+
+        return userDetails;
+    }
 }

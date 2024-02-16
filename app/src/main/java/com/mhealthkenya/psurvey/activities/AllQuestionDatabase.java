@@ -7,12 +7,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.mhealthkenya.psurvey.interfaces.AnswerDao;
+import com.mhealthkenya.psurvey.interfaces.CurrentUserDao;
 import com.mhealthkenya.psurvey.interfaces.QuestionDao;
 import com.mhealthkenya.psurvey.interfaces.QuestionnaireDao;
 import com.mhealthkenya.psurvey.interfaces.SessionDao;
 import com.mhealthkenya.psurvey.interfaces.UserCredentialsDao;
 import com.mhealthkenya.psurvey.interfaces.UserResponseDao;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
+import com.mhealthkenya.psurvey.models.CurrentUser;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
 import com.mhealthkenya.psurvey.models.SessionOffline;
@@ -20,7 +22,8 @@ import com.mhealthkenya.psurvey.models.UserCredentials;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
 
 
-@Database(entities = {QuestionnaireEntity.class,QuestionEntity.class, AnswerEntity.class, UserResponseEntity.class, SessionOffline.class, UserCredentials.class}, version =27)
+@Database(entities = {QuestionnaireEntity.class,QuestionEntity.class, AnswerEntity.class,
+        UserResponseEntity.class, SessionOffline.class, UserCredentials.class, CurrentUser.class}, version =27)
 public abstract class AllQuestionDatabase extends RoomDatabase {
 
     public abstract QuestionnaireDao questionnaireDao();
@@ -29,6 +32,7 @@ public abstract class AllQuestionDatabase extends RoomDatabase {
     public abstract UserResponseDao userResponseDao();
     public abstract SessionDao sessionDao();
     public abstract UserCredentialsDao userCredentialsDao();
+    public abstract CurrentUserDao currentUserDao();
 
 
     private static final String DATABASENAME = "surveyDB";

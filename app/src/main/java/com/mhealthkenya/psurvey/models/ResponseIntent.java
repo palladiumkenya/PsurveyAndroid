@@ -4,9 +4,9 @@ import com.orm.SugarRecord;
 
 public class ResponseIntent extends SugarRecord {
 
-    private int ID_extra,  session_extra,  answID_extra, quetnID_extra, qtype_extra, QuestionnaireId_extra;
-     private String Quetion_extra, Option_extra, UniqueIdentifier_extra, dateValidation_extra;
-     boolean isRequired_extra, isRepeatable_extra;
+    private int ID_extra,  session_extra,   quetnID_extra, qtype_extra, QuestionnaireId_extra;
+    private String Quetion_extra, Option_extra, UniqueIdentifier_extra, dateValidation_extra,answID_extra;
+    boolean isRequired_extra, isRepeatable_extra;
 
 
    /* ID_extra = intent2.getIntExtra("ID", 0); // Default to 0
@@ -27,7 +27,7 @@ public class ResponseIntent extends SugarRecord {
     public ResponseIntent() {
     }
 
-    public ResponseIntent(int ID_extra, int session_extra, int answID_extra, int quetnID_extra, int qtype_extra, int questionnaireId_extra, String quetion_extra, String option_extra, String uniqueIdentifier_extra, String dateValidation_extra, boolean isRequired_extra, boolean isRepeatable_extra) {
+    public ResponseIntent(int ID_extra, int session_extra, String answID_extra, int quetnID_extra, int qtype_extra, int questionnaireId_extra, String quetion_extra, String option_extra, String uniqueIdentifier_extra, String dateValidation_extra, boolean isRequired_extra, boolean isRepeatable_extra) {
         this.ID_extra = ID_extra;
         this.session_extra = session_extra;
         this.answID_extra = answID_extra;
@@ -66,11 +66,11 @@ public class ResponseIntent extends SugarRecord {
         this.session_extra = session_extra;
     }
 
-    public int getAnswID_extra() {
+    public String getAnswID_extra() {
         return answID_extra;
     }
 
-    public void setAnswID_extra(int answID_extra) {
+    public void setAnswID_extra(String answID_extra) {
         this.answID_extra = answID_extra;
     }
 

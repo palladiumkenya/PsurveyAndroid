@@ -186,8 +186,8 @@ public class EditActivity extends AppCompatActivity {
 
     LinearLayout error_lyt;
 
-    int ID_extra, session_extra, answID_extra, quetnID_extra, qtype_extra,QuestionnaireId_extra;
-    String Quetion_extra, Option_extra, UniqueIdentifier_extra, dateValidation_extra;
+    int ID_extra, session_extra, quetnID_extra, qtype_extra,QuestionnaireId_extra;
+    String Quetion_extra, Option_extra, UniqueIdentifier_extra, dateValidation_extra, answID_extra;
     boolean isRequired_extra, isRepeatable_extra;
 
     @Override
@@ -428,14 +428,14 @@ public class EditActivity extends AppCompatActivity {
                     } else {
 
                         SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
-                      //  SaveAnswers(question.getQuestionOrder(),question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
+                        //  SaveAnswers(question.getQuestionOrder(),question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
                         //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
 
 
 
                     }
                 } else if (qtype_extra == 1) {
-                   // SaveAnswers(question.getQuestionOrder(),answerEntity.getId(), surveyUniqueID, savedquestionnaireId, currentQuestionIndex, openTextEtxt.getText().toString(), question.getQuestion());
+                    // SaveAnswers(question.getQuestionOrder(),answerEntity.getId(), surveyUniqueID, savedquestionnaireId, currentQuestionIndex, openTextEtxt.getText().toString(), question.getQuestion());
                     SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
 
                 } else if (qtype_extra == 4 && isRequired_extra) {
@@ -926,198 +926,198 @@ public class EditActivity extends AppCompatActivity {
 
 
 
-            surveyQuestion.setText(Quetion_extra);
+        surveyQuestion.setText(Quetion_extra);
 
-            //end
-
-
-            if (qtype_extra == 1) {
-                openTextTil.setVisibility(View.VISIBLE);
-                openTextEtxt.setText(Option_extra);
-
-            } else if (qtype_extra == 2) {
-
-                singleChoiceRadioGroup.setVisibility(View.VISIBLE);
-
-             //   Toast.makeText(EditActivity.this, "quetnID_extra"+session_extra, Toast.LENGTH_SHORT).show();
+        //end
 
 
-                List<AnswerEntity> answersA = allQuestionDatabase.answerDao().getAnswersForQuestion2(savedquestionnaireId, session_extra);
-                // Log.d("Answer List", answersA.);
+        if (qtype_extra == 1) {
+            openTextTil.setVisibility(View.VISIBLE);
+            openTextEtxt.setText(Option_extra);
+
+        } else if (qtype_extra == 2) {
+
+            singleChoiceRadioGroup.setVisibility(View.VISIBLE);
+
+            //   Toast.makeText(EditActivity.this, "quetnID_extra"+session_extra, Toast.LENGTH_SHORT).show();
 
 
-                for (AnswerEntity answers2 : answersA) {
-                    // Log.d("Answer List", answers2.toString());
-
-                    int id = answers2.getId();
-                    optionR = answers2.getOption();
-                    String createdAt = answers2.getCreatedAt();
-                    int questionI = answers2.getQuestionId();
-                    int questionnaireI = answers2.getQuestionnaireId();
-                    int createdBy = answers2.getCreatedBy();
-
-                    answerEntity = new AnswerEntity(id, optionR, createdAt, questionI, questionnaireI, createdBy);
-                    answerList.add(answerEntity);
-
-                    RadioButton rbn = new RadioButton(EditActivity.this);
-                    rbn.setId(View.generateViewId());
-                    rbn.setText(optionR);
-                    Log.d("Answer Options", optionR);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-                    rbn.setLayoutParams(params);
-                    singleChoiceRadioGroup.addView(rbn);
+            List<AnswerEntity> answersA = allQuestionDatabase.answerDao().getAnswersForQuestion2(savedquestionnaireId, session_extra);
+            // Log.d("Answer List", answersA.);
 
 
-                }
+            for (AnswerEntity answers2 : answersA) {
+                // Log.d("Answer List", answers2.toString());
 
+                int id = answers2.getId();
+                optionR = answers2.getOption();
+                String createdAt = answers2.getCreatedAt();
+                int questionI = answers2.getQuestionId();
+                int questionnaireI = answers2.getQuestionnaireId();
+                int createdBy = answers2.getCreatedBy();
 
-            } else if (qtype_extra == 3) {
-                openTextTil.setVisibility(View.GONE);
-                singleChoiceRadioGroup.setVisibility(View.GONE);
-                multipleChoiceAns.setVisibility(View.VISIBLE);
-                // List<AnswerEntity> answersB = allQuestionDatabase.answerDao().getAnswersForQuestion(question.getId());
-                List<AnswerEntity> answersB = allQuestionDatabase.answerDao().getAnswersForQuestion2(savedquestionnaireId, session_extra);
-                List<Integer> answersB1 = allQuestionDatabase.answerDao().getAnswerIdsForQuestion(session_extra);
-                for (AnswerEntity answers2 : answersB) {
-                    int id = answers2.getId();
-                    String option = answers2.getOption();
-                    String createdAt = answers2.getCreatedAt();
-                    int questionI = answers2.getQuestionId();
-                    int questionnaire2 = answers2.getQuestionnaireId();
-                    int createdBy = answers2.getCreatedBy();
+                answerEntity = new AnswerEntity(id, optionR, createdAt, questionI, questionnaireI, createdBy);
+                answerList.add(answerEntity);
 
-                    answerEntity = new AnswerEntity(id, option, createdAt, questionI, questionnaire2, createdBy);
-                    answerList.add(answerEntity);
-
-                }
-
-
-                checkBox = new CheckBox(this);
-                checkBox.setId(answerEntity.getId());
-                checkBox.setText(answerEntity.getOption());
+                RadioButton rbn = new RadioButton(EditActivity.this);
+                rbn.setId(View.generateViewId());
+                rbn.setText(optionR);
+                Log.d("Answer Options", optionR);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-                checkBox.setLayoutParams(params);
-                multipleChoiceAns.addView(checkBox);
+                rbn.setLayoutParams(params);
+                singleChoiceRadioGroup.addView(rbn);
 
-                // }
-
-            } else if (qtype_extra == 4) {
-
-                numericText.setVisibility(View.VISIBLE);
-                numericEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
-            }
-            //none
-            else if (qtype_extra == 5 && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count == 1) {
-                dateTextTil.setVisibility(View.VISIBLE);
-            }
-            //none not repeat
-            else if (qtype_extra == 5 && dateValidation_extra.equals("none") && !isRepeatable_extra) {
-                dateTextTil.setVisibility(View.VISIBLE);
-            }
-
-            //try
-            // restrict future1
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && !isRepeatable_extra) {
-                // dateTextTil.setVisibility(View.VISIBLE);
-                dateTextTilfuture.setVisibility(View.VISIBLE);
-
-            }
-
-            // restrict future1
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 1) {
-                dateTextTilfuture.setVisibility(View.VISIBLE);
-
-            }
-
-            // restrict future2
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 2) {
-                dateTextTilfuture.setVisibility(View.VISIBLE);
-                dateTextTilfuture2.setVisibility(View.VISIBLE);
 
             }
 
 
-            // restrict future3
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 3) {
-                dateTextTilfuture.setVisibility(View.VISIBLE);
-                dateTextTilfuture2.setVisibility(View.VISIBLE);
-                dateTextTilfuture3.setVisibility(View.VISIBLE);
+        } else if (qtype_extra == 3) {
+            openTextTil.setVisibility(View.GONE);
+            singleChoiceRadioGroup.setVisibility(View.GONE);
+            multipleChoiceAns.setVisibility(View.VISIBLE);
+            // List<AnswerEntity> answersB = allQuestionDatabase.answerDao().getAnswersForQuestion(question.getId());
+            List<AnswerEntity> answersB = allQuestionDatabase.answerDao().getAnswersForQuestion2(savedquestionnaireId, session_extra);
+            List<Integer> answersB1 = allQuestionDatabase.answerDao().getAnswerIdsForQuestion(session_extra);
+            for (AnswerEntity answers2 : answersB) {
+                int id = answers2.getId();
+                String option = answers2.getOption();
+                String createdAt = answers2.getCreatedAt();
+                int questionI = answers2.getQuestionId();
+                int questionnaire2 = answers2.getQuestionnaireId();
+                int createdBy = answers2.getCreatedBy();
 
-            }
-
-            // restrict future4
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 4) {
-                dateTextTilfuture.setVisibility(View.VISIBLE);
-                dateTextTilfuture2.setVisibility(View.VISIBLE);
-                dateTextTilfuture3.setVisibility(View.VISIBLE);
-                dateTextTilfuture4.setVisibility(View.VISIBLE);
-
-            }
-            // restrict future5
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 5) {
-                dateTextTilfuture.setVisibility(View.VISIBLE);
-                dateTextTilfuture2.setVisibility(View.VISIBLE);
-                dateTextTilfuture3.setVisibility(View.VISIBLE);
-                dateTextTilfuture4.setVisibility(View.VISIBLE);
-                dateTextTilfuture5.setVisibility(View.VISIBLE);
-
-            }
-
-            // restrict future6
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 6) {
-                dateTextTilfuture.setVisibility(View.VISIBLE);
-                dateTextTilfuture2.setVisibility(View.VISIBLE);
-                dateTextTilfuture3.setVisibility(View.VISIBLE);
-                dateTextTilfuture4.setVisibility(View.VISIBLE);
-                dateTextTilfuture5.setVisibility(View.VISIBLE);
-                dateTextTilfuture6.setVisibility(View.VISIBLE);
+                answerEntity = new AnswerEntity(id, option, createdAt, questionI, questionnaire2, createdBy);
+                answerList.add(answerEntity);
 
             }
 
 
-            //restrict past repeat none
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && !isRepeatable_extra) {
-                dateTextTilpast.setVisibility(View.VISIBLE);
-            }
-            //restrict past2
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 2) {
-                dateTextTilpast.setVisibility(View.VISIBLE);
-                dateTextTilpast2.setVisibility(View.VISIBLE);
-            }
+            checkBox = new CheckBox(this);
+            checkBox.setId(answerEntity.getId());
+            checkBox.setText(answerEntity.getOption());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            checkBox.setLayoutParams(params);
+            multipleChoiceAns.addView(checkBox);
 
-            //restrict past3
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRequired_extra && repeat_count1.getRepeat_count() == 3) {
-                dateTextTilpast.setVisibility(View.VISIBLE);
-                dateTextTilpast2.setVisibility(View.VISIBLE);
-                dateTextTilpast3.setVisibility(View.VISIBLE);
-            }
+            // }
+
+        } else if (qtype_extra == 4) {
+
+            numericText.setVisibility(View.VISIBLE);
+            numericEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        }
+        //none
+        else if (qtype_extra == 5 && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count == 1) {
+            dateTextTil.setVisibility(View.VISIBLE);
+        }
+        //none not repeat
+        else if (qtype_extra == 5 && dateValidation_extra.equals("none") && !isRepeatable_extra) {
+            dateTextTil.setVisibility(View.VISIBLE);
+        }
+
+        //try
+        // restrict future1
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && !isRepeatable_extra) {
+            // dateTextTil.setVisibility(View.VISIBLE);
+            dateTextTilfuture.setVisibility(View.VISIBLE);
+
+        }
+
+        // restrict future1
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 1) {
+            dateTextTilfuture.setVisibility(View.VISIBLE);
+
+        }
+
+        // restrict future2
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 2) {
+            dateTextTilfuture.setVisibility(View.VISIBLE);
+            dateTextTilfuture2.setVisibility(View.VISIBLE);
+
+        }
 
 
-            //restrict past4
-            else if (qtype_extra== 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 4) {
-                dateTextTilpast.setVisibility(View.VISIBLE);
-                dateTextTilpast2.setVisibility(View.VISIBLE);
-                dateTextTilpast3.setVisibility(View.VISIBLE);
-                dateTextTilpast4.setVisibility(View.VISIBLE);
-            }
-            //restrict past5
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 5) {
-                dateTextTilpast.setVisibility(View.VISIBLE);
-                dateTextTilpast2.setVisibility(View.VISIBLE);
-                dateTextTilpast3.setVisibility(View.VISIBLE);
-                dateTextTilpast4.setVisibility(View.VISIBLE);
-                dateTextTilpast5.setVisibility(View.VISIBLE);
-            }
+        // restrict future3
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 3) {
+            dateTextTilfuture.setVisibility(View.VISIBLE);
+            dateTextTilfuture2.setVisibility(View.VISIBLE);
+            dateTextTilfuture3.setVisibility(View.VISIBLE);
 
-            //restrict past6
-            else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 6) {
-                dateTextTilpast.setVisibility(View.VISIBLE);
-                dateTextTilpast2.setVisibility(View.VISIBLE);
-                dateTextTilpast3.setVisibility(View.VISIBLE);
-                dateTextTilpast4.setVisibility(View.VISIBLE);
-                dateTextTilpast5.setVisibility(View.VISIBLE);
-                dateTextTilpast6.setVisibility(View.VISIBLE);
-            }
+        }
+
+        // restrict future4
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 4) {
+            dateTextTilfuture.setVisibility(View.VISIBLE);
+            dateTextTilfuture2.setVisibility(View.VISIBLE);
+            dateTextTilfuture3.setVisibility(View.VISIBLE);
+            dateTextTilfuture4.setVisibility(View.VISIBLE);
+
+        }
+        // restrict future5
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 5) {
+            dateTextTilfuture.setVisibility(View.VISIBLE);
+            dateTextTilfuture2.setVisibility(View.VISIBLE);
+            dateTextTilfuture3.setVisibility(View.VISIBLE);
+            dateTextTilfuture4.setVisibility(View.VISIBLE);
+            dateTextTilfuture5.setVisibility(View.VISIBLE);
+
+        }
+
+        // restrict future6
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 6) {
+            dateTextTilfuture.setVisibility(View.VISIBLE);
+            dateTextTilfuture2.setVisibility(View.VISIBLE);
+            dateTextTilfuture3.setVisibility(View.VISIBLE);
+            dateTextTilfuture4.setVisibility(View.VISIBLE);
+            dateTextTilfuture5.setVisibility(View.VISIBLE);
+            dateTextTilfuture6.setVisibility(View.VISIBLE);
+
+        }
+
+
+        //restrict past repeat none
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && !isRepeatable_extra) {
+            dateTextTilpast.setVisibility(View.VISIBLE);
+        }
+        //restrict past2
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 2) {
+            dateTextTilpast.setVisibility(View.VISIBLE);
+            dateTextTilpast2.setVisibility(View.VISIBLE);
+        }
+
+        //restrict past3
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRequired_extra && repeat_count1.getRepeat_count() == 3) {
+            dateTextTilpast.setVisibility(View.VISIBLE);
+            dateTextTilpast2.setVisibility(View.VISIBLE);
+            dateTextTilpast3.setVisibility(View.VISIBLE);
+        }
+
+
+        //restrict past4
+        else if (qtype_extra== 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 4) {
+            dateTextTilpast.setVisibility(View.VISIBLE);
+            dateTextTilpast2.setVisibility(View.VISIBLE);
+            dateTextTilpast3.setVisibility(View.VISIBLE);
+            dateTextTilpast4.setVisibility(View.VISIBLE);
+        }
+        //restrict past5
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 5) {
+            dateTextTilpast.setVisibility(View.VISIBLE);
+            dateTextTilpast2.setVisibility(View.VISIBLE);
+            dateTextTilpast3.setVisibility(View.VISIBLE);
+            dateTextTilpast4.setVisibility(View.VISIBLE);
+            dateTextTilpast5.setVisibility(View.VISIBLE);
+        }
+
+        //restrict past6
+        else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 6) {
+            dateTextTilpast.setVisibility(View.VISIBLE);
+            dateTextTilpast2.setVisibility(View.VISIBLE);
+            dateTextTilpast3.setVisibility(View.VISIBLE);
+            dateTextTilpast4.setVisibility(View.VISIBLE);
+            dateTextTilpast5.setVisibility(View.VISIBLE);
+            dateTextTilpast6.setVisibility(View.VISIBLE);
+        }
 
         // btnNext.setEnabled(true);
     }
@@ -1241,14 +1241,14 @@ public class EditActivity extends AppCompatActivity {
 
 
 
-    public void SaveAnswers(int Sessionid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable, int answ_id, String uniqueIdentifier, int questionnaireId1, int questionId1, String option1, String quetion1){
-       // int Sessionid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable, int answ_id, String uniqueIdentifier, int questionnaireId1, int questionId1, String option1, String quetion1
+    public void SaveAnswers(int Sessionid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable, String answ_id, String uniqueIdentifier, int questionnaireId1, int questionId1, String option1, String quetion1){
+        // int Sessionid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable, int answ_id, String uniqueIdentifier, int questionnaireId1, int questionId1, String option1, String quetion1
 
         // List<AnswerEntity> answers = allQuestionDatabase.answerDao().getAnswersForQuestion(surveyQuestion.getId());
 
         UserResponseEntity userResponseEntity = allQuestionDatabase.userResponseDao().getUserResponseById(session_extra);
 
-      //  UserResponseEntity userResponseEntity = new UserResponseEntity();
+        //  UserResponseEntity userResponseEntity = new UserResponseEntity();
 
         if (userResponseEntity==null){
             Toast.makeText(EditActivity.this, "Null to update", Toast.LENGTH_SHORT).show();
@@ -1256,26 +1256,26 @@ public class EditActivity extends AppCompatActivity {
         }else{
 
 
-        userResponseEntity.setSessionid(Sessionid);
-        userResponseEntity.setQuestionType(questionType);
-        userResponseEntity.setRequired(isRequired);
-        userResponseEntity.setDateValidation(dateValidation);
-        userResponseEntity.setRepeatable(isRepeatable);
+            userResponseEntity.setSessionid(Sessionid);
+            userResponseEntity.setQuestionType(questionType);
+            userResponseEntity.setRequired(isRequired);
+            userResponseEntity.setDateValidation(dateValidation);
+            userResponseEntity.setRepeatable(isRepeatable);
 
-        userResponseEntity.setAnswerId(answ_id);
-        userResponseEntity.setUniqueIdentifier(uniqueIdentifier);
-        userResponseEntity.setQuestionnaireId(questionnaireId1);
-        userResponseEntity.setQuestionId(questionId1);
-        // userResponseEntity.setAnswerId(answeid1);
-        userResponseEntity.setOption(option1);
-        userResponseEntity.setQuetion_A(quetion1);
+            userResponseEntity.setAnswerId(answ_id);
+            userResponseEntity.setUniqueIdentifier(uniqueIdentifier);
+            userResponseEntity.setQuestionnaireId(questionnaireId1);
+            userResponseEntity.setQuestionId(questionId1);
+            // userResponseEntity.setAnswerId(answeid1);
+            userResponseEntity.setOption(option1);
+            userResponseEntity.setQuetion_A(quetion1);
 
-  //      allQuestionDatabase.userResponseDao().insertResponse(userResponseEntity);
+            //      allQuestionDatabase.userResponseDao().insertResponse(userResponseEntity);
 
-        allQuestionDatabase.userResponseDao().updateResponse(userResponseEntity);
+            allQuestionDatabase.userResponseDao().updateResponse(userResponseEntity);
 
-        Intent intent = new Intent(EditActivity.this, SessionList.class);
-        startActivity(intent);
+            Intent intent = new Intent(EditActivity.this, SessionList.class);
+            startActivity(intent);
 
         }
 
@@ -1298,6 +1298,7 @@ public class EditActivity extends AppCompatActivity {
         currentQuestionIndex = savedInstanceState.getInt("currentQuestionIndex");
         // Restore other necessary data here
     }
+
 
 
 }

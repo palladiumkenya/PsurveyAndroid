@@ -130,18 +130,18 @@ public class ResponseData extends AppCompatActivity {
         // Initialize your RecyclerView
 
         loggedInUser = (auth) Stash.getObject(Constants.AUTH_TOKEN, auth.class);
-  //      userResponsesB = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
+        //      userResponsesB = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
 
 
 
         allQuestionDatabase = AllQuestionDatabase.getInstance(this);
         userResponsesB = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
-       // userResponsesC = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier2(SesssionValue);
+        // userResponsesC = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier2(SesssionValue);
 
         //userResponseEntities =allQuestionDatabase.userResponseDao().getUserResponsesForQuestionnaire()
 
-     //    Intent mIntent = getIntent();
-     //   IDvalue = mIntent.getIntExtra("Quetionnaire_ID", 0);
+        //    Intent mIntent = getIntent();
+        //   IDvalue = mIntent.getIntExtra("Quetionnaire_ID", 0);
         try {
 
             //from QUETIONNAIRE_ID
@@ -152,7 +152,7 @@ public class ResponseData extends AppCompatActivity {
                 for (int x=0; x<_url.size(); x++){
                     IDvalue=_url.get(x).getQuetioonareID();
 
-                    Toast.makeText(ResponseData.this, "Your Quetionnaire_ID is" + " " +IDvalue, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(ResponseData.this, "Your Quetionnaire_ID is" + " " +IDvalue, Toast.LENGTH_LONG).show();
                 }
             }
         }catch (Exception e){
@@ -169,7 +169,7 @@ public class ResponseData extends AppCompatActivity {
                 for (int x=0; x<_url.size(); x++){
                     SesssionValue=_url.get(x).getUniqueIdentifier();
 
-                    Toast.makeText(ResponseData.this, "Your session is" + " " +SesssionValue, Toast.LENGTH_LONG).show();
+                    //  Toast.makeText(ResponseData.this, "Your session is" + " " +SesssionValue, Toast.LENGTH_LONG).show();
                 }
             }
         }catch (Exception e){
@@ -198,10 +198,10 @@ public class ResponseData extends AppCompatActivity {
         }*/
 
 
-      //  Toast.makeText(ResponseData.this, "ID Is"+IDvalue, Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(ResponseData.this, "ID Is"+IDvalue, Toast.LENGTH_SHORT).show();
         recyclerView1 = findViewById(R.id.recyclerViewResponse);
         userResponseEntities= new ArrayList<>();
-       // userResponseEntities1= new ArrayList<>();
+        // userResponseEntities1= new ArrayList<>();
 
 
 
@@ -210,7 +210,7 @@ public class ResponseData extends AppCompatActivity {
         // recyclerView1.setLayoutManager(new LinearLayoutManager(this));
         recyclerView1.setHasFixedSize(true);
         adapter = new UserResponseAdapter(this);
-       // recyclerView1.addItemDecoration(new DividerItemDecoration(recyclerView1.getContext()));
+        // recyclerView1.addItemDecoration(new DividerItemDecoration(recyclerView1.getContext()));
 
         adapter.setOnItemClickListener(new UserResponseAdapter.OnItemClickListener() {
             @Override
@@ -231,7 +231,7 @@ public class ResponseData extends AppCompatActivity {
         });
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView1.getContext(), layoutManager.getOrientation());
-               // layoutManager.getOrientation());
+        // layoutManager.getOrientation());
         recyclerView1.addItemDecoration(dividerItemDecoration);
 
         recyclerView1.setAdapter(adapter);
@@ -244,8 +244,8 @@ public class ResponseData extends AppCompatActivity {
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //    Toast.makeText(ResponseData.this, "Coming Soon", Toast.LENGTH_SHORT).show();
-              //  sendAnswersToServer();
+                //    Toast.makeText(ResponseData.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+                //  sendAnswersToServer();
 
                 sendAnswersToServer1();
 
@@ -275,7 +275,7 @@ public class ResponseData extends AppCompatActivity {
             int questionId =  userResponseEntity.getQuestionId();
             String answer = userResponseEntity.getOption();
             long ccid = userResponseEntity.getCccid();
-            int answeiD =userResponseEntity.getAnswerId();
+            String answeiD =userResponseEntity.getAnswerId();
             String uniq = userResponseEntity.getUniqueIdentifier();
             String quetion = userResponseEntity.getQuetion_A();
             int session = userResponseEntity.getSessionid();
@@ -286,7 +286,7 @@ public class ResponseData extends AppCompatActivity {
             boolean isRepeatable =userResponseEntity.isRepeatable();
 
             // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-           // UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+            // UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
             UserResponseEntity userResponseEntity1 =new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
 
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
@@ -308,7 +308,7 @@ public class ResponseData extends AppCompatActivity {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(ResponseData.this);
         builder1.setIcon(R.drawable.logo);
         builder1.setTitle("No Responses for This Questionnaire");
-       // builder1.setMessage( zz);
+        // builder1.setMessage( zz);
         builder1.setCancelable(false);
 
         builder1.setPositiveButton(
@@ -508,104 +508,104 @@ public class ResponseData extends AppCompatActivity {
     }
     // submit data
 
-        public  void sendAnswersToServer() {
-            String auth_token = loggedInUser.getAuth_token();
-            try {
-              JSONArray responsesArray = new JSONArray();
+    public  void sendAnswersToServer() {
+        String auth_token = loggedInUser.getAuth_token();
+        try {
+            JSONArray responsesArray = new JSONArray();
 
-                // Iterate over the list of user responses and prepare JSON objects
+            // Iterate over the list of user responses and prepare JSON objects
 
-                for (UserResponseEntity userResponse : userResponses) {
-                    quer_id = userResponse.getQuestionnaireId();
+            for (UserResponseEntity userResponse : userResponses) {
+                quer_id = userResponse.getQuestionnaireId();
 
-                    JSONObject responseObj = new JSONObject();
-                    responseObj.put("ccc_number", "12345"); // Example field, replace with actual field names
-                    responseObj.put("first_name", "victor");
-                    responseObj.put("questionnaire_participant_id", 1);
-                    responseObj.put("informed_consent", "True");
-                    responseObj.put("privacy_policy", "True");
-                    responseObj.put("interviewer_statement", "True");
+                JSONObject responseObj = new JSONObject();
+                responseObj.put("ccc_number", "12345"); // Example field, replace with actual field names
+                responseObj.put("first_name", "victor");
+                responseObj.put("questionnaire_participant_id", 1);
+                responseObj.put("informed_consent", "True");
+                responseObj.put("privacy_policy", "True");
+                responseObj.put("interviewer_statement", "True");
 
-                    JSONArray questionAnswersArray = new JSONArray();
+                JSONArray questionAnswersArray = new JSONArray();
 
-                    responseObj.put("question_answers", questionAnswersArray);
-         //           responseObj.put("question_answers", questionAnswersArray);
-                    responsesArray.put(responseObj);
-                }
+                responseObj.put("question_answers", questionAnswersArray);
+                //           responseObj.put("question_answers", questionAnswersArray);
+                responsesArray.put(responseObj);
+            }
 
-                // Create the main JSON object with the questionnaire ID and responses array
-                JSONObject requestBody = new JSONObject();
-                requestBody.put("questionnaire_id",  quer_id); // Assuming all responses belong to the same questionnaire
-                requestBody.put("responses", responsesArray);
+            // Create the main JSON object with the questionnaire ID and responses array
+            JSONObject requestBody = new JSONObject();
+            requestBody.put("questionnaire_id",  quer_id); // Assuming all responses belong to the same questionnaire
+            requestBody.put("responses", responsesArray);
 
-                Log.d("SENT DATA", requestBody.toString());
-                Log.d("TOKEN", auth_token);
+            Log.d("SENT DATA", requestBody.toString());
+            Log.d("TOKEN", auth_token);
 
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization","Token "+ auth_token);
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Authorization","Token "+ auth_token);
 
-                // Send the JSON object to the server using Volley
-                RequestQueue queue = Volley.newRequestQueue(ResponseData.this);
-               String URL ="https://psurveyapitest.kenyahmis.org/api/questions/answers/all/";
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, requestBody,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
+            // Send the JSON object to the server using Volley
+            RequestQueue queue = Volley.newRequestQueue(ResponseData.this);
+            String URL ="https://psurveyapitest.kenyahmis.org/api/questions/answers/all/";
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, requestBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
 
-                                // Handle response from the server
-                                try {
-                                    boolean success = response.getBoolean("success");
-                                    if (success) {
-                                        // Display success message
-                                        String message = response.getString("Message");
-                                        Toast.makeText(ResponseData.this, message, Toast.LENGTH_SHORT).show();
-                                        // TODO: Display the success message
-                                    } else {
-                                        // Handle unsuccessful response
-                                        // TODO: Handle the error case
-                                        Toast.makeText(ResponseData.this, "Not successful", Toast.LENGTH_SHORT).show();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                            // Handle response from the server
+                            try {
+                                boolean success = response.getBoolean("success");
+                                if (success) {
+                                    // Display success message
+                                    String message = response.getString("Message");
+                                    Toast.makeText(ResponseData.this, message, Toast.LENGTH_SHORT).show();
+                                    // TODO: Display the success message
+                                } else {
+                                    // Handle unsuccessful response
+                                    // TODO: Handle the error case
+                                    Toast.makeText(ResponseData.this, "Not successful", Toast.LENGTH_SHORT).show();
                                 }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
+                        }
 
-                           // }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle error response
-                        if (error instanceof ServerError && error.networkResponse != null) {
-                            int statusCode = error.networkResponse.statusCode;
-                            if (statusCode == 500) {
-                                // Handle 500 error
-                                // Display an error message to the user or log the error
-                                Toast.makeText(ResponseData.this, "Server Error with code"+" "+statusCode+ error.getMessage(), Toast.LENGTH_SHORT).show();
-                            } else {
-                                // Handle other types of errors
-                                // Display an error message or retry the request
-                            }
+                        // }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Handle error response
+                    if (error instanceof ServerError && error.networkResponse != null) {
+                        int statusCode = error.networkResponse.statusCode;
+                        if (statusCode == 500) {
+                            // Handle 500 error
+                            // Display an error message to the user or log the error
+                            Toast.makeText(ResponseData.this, "Server Error with code"+" "+statusCode+ error.getMessage(), Toast.LENGTH_SHORT).show();
                         } else {
                             // Handle other types of errors
                             // Display an error message or retry the request
                         }
-                        //Log.d("ERROR", error.getLocalizedMessage());
-
-                        // Handle error
+                    } else {
+                        // Handle other types of errors
+                        // Display an error message or retry the request
                     }
-                }){
-                    @Override
-                    public Map<String, String> getHeaders() {
-                        return headers;
-                    }
-                };
-                queue.add(jsonObjectRequest);
+                    //Log.d("ERROR", error.getLocalizedMessage());
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-       // }
-}
+                    // Handle error
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() {
+                    return headers;
+                }
+            };
+            queue.add(jsonObjectRequest);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // }
+    }
     public void sendAnswersToServer1() {
 
 
@@ -616,7 +616,7 @@ public class ResponseData extends AppCompatActivity {
             // Create the main JSON object with questionnaire_id and responses array
             JSONObject requestBody = new JSONObject();
 
-          //  requestBody.put("questionnaire_id", 109); // Assuming the questionnaire_id is fixed
+            //  requestBody.put("questionnaire_id", 109); // Assuming the questionnaire_id is fixed
 
             JSONArray responsesArray = new JSONArray();
 
@@ -725,6 +725,8 @@ public class ResponseData extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
 
 
 }

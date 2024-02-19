@@ -25,7 +25,7 @@ public class UserResponseEntity  {
     private int Sessionid;
     private int questionnaireId;
     private int questionId;
-    private int answerId;
+    private String answerId;
     private  String option;
     private  String Quetion_A;
     private String uniqueIdentifier;
@@ -42,7 +42,7 @@ public class UserResponseEntity  {
     }
 
 
-    public UserResponseEntity(int Sessionid,long cccid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable,  int answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
+    public UserResponseEntity(int Sessionid,long cccid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable,  String answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
 
         this.questionnaireId = questionnaireId;
         this.uniqueIdentifier =uniqueIdentifier;
@@ -97,11 +97,11 @@ public class UserResponseEntity  {
         this.questionId = questionId;
     }
 
-    public int getAnswerId() {
+    public String getAnswerId() {
         return answerId;
     }
 
-    public void setAnswerId(int answerId) {
+    public void setAnswerId(String answerId) {
         this.answerId = answerId;
     }
 

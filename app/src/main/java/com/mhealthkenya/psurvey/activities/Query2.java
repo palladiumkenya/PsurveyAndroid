@@ -53,6 +53,7 @@ import com.mhealthkenya.psurvey.interfaces.AnswerDao;
 import com.mhealthkenya.psurvey.interfaces.QuestionDao;
 import com.mhealthkenya.psurvey.interfaces.QuestionnaireDao;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
+import com.mhealthkenya.psurvey.models.AvailableSurveys;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
 import com.mhealthkenya.psurvey.models.SessionOffline;
@@ -246,7 +247,16 @@ public class Query2 extends AppCompatActivity {
 
                 questionnaireEntities.add(questionnaireEntity);
                 questionnairesAdapterOffline.setUser(questionnaireEntities);
+
+
+
             }
+
+
+
+
+
+
         }
     }
 

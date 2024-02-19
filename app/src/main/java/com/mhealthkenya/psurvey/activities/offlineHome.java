@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -50,6 +51,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.activities.auth.LoginActivity;
+import com.mhealthkenya.psurvey.adapters.QuestionnairesAdapterOffline;
 import com.mhealthkenya.psurvey.adapters.activeSurveyAdapter;
 import com.mhealthkenya.psurvey.depedancies.Constants;
 import com.mhealthkenya.psurvey.interfaces.CurrentUserCallback;
@@ -57,6 +59,7 @@ import com.mhealthkenya.psurvey.interfaces.CurrentUserDao;
 import com.mhealthkenya.psurvey.models.ActiveSurveys;
 import com.mhealthkenya.psurvey.models.AnswerEntity;
 import com.mhealthkenya.psurvey.models.Available;
+import com.mhealthkenya.psurvey.models.AvailableSurveys;
 import com.mhealthkenya.psurvey.models.Completed;
 import com.mhealthkenya.psurvey.models.CurrentUser;
 import com.mhealthkenya.psurvey.models.QuestionEntity;
@@ -94,6 +97,7 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
     int questionnaireId;
 
     int active2;
+    int availablesurveys1;
 
 
     public ArrayList<QuestionnaireEntity> questionnaireEntities;
@@ -125,6 +129,7 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
     ProgressDialog progressDialog;
 
     private CurrentUserDao currentUserDao;
+    public QuestionnairesAdapterOffline questionnairesAdapterOffline;
 
 
     @Override
@@ -138,6 +143,7 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
         getSupportActionBar().setTitle("pSurvey");
         allQuestionDatabase = AllQuestionDatabase.getInstance(this);
         currentUserDao = allQuestionDatabase.currentUserDao();
+        questionnairesAdapterOffline = new QuestionnairesAdapterOffline(this);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -193,25 +199,7 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
         }else{
             progressDialog.dismiss();
 
-
-            try {
-
-                List<Available> _url = Available.findWithQuery(Available.class, "SELECT *from Available ORDER BY id DESC LIMIT 1");
-                if (_url.size() == 1) {
-                    for (int x = 0; x < _url.size(); x++) {
-                        active2 = _url.get(x).getAvailable();
-
-                        Log.d("Active SURVEYS", String.valueOf(active2));
-
-                        //   Select.from(Completed.class).orderBy("ID DESC").first();
-
-
-                    }
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            tv_active_surveys.setText(String.valueOf(active2));
+            new RetrieveQuestionnaireTask(allQuestionDatabase, questionnaireEntities, questionnairesAdapterOffline).execute();
 
         }
 
@@ -252,6 +240,8 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
             e.printStackTrace();
         }
         tv_completed_surveys1.setText(String.valueOf(countS));
+
+
 
     }
 
@@ -398,6 +388,13 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
 
                         allQuestionDatabase.questionnaireDao().insert(questionnaireEntity2);
 
+                        Available available1 =new Available(10);
+                        available1.save();
+                       /* AvailableSurveys.deleteAll(AvailableSurveys.class);
+                        AvailableSurveys availableSurveys = new AvailableSurveys(questionnaireEntities.size());
+                        availableSurveys.save();*/
+
+
                         //questions
                         JSONArray jsonArray = jsonObject.getJSONArray("questions");
 
@@ -468,10 +465,15 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
                     }
                 }
                 //   progressBar.setVisibility(View.GONE);
-                tv_active_surveys.setText(String.valueOf(questionnaireEntities.size()));
+               tv_active_surveys.setText(String.valueOf(questionnaireEntities.size()));
 
-                Available available1 =new Available(questionnaireEntities.size());
-                available1.save();
+
+
+
+               // Toast.makeText(offlineHome.this, "nOMBERSUrveys"+""+String.valueOf(availablesurveys1), Toast.LENGTH_LONG).show();
+
+                /*Available available1 =new Available(questionnaireEntities.size());
+                available1.save();*/
                 progressDialog.dismiss();
                // Toast.makeText(offlineHome.this, "nOMBERSUrveys"+""+String.valueOf(questionnaireEntities.size()), Toast.LENGTH_LONG).show();
 
@@ -787,4 +789,67 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
 
         return userDetails;
     }
+
+
+
+
+    //retrieve background
+    public class RetrieveQuestionnaireTask extends AsyncTask<Void, Void, List<QuestionnaireEntity>> {
+
+        private AllQuestionDatabase allQuestionDatabase;
+        private List<QuestionnaireEntity> questionnaireEntities;
+        private QuestionnairesAdapterOffline questionnairesAdapterOffline;
+
+        public RetrieveQuestionnaireTask(AllQuestionDatabase allQuestionDatabase, List<QuestionnaireEntity> questionnaireEntities, QuestionnairesAdapterOffline questionnairesAdapterOffline) {
+            this.allQuestionDatabase = allQuestionDatabase;
+            this.questionnaireEntities = questionnaireEntities;
+            this.questionnairesAdapterOffline = questionnairesAdapterOffline;
+        }
+
+        @Override
+        protected List<QuestionnaireEntity> doInBackground(Void... voids) {
+            return allQuestionDatabase.questionnaireDao().getAllQuestionnaires();
+        }
+
+        @Override
+        protected void onPostExecute(List<QuestionnaireEntity> questionnaires) {
+            super.onPostExecute(questionnaires);
+
+            for (QuestionnaireEntity retrievedQuestionnaire : questionnaires) {
+                Log.d("ALl", retrievedQuestionnaire.getName());
+                Log.d("ALl", retrievedQuestionnaire.getDescription());
+
+                int questionnaireId = retrievedQuestionnaire.getId();
+                String questionnaireCreatedAt = retrievedQuestionnaire.getCreatedAt();
+                String questionnaireDescription = retrievedQuestionnaire.getDescription();
+                int questionnaireNumberOfQuestions = retrievedQuestionnaire.getNumberOfQuestions();
+                String questionnaireActiveTill = retrievedQuestionnaire.getActiveTill();
+                String questionnaireTargetApp = retrievedQuestionnaire.getTargetApp();
+
+                String questionnaireName = retrievedQuestionnaire.getName();
+
+                boolean questionnaireIsActive = retrievedQuestionnaire.isActive();
+
+
+                QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId, questionnaireCreatedAt, questionnaireName, questionnaireDescription,  questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
+                // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId, questionnaireCreatedAt,  questionnaireDescription,  questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
+                //QuestionnaireEntity(int id, String createdAt, String name, String description, int numberOfQuestions, String activeTill, String targetApp)
+
+                questionnaireEntities.add(questionnaireEntity);
+                questionnairesAdapterOffline.setUser(questionnaireEntities);
+
+                tv_active_surveys.setText(String.valueOf(questionnaireEntities.size()));
+
+
+
+            }
+
+
+
+
+
+
+        }
+    }
+
 }

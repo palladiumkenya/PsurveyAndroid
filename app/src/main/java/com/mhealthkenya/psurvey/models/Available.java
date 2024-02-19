@@ -1,7 +1,10 @@
 package com.mhealthkenya.psurvey.models;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Table;
 
+
+@Table(name = "Available")
 public class Available extends SugarRecord {
 
     public  int available;

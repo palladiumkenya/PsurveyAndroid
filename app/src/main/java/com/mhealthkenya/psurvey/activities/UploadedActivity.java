@@ -72,53 +72,21 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
     JSONArray jsonArray1;
 
     private Context context;
-   /* @BindView(R.id.fabtodays)
-    FloatingActionButton fab;*/
-
 
     RelativeLayout cod;
 
-
     ListView listView;
 
-
-   /* @BindView(R.id.btn_patient_consent)
-    Button btn_patient_consent;
-
-    @BindView(R.id.tv_patient_name)
-    MaterialTextView tv_patient_name;*/
-
-
-
-   //Toolbar toolbar1;
-
-//Context context;
-
     String passedUname,passedPassword;
-    //FloatingActionButton fab;
-   // RelativeLayout cod;
 
      auth loggedInUser;
-    TextView appCounterTxtV;
-     ProgressDialog progress;
-  //  Dialogs dialogs;
-    JSONArray jsonarray;
+    String z;
 
-    long  diffdate;
-    String z, dates, phone;
-
-     List<UploadModel> mymesslist = new ArrayList<>();
     List<UploadModel> upilist= new ArrayList<>();
 
     UploadDataAdapter upiErrAdapter1;
-  //  ListView listView;
-    ArrayAdapter arrayAdapter;
-    EditText input;
-    int appointmentCounter;
-    int MFLcode;
 
-    private Unbinder unbinder;
-    private View root;
+    int MFLcode;
    ActiveSurveys activeSurveys;
 
     View rootView;
@@ -143,40 +111,14 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
         // Initialize views and action bar
         actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
 
-       // Assuming your toolbar is defined in your_fragment_layout
-       /* try {
-            Toolbar toolbar = rootView.findViewById(R.id.toolbar);
-            ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-            Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Today Appointments");
-            ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        } catch (Exception e) {
-            // Handle any exceptions here
-        }*/
-       /* Toolbar toolbar = rootView.findViewById(R.id.toolbar);
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);*/
-
         FloatingActionButton fab=rootView.findViewById(R.id.fabtodays);
 
         cod=rootView.findViewById(R.id.coordinate);
         listView= rootView.findViewById(R.id.messages);
 
 
-
-
-
-
-
-
-
-      /*  Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
         assert getArguments() != null;
         activeSurveys = (ActiveSurveys) getArguments().getSerializable("questionnaire");
-
-       /* Bundle arguments = getIntent().getExtras();
-        if (arguments != null) {
-            activeSurveys = (ActiveSurveys) arguments.getSerializable("questionnaire");
-        }*/
         MFLcode = Stash.getInt(String.valueOf(Constants.MFL_CODE));
 
         Log.d("activeSurveys ", String.valueOf(activeSurveys.getId()));
@@ -215,195 +157,8 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
         });
         return rootView;
     }
-   /* public void initialise(){
-
-        try{
 
 
-
-            passedUname="";
-            passedPassword="";
-            listView = (ListView)findViewById(R.id.messages);
-            cod = findViewById(R.id.coordinate);
-        }
-        catch(Exception e){
-
-        }
-    }*/
-   /* @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main2, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }*/
-
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main2, menu);
-        return true;
-    }*/
- /*  @Override
-   public boolean onOptionsItemSelected(MenuItem item) {
-       int id = item.getItemId();
-
-       switch(id){
-
-
-          /* case android.R.id.home: // Handle back button press
-               if (isSearchOpened) {
-                   // Clear focus from the EditText
-                   if (edtSearch != null) {
-                       edtSearch.clearFocus();
-                   }
-                   // Hide the soft keyboard
-                   InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-                   imm.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
-                   isSearchOpened = false;
-                   return true;
-               }*/
-
-        /*   case R.id.logout:
-               Intent i = new Intent(requireActivity(), LoginActivity.class);
-               i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-               i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-               i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-               startActivity(i);
-               requireActivity().finish();
-               return true;
-       }
-
-       return super.onOptionsItemSelected(item);
-   }*/
-
-
-   /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
-        switch(id){
-            case R.id.action_search2:
-                handleMenuSearch();
-                return true;
-
-            case R.id.logout:
-                Intent i = new Intent(UploadedActivity.this, LoginActivity.class);
-                // Closing all the Activities
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                startActivity(i);
-                //finish();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
-   /* protected void handleMenuSearch(){
-        ActionBar action = getSupportActionBar(); //get the actionbar
-
-        if(isSearchOpened){ //test if the search is open
-
-            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
-            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
-
-            //hides the keyboard
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(edtSeach.getWindowToken(), 0);
-
-            //add the search icon in the action bar
-//            mSearchAction.setIcon(getResources().getDrawable(R.mipmap.search));
-
-            isSearchOpened = false;
-        } else { //open the search entry
-
-            action.setDisplayShowCustomEnabled(true); //enable it to display a
-            // custom view in the action bar.
-            action.setCustomView(R.layout.search_bar);//add the custom view
-            action.setDisplayShowTitleEnabled(false); //hide the title
-
-            edtSeach = (EditText)action.getCustomView().findViewById(R.id.edtSearch); //the text editor
-
-            edtSeach.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    doSearching(s.toString());
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    //  upiErrAdapter1.notifyDataSetChanged();
-
-                    // int x = listView.getCount();
-                    //textView1.setText("Total appointments"+ " "+ String.valueOf(x));
-
-                }
-            });
-
-            edtSeach.requestFocus();
-
-            //open the keyboard focused in the edtSearch
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(edtSeach, InputMethodManager.SHOW_IMPLICIT);
-
-
-
-            //add the close icon
-//            mSearchAction.setIcon(getResources().getDrawable(R.mipmap.cancel));
-
-            isSearchOpened = true;
-        }
-    }*/
-
-    protected void handleMenuSearch() {
-        if (isSearchOpened) {
-            actionBar.setDisplayShowCustomEnabled(false);
-            actionBar.setDisplayShowTitleEnabled(true);
-
-            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(edtSearch.getWindowToken(), 0);
-
-            isSearchOpened = false;
-        } else {
-            actionBar.setDisplayShowCustomEnabled(true);
-            actionBar.setCustomView(R.layout.search_bar);
-            actionBar.setDisplayShowTitleEnabled(false);
-
-            edtSearch = actionBar.getCustomView().findViewById(R.id.edtSearch);
-
-            edtSearch.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    doSearching(s.toString());
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {}
-            });
-
-            edtSearch.requestFocus();
-
-            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(edtSearch, InputMethodManager.SHOW_IMPLICIT);
-
-            isSearchOpened = true;
-        }
-    }
 
 
     public void doSearching(CharSequence s){
@@ -411,11 +166,7 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
         try {
 
             upiErrAdapter1.getFilter().filter(s.toString());
-            // upiErrAdapter1.notifyDataSetChanged();
 
-            //Toast.makeText(getApplicationContext(), "searching appointments"+s, Toast.LENGTH_SHORT).show();
-            // myadapt.getFilter().filter(s.toString());
-            //myadapt.filter.performFiltering(s.toString());
         }
         catch(Exception e){
 
@@ -519,19 +270,6 @@ public class UploadedActivity extends Fragment implements UploadDataAdapter.OnIt
        // bundle.putSerializable("questionnaire", position);
         Navigation.findNavController(rootView).navigate(R.id.lastConsent2, bundle);
 
-
-       /* Bundle bundle = new Bundle();
-       // bundle.putString("CCCNUMBER", position);
- //       bundle.putSerializable("questionnaire1",  String.valueOf(activeSurveys.getId()));
-       // set Fragmentclass Arguments
-      LastConsent fragobj = new LastConsent();
-     // Test fragobj = new Test();
- //       fragobj.setArguments(bundle);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.testid, fragobj); // Assuming R.id.fragment_container is the ID of your fragment container in the layout
-       // transaction.addToBackStack(null); // If you want to add the transaction to the back stack
-        transaction.commit();*/
 
     }
 }

@@ -157,20 +157,7 @@ public class InformedConsentFragment extends Fragment {
 
         assert getArguments() != null;
         activeSurveys = (ActiveSurveys) getArguments().getSerializable("questionnaire");
-       // String ccc_no= (String) getArguments().getSerializable("ccc_no");
-        //String f_name= (String) getArguments().getSerializable("f_name");
-        // questionnaire_participant_id =(int) getArguments().getSerializable("questionnaire_participant_id_");
 
-        //String description = (String) getArguments().getSerializable("description");
-        //String name = (String) getArguments().getSerializable("name");
-       //boolean privacy_policy = (boolean) getArguments().getSerializable("privacy_policy");
-       //boolean informed_consent = (boolean) getArguments().getSerializable("informed_consent");
-       //boolean interviewer_statement = (boolean) getArguments().getSerializable("interviewer_statement");
-
-
-        //tv_patient_name.setText("Name: "+f_name);
-        //tv_patient_number.setText("CCC Number: " + ccc_no);
-        //patient_id.setText("Patient id: " + questionnaire_participant_id);
         tv_survey_id.setText("Questioonaire ID: "+String.valueOf(activeSurveys.getId()));
         getparticipant();
 
@@ -229,18 +216,7 @@ public class InformedConsentFragment extends Fragment {
         btn_patient_consent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*if (dataID==1 && TextUtils.isEmpty(etxt_ccc_no.getText().toString())){
-                    Snackbar.make(root.findViewById(R.id.frag_patient_consent),"Enter Patient's CCC Number", Snackbar.LENGTH_SHORT).show();
-                }
-                else if (dataID==1 && TextUtils.isEmpty(etxt_first_name.getText().toString())){
-                    Snackbar.make(root.findViewById(R.id.frag_patient_consent), "Enter Patient's  First Name", Snackbar.LENGTH_LONG).show();
-                }
 
-
-                else if (dataID!=1 &&dataID!=2){
-                    Snackbar.make(root.findViewById(R.id.frag_patient_consent), "Invalid", Snackbar.LENGTH_LONG).show();
-
-                }*/
                 if (dataID!=1 || dataID!=2){
                     Snackbar.make(root.findViewById(R.id.frag_patient_consent), "Invalid", Snackbar.LENGTH_LONG).show();
 

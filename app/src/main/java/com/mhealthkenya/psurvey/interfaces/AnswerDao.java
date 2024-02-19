@@ -50,4 +50,15 @@ public interface AnswerDao {
     @Query("SELECT * FROM AnswerEntity WHERE questionId = :questionId")
     AnswerEntity getAnswersOrderedByAnswerId(int  questionId);
 
+
+
+    @Query("SELECT * FROM AnswerEntity WHERE questionId = :questionId")
+    List<AnswerEntity> getAnswersByQuestionId(int questionId);
+
+
+
+    @Query("SELECT AnswerEntity.id FROM AnswerEntity INNER JOIN QuestionEntity ON AnswerEntity.questionId = QuestionEntity.id WHERE QuestionEntity.question = :question")
+    int getAnswerIdForQuestion(String question);
+
+
 }

@@ -57,6 +57,7 @@ import com.mhealthkenya.psurvey.models.SessionID;
 import com.mhealthkenya.psurvey.models.SessionOffline;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.UserResponseEntity;
+import com.mhealthkenya.psurvey.models.UserResponseEntity2;
 import com.mhealthkenya.psurvey.models.auth;
 
 import org.json.JSONArray;
@@ -96,6 +97,11 @@ public class ResponseData extends AppCompatActivity {
 
 
     List<UserResponseEntity> userResponses;
+    List<UserResponseEntity> userResponsesB;
+
+    List<UserResponseEntity2> userResponsesC;
+
+    UserResponseEntity userResponse1;
 
     List<SessionOffline> sessionOfflines;
     @Override
@@ -124,10 +130,14 @@ public class ResponseData extends AppCompatActivity {
         // Initialize your RecyclerView
 
         loggedInUser = (auth) Stash.getObject(Constants.AUTH_TOKEN, auth.class);
+  //      userResponsesB = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
 
 
 
         allQuestionDatabase = AllQuestionDatabase.getInstance(this);
+        userResponsesB = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
+       // userResponsesC = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier2(SesssionValue);
+
         //userResponseEntities =allQuestionDatabase.userResponseDao().getUserResponsesForQuestionnaire()
 
      //    Intent mIntent = getIntent();
@@ -165,6 +175,7 @@ public class ResponseData extends AppCompatActivity {
         }catch (Exception e){
             Log.d("SesssionValue", e.getMessage());
         }
+
 
 
    /*     try {
@@ -234,7 +245,9 @@ public class ResponseData extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             //    Toast.makeText(ResponseData.this, "Coming Soon", Toast.LENGTH_SHORT).show();
-                sendAnswersToServer();
+              //  sendAnswersToServer();
+
+                sendAnswersToServer1();
 
             }
         });
@@ -246,8 +259,8 @@ public class ResponseData extends AppCompatActivity {
 
     public void getResponses2(){
         userResponses = allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier(SesssionValue);
+        userResponsesC =allQuestionDatabase.userResponseDao().getUserResponsesForuniqueIdentifier2(SesssionValue);
         // userResponseEntities1.add(userResponses);
-        Log.d("RESPONSE SIZE", String.valueOf(userResponses.size()));
 
         //try
 
@@ -261,6 +274,7 @@ public class ResponseData extends AppCompatActivity {
             int questionnaireId = userResponseEntity.getQuestionnaireId();
             int questionId =  userResponseEntity.getQuestionId();
             String answer = userResponseEntity.getOption();
+            long ccid = userResponseEntity.getCccid();
             int answeiD =userResponseEntity.getAnswerId();
             String uniq = userResponseEntity.getUniqueIdentifier();
             String quetion = userResponseEntity.getQuetion_A();
@@ -272,7 +286,9 @@ public class ResponseData extends AppCompatActivity {
             boolean isRepeatable =userResponseEntity.isRepeatable();
 
             // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
-            UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+           // UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+            UserResponseEntity userResponseEntity1 =new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
             userResponseEntities.add(userResponseEntity1);
 
@@ -498,6 +514,7 @@ public class ResponseData extends AppCompatActivity {
               JSONArray responsesArray = new JSONArray();
 
                 // Iterate over the list of user responses and prepare JSON objects
+
                 for (UserResponseEntity userResponse : userResponses) {
                     quer_id = userResponse.getQuestionnaireId();
 
@@ -511,14 +528,6 @@ public class ResponseData extends AppCompatActivity {
 
                     JSONArray questionAnswersArray = new JSONArray();
 
-                    for (UserResponseEntity questionAnswer : userResponses) {
-                        JSONObject questionAnswerObj = new JSONObject();
-                       // questionAnswerObj.put("question", questionAnswer.getSessionid());
-                        questionAnswerObj.put("question", questionAnswer.getQuestionId());
-                        questionAnswerObj.put("answer", questionAnswer.getAnswerId());
-                        questionAnswerObj.put("open_text", questionAnswer.getOption());
-                        questionAnswersArray.put(questionAnswerObj);
-                    }
                     responseObj.put("question_answers", questionAnswersArray);
          //           responseObj.put("question_answers", questionAnswersArray);
                     responsesArray.put(responseObj);
@@ -596,4 +605,126 @@ public class ResponseData extends AppCompatActivity {
                 e.printStackTrace();
             }
        // }
-}}
+}
+    public void sendAnswersToServer1() {
+
+
+        String auth_token = loggedInUser.getAuth_token();
+        try {
+
+            //put here
+            // Create the main JSON object with questionnaire_id and responses array
+            JSONObject requestBody = new JSONObject();
+
+          //  requestBody.put("questionnaire_id", 109); // Assuming the questionnaire_id is fixed
+
+            JSONArray responsesArray = new JSONArray();
+
+            // Iterate through each UserResponseEntity object
+            for (UserResponseEntity2 userResponse : userResponsesC) {
+                JSONObject responseObj = new JSONObject();
+
+                // Set common fields for each response
+                responseObj.put("ccc_number", userResponse.getCccNumber());
+                responseObj.put("first_name", userResponse.getFirstName());
+                responseObj.put("questionnaire_participant_id", 1);
+                responseObj.put("informed_consent", userResponse.isInformedConsent());
+                responseObj.put("privacy_policy", userResponse.isPrivacyPolicy());
+                responseObj.put("interviewer_statement", userResponse.isInterviewerStatement());
+
+                JSONArray questionAnswersArray = new JSONArray();
+
+                // Iterate through each question answer in the UserResponseEntity
+                for (UserResponseEntity questionAnswer : userResponses) {
+                    quer_id = questionAnswer.getQuestionnaireId();
+                    JSONObject questionAnswerObj = new JSONObject();
+                    questionAnswerObj.put("question", questionAnswer.getQuestionId());
+                    questionAnswerObj.put("answer", questionAnswer.getAnswerId());
+                    questionAnswerObj.put("open_text", questionAnswer.getOption());
+                    questionAnswersArray.put(questionAnswerObj);
+
+                }
+
+                // Add the question_answers array to the response object
+                responseObj.put("question_answers", questionAnswersArray);
+
+
+                // Add the response object to the responses array
+                responsesArray.put(responseObj);
+            }
+
+            // Add the responses array to the main request body object
+            requestBody.put("questionnaire_id", quer_id);
+            requestBody.put("responses", responsesArray);
+
+
+
+            Log.d("SENT DATA", requestBody.toString());
+            Log.d("TOKEN", auth_token);
+
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Authorization","Token "+ auth_token);
+
+            // Send the JSON object to the server using Volley
+            RequestQueue queue = Volley.newRequestQueue(ResponseData.this);
+
+            String URL ="https://psurveyapitest.kenyahmis.org/api/questions/answers/all/";
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, requestBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // Handle response from the server
+
+                            try {
+                                boolean success = response.getBoolean("success");
+                                if (success) {
+                                    // Display success message
+                                    String message = response.getString("Message");
+                                    Toast.makeText(ResponseData.this, message, Toast.LENGTH_SHORT).show();
+                                    // TODO: Display the success message
+                                } else {
+                                    // Handle unsuccessful response
+                                    // TODO: Handle the error case
+                                    Toast.makeText(ResponseData.this, "Not successful", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error instanceof ServerError && error.networkResponse != null) {
+                        int statusCode = error.networkResponse.statusCode;
+                        if (statusCode == 500) {
+                            // Handle 500 error
+                            // Display an error message to the user or log the error
+                            Toast.makeText(ResponseData.this, "Server Error with code"+" "+statusCode+ error.getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Handle other types of errors
+                            // Display an error message or retry the request
+                        }
+                    } else {
+                        // Handle other types of errors
+                        // Display an error message or retry the request
+                    }
+                    //Log.d("ERROR", error.getLocalizedMessage());
+
+                    // Handle error
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() {
+                    return headers;
+                }
+            };
+            queue.add(jsonObjectRequest);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+}

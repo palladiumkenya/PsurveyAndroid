@@ -1,5 +1,7 @@
 package com.mhealthkenya.psurvey.utils;
 
+import com.mhealthkenya.psurvey.BuildConfig;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
@@ -10,7 +12,7 @@ import java.security.Key;
  */
 public class PasswordHasher {
     private static final String ALGORITHM = "AES";
-    private static final String SECRET_KEY = "somesecretkeyverycomple1";
+    private static final String SECRET_KEY = BuildConfig.SECRET_KEY;
 
     /**
      * Encrypts a password using AES encryption.

@@ -47,6 +47,7 @@ import com.mhealthkenya.psurvey.interfaces.UserCredentialsDao;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.UserCredentials;
 import com.mhealthkenya.psurvey.models.auth;
+import com.mhealthkenya.psurvey.service.LoginService;
 import com.mhealthkenya.psurvey.utils.PasswordHasher;
 
 import org.json.JSONException;
@@ -289,7 +290,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     private void saveUserCredentialsLocally(String phoneNumber, String password) {
-        UserCredentials userCredentials = new UserCredentials(phoneNumber, PasswordHasher.hashPassword(password));
+        UserCredentials userCredentials = new UserCredentials(phoneNumber, PasswordHasher.encryptPassword(password));
         userCredentialsDao.insert(userCredentials);
         Log.i("-->Save User", "Saving User");
     }
@@ -313,6 +314,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         } else {
             attemptOfflineLogin(phoneNumber, password);
+            startLoginService();
             Log.i("-->Login Offline", "Offline Login");
         }
     }
@@ -320,7 +322,7 @@ public class LoginActivity extends AppCompatActivity {
     private void attemptOfflineLogin(String phoneNumber, String password) {
         UserCredentials storedCredentials = getUserCredentialsLocally();
         if (storedCredentials != null && phoneNumber.equals(storedCredentials.getPhoneNumber())
-                && PasswordHasher.hashPassword(password).equals(storedCredentials.getPassword())) {
+                && password.equals(PasswordHasher.decryptPassword(storedCredentials.getPassword()))) {
             // If stored credentials match the input, simulate successful login
             successfulLogin();
         } else {
@@ -334,5 +336,12 @@ public class LoginActivity extends AppCompatActivity {
         mint.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mint);
         Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void startLoginService() {
+        Intent serviceIntent = new Intent(this, LoginService.class);
+//        serviceIntent.putExtra("phoneNumber", phoneNumber);
+//        serviceIntent.putExtra("password", password);
+        startService(serviceIntent);
     }
 }

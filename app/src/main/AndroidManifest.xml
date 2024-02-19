@@ -99,6 +99,8 @@
             android:name=".activities.MainActivity"
             android:label="@string/menu_home"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".service.LoginService" />
     </application>
 
 </manifest>

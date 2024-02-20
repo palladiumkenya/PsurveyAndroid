@@ -248,12 +248,43 @@
                         android:background="@color/grey_5" />
 
                     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                        android:id="@+id/facility_Spinner"
+                        android:id="@+id/county_Spinner_s"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/spacing_xxlarge"
+                        android:layout_height="@dimen/spacing_xmlarge"
                         android:minHeight="@dimen/spacing_xmlarge"
                         android:paddingLeft="@dimen/spacing_large"
                         android:paddingRight="@dimen/spacing_large"
+                        app:hintText="Select County"
+                        android:drawSelectorOnTop="true" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/grey_5" />
+
+                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                        android:id="@+id/sub_county_spinner_s"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_xmlarge"
+                        android:minHeight="@dimen/spacing_xmlarge"
+                        android:paddingLeft="@dimen/spacing_large"
+                        android:paddingRight="@dimen/spacing_large"
+                        app:hintText="Select Sub County"
+                        android:drawSelectorOnTop="true" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/grey_5" />
+
+                    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                        android:id="@+id/facility_Spinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/spacing_xmlarge"
+                        android:minHeight="@dimen/spacing_xmlarge"
+                        android:paddingLeft="@dimen/spacing_large"
+                        android:paddingRight="@dimen/spacing_large"
+                        app:hintText="Select Facility"
                         android:drawSelectorOnTop="true" />
 
                     <View

@@ -27,6 +27,7 @@ import com.mhealthkenya.psurvey.depedancies.Constants;
 import com.mhealthkenya.psurvey.models.Designation;
 import com.mhealthkenya.psurvey.models.Facility;
 import com.mhealthkenya.psurvey.models.UrlTable;
+import com.mhealthkenya.psurvey.utils.FacilitySpinnerUtils;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONArray;
@@ -52,8 +53,8 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText msisdn;
     private EditText password;
     private EditText re_password;
-    private SearchableSpinner designationSpinner;
-    private SearchableSpinner facilitySpinner;
+    private SearchableSpinner designationSpinner, facilitySpinner, countySpinner, subCountySpinner;
+    ArrayAdapter<String> countyAdapter, subCountyAdapter, facilityAdapter;
 
     private int facilityID = 0;
     private int designationID = 0;
@@ -107,13 +108,29 @@ public class SignUpActivity extends AppCompatActivity {
         re_password = (EditText) findViewById(R.id.edtxt_repassword);
         facilitySpinner = (SearchableSpinner) findViewById(R.id.facility_Spinner);
         designationSpinner = (SearchableSpinner) findViewById(R.id.designation_Spinner);
+        countySpinner = (SearchableSpinner) findViewById(R.id.county_Spinner_s);
+        subCountySpinner = (SearchableSpinner) findViewById(R.id.sub_county_spinner_s);
 
         btn_signup = findViewById(R.id.btn_sign_up);
         sign_in = (TextView) findViewById(R.id.tv_signup);
 
+        countyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+        subCountyAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+        facilityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+
+
         facilitySpinner.setTitle("Select the facility ");
         facilitySpinner.setPositiveButton("OK");
-        getFacilities();
+        countySpinner.setTitle("Select the county ");
+        countySpinner.setPositiveButton("OK");
+        subCountySpinner.setTitle("Select the sub county ");
+        subCountySpinner.setPositiveButton("OK");
+
+        countySpinner.setAdapter(countyAdapter);
+        subCountySpinner.setAdapter(subCountyAdapter);
+        facilitySpinner.setAdapter(facilityAdapter);
+
+        setFacilityID();
 
         designationSpinner.setTitle("Select your designation ");
         designationSpinner.setPositiveButton("OK");
@@ -294,6 +311,11 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void setFacilityID(){
+        FacilitySpinnerUtils facilitySpinnerUtils = new FacilitySpinnerUtils();
+        facilityID = facilitySpinnerUtils.setupCountySpinner(countyAdapter,countySpinner,subCountyAdapter,subCountySpinner,facilityAdapter,facilitySpinner,this);
     }
 
     private void getFacilities() {

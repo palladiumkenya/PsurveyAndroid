@@ -7,6 +7,9 @@ public class Facility {
     private String county;
     private String sub_county;
 
+    public Facility() {
+    }
+
     public Facility(int id, String mfl_code, String name, String county, String sub_county) {
         this.id = id;
         this.mfl_code = mfl_code;

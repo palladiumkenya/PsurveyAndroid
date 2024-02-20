@@ -101,6 +101,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".service.LoginService" />
+        <service android:name=".service.intent.FacilityIntentService"/>
     </application>
 
 </manifest>

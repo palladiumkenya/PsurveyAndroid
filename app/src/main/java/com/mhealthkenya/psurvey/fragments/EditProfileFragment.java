@@ -34,6 +34,7 @@ import com.mhealthkenya.psurvey.models.Facility;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.User;
 import com.mhealthkenya.psurvey.models.auth;
+import com.mhealthkenya.psurvey.utils.FacilitySpinnerUtils;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONArray;
@@ -68,6 +69,8 @@ public class EditProfileFragment extends Fragment {
     ArrayList<String> facilitiesList;
     ArrayList<Facility> facilities;
 
+    ArrayAdapter<String> countyAdapter, subCountyAdapter, facilityAdapter ;
+
     ArrayList<String> designationList;
     ArrayList<Designation> designations;
 
@@ -88,6 +91,12 @@ public class EditProfileFragment extends Fragment {
 
     @BindView(R.id.etxt_email)
     TextInputEditText etxt_email;
+
+    @BindView(R.id.county_spinner)
+    SearchableSpinner county_spinner;
+
+    @BindView(R.id.sub_county_spinner)
+    SearchableSpinner sub_county_spinner;
 
     @BindView(R.id.facility_Spinner)
     SearchableSpinner facility_Spinner;
@@ -120,11 +129,21 @@ public class EditProfileFragment extends Fragment {
 
         loggedInUser = (auth) Stash.getObject(Constants.AUTH_TOKEN, auth.class);
 
+        county_spinner.setTitle("Select the County ");
+        county_spinner.setPositiveButton("OK");
+
+        sub_county_spinner.setTitle("Select the Sub County ");
+        sub_county_spinner.setPositiveButton("OK");
+
         facility_Spinner.setTitle("Select the facility ");
         facility_Spinner.setPositiveButton("OK");
 
         designation_Spinner.setTitle("Select your designation ");
         designation_Spinner.setPositiveButton("OK");
+
+        countyAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
+        subCountyAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
+        facilityAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
 
         loadCurrentUser();
         getFacilities();
@@ -224,117 +243,122 @@ public class EditProfileFragment extends Fragment {
 
     }
 
+//    private void getFacilities() {
+//
+//        try{
+//            List<UrlTable> _url =UrlTable.findWithQuery(UrlTable.class, "SELECT *from URL_TABLE ORDER BY id DESC LIMIT 1");
+//            if (_url.size()==1){
+//                for (int x=0; x<_url.size(); x++){
+//                    z=_url.get(x).getBase_url1();
+//                }
+//            }
+//
+//        } catch(Exception e){
+//
+//        }
+//
+//        AndroidNetworking.get(z+Constants.ALL_FACILITIES)
+//                .addHeaders("Content-Type", "application.json")
+//                .addHeaders("Accept", "*/*")
+//                .addHeaders("Accept", "gzip, deflate, br")
+//                .addHeaders("Connection","keep-alive")
+//                .setPriority(Priority.LOW)
+//                .build()
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        // do anything with response
+//                        Log.e(TAG, response.toString());
+//
+//                        try {
+//
+//                            boolean  status = response.has("success") && response.getBoolean("success");
+//                            String  message = response.has("message") ? response.getString("message") : "" ;
+//                            String  errors = response.has("errors") ? response.getString("errors") : "" ;
+//
+//
+//                            facilities = new ArrayList<Facility>();
+//                            facilitiesList = new ArrayList<String>();
+//
+//                            facilities.clear();
+//                            facilitiesList.clear();
+//
+//                            JSONArray jsonArray = response.getJSONArray("data");
+//
+//                            for (int i = 0; i < jsonArray.length(); i++) {
+//                                JSONObject facility = (JSONObject) jsonArray.get(i);
+//
+//                                int id = facility.has("id") ? facility.getInt("id") : 0;
+//                                String mfl_code = facility.has("mfl_code") ? facility.getString("mfl_code") : "";
+//                                String name = facility.has("name") ? facility.getString("name") : "";
+//                                String county = facility.has("county") ? facility.getString("county") : "";
+//                                String sub_county = facility.has("sub_county") ? facility.getString("sub_county") : "";
+//
+//                                Facility newFacility = new Facility(id,mfl_code,name,county,sub_county);
+//
+//                                facilities.add(newFacility);
+//                                facilitiesList.add(newFacility.getName());
+//                            }
+//
+//
+//                            facilities.add(new Facility(0,"Select your facility.","Select your facility.","--select--","--select--"));
+//                            facilitiesList.add("Select your facility.");
+//
+//                            ArrayAdapter<String> aa=new ArrayAdapter<String>(context,
+//                                    android.R.layout.simple_spinner_dropdown_item,
+//                                    facilitiesList){
+//                                @Override
+//                                public int getCount() {
+//                                    return super.getCount(); // you don't display last item. It is used as hint.
+//                                }
+//                            };
+//
+//                            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//
+//                            if (facility_Spinner != null){
+//                                facility_Spinner.setAdapter(aa);
+//                                facility_Spinner.setSelection(facilityID-1);
+//
+//                                facilityID = facilities.get(aa.getCount()-1).getId();
+//
+//                                facility_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                                    @Override
+//                                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+//
+//                                        facilityID = facilities.get(position).getId();
+//
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//                                    }
+//                                });
+//
+//                            }
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//
+//                            Snackbar.make(root.findViewById(R.id.frag_update_user), e.getMessage(), Snackbar.LENGTH_LONG).show();
+//                        }
+//
+//
+//                    }
+//                    @Override
+//                    public void onError(ANError error) {
+//                        // handle error
+//
+//                        Log.e(TAG, String.valueOf(error.getErrorCode()));
+//
+//                    }
+//                });
+//    }
+
     private void getFacilities() {
-
-        try{
-            List<UrlTable> _url =UrlTable.findWithQuery(UrlTable.class, "SELECT *from URL_TABLE ORDER BY id DESC LIMIT 1");
-            if (_url.size()==1){
-                for (int x=0; x<_url.size(); x++){
-                    z=_url.get(x).getBase_url1();
-                }
-            }
-
-        } catch(Exception e){
-
-        }
-
-        AndroidNetworking.get(z+Constants.ALL_FACILITIES)
-                .addHeaders("Content-Type", "application.json")
-                .addHeaders("Accept", "*/*")
-                .addHeaders("Accept", "gzip, deflate, br")
-                .addHeaders("Connection","keep-alive")
-                .setPriority(Priority.LOW)
-                .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // do anything with response
-                        Log.e(TAG, response.toString());
-
-                        try {
-
-                            boolean  status = response.has("success") && response.getBoolean("success");
-                            String  message = response.has("message") ? response.getString("message") : "" ;
-                            String  errors = response.has("errors") ? response.getString("errors") : "" ;
-
-
-                            facilities = new ArrayList<Facility>();
-                            facilitiesList = new ArrayList<String>();
-
-                            facilities.clear();
-                            facilitiesList.clear();
-
-                            JSONArray jsonArray = response.getJSONArray("data");
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject facility = (JSONObject) jsonArray.get(i);
-
-                                int id = facility.has("id") ? facility.getInt("id") : 0;
-                                String mfl_code = facility.has("mfl_code") ? facility.getString("mfl_code") : "";
-                                String name = facility.has("name") ? facility.getString("name") : "";
-                                String county = facility.has("county") ? facility.getString("county") : "";
-                                String sub_county = facility.has("sub_county") ? facility.getString("sub_county") : "";
-
-                                Facility newFacility = new Facility(id,mfl_code,name,county,sub_county);
-
-                                facilities.add(newFacility);
-                                facilitiesList.add(newFacility.getName());
-                            }
-
-
-                            facilities.add(new Facility(0,"Select your facility.","Select your facility.","--select--","--select--"));
-                            facilitiesList.add("Select your facility.");
-
-                            ArrayAdapter<String> aa=new ArrayAdapter<String>(context,
-                                    android.R.layout.simple_spinner_dropdown_item,
-                                    facilitiesList){
-                                @Override
-                                public int getCount() {
-                                    return super.getCount(); // you don't display last item. It is used as hint.
-                                }
-                            };
-
-                            aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-                            if (facility_Spinner != null){
-                                facility_Spinner.setAdapter(aa);
-                                facility_Spinner.setSelection(facilityID-1);
-
-                                facilityID = facilities.get(aa.getCount()-1).getId();
-
-                                facility_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-
-                                        facilityID = facilities.get(position).getId();
-
-
-                                    }
-
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                                    }
-                                });
-
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-                            Snackbar.make(root.findViewById(R.id.frag_update_user), e.getMessage(), Snackbar.LENGTH_LONG).show();
-                        }
-
-
-                    }
-                    @Override
-                    public void onError(ANError error) {
-                        // handle error
-
-                        Log.e(TAG, String.valueOf(error.getErrorCode()));
-
-                    }
-                });
+        FacilitySpinnerUtils facilitySpinnerUtils = new FacilitySpinnerUtils();
+        facilityID = facilitySpinnerUtils.setupCountySpinner(countyAdapter,county_spinner,subCountyAdapter,sub_county_spinner,facilityAdapter,facility_Spinner,context);
     }
 
     private void getDesignation() {

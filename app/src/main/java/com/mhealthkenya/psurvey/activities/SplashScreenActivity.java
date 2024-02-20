@@ -4,9 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.mhealthkenya.psurvey.R;
-import com.mhealthkenya.psurvey.activities.auth.LoginActivity;
+import com.mhealthkenya.psurvey.service.intent.FacilityIntentService;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -14,6 +15,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        Intent intent = new Intent(this, FacilityIntentService.class);
+        startService(intent);
+        Log.i("-->Facility Service", "Start Facility service intent");
 
         new Thread(new Runnable() {
             @Override

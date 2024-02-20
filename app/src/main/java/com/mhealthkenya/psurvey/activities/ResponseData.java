@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -178,24 +181,6 @@ public class ResponseData extends AppCompatActivity {
 
 
 
-   /*     try {
-
-            List<ResponseIntent> savedID = ResponseIntent.findWithQuery(ResponseIntent.class, "SELECT *from RESPONSE_INTENT ORDER BY id DESC LIMIT 1");
-            if (savedID.size()==1){
-                for (int x=0; x<savedID.size(); x++) {
-
-                    IDvalue = savedID.get(x).getID_extra();
-                 //
-                    //   SesssionValue = savedID.get(x).getSession_extra();
-
-                    SesssionValue = savedID.get(x).getUniqueIdentifier_extra();
-
-                }
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }*/
 
 
         //  Toast.makeText(ResponseData.this, "ID Is"+IDvalue, Toast.LENGTH_SHORT).show();
@@ -219,14 +204,6 @@ public class ResponseData extends AppCompatActivity {
 
                 Toast.makeText(ResponseData.this, "Coming Soon", Toast.LENGTH_SHORT).show();
 
-              /*  Intent ii=new Intent(ResponseData.this, QuetionsOffline.class);
-                ii.putExtra("ID",  userResponseEntity.getIdA());
-                ii.putExtra("Quetion",  userResponseEntity.getQuetion_A());
-                ii.putExtra("Answer",  userResponseEntity.getOption());
-              //  ii.putExtra("Answer",  userResponseEntity.getQ);
-
-                startActivity(ii);*/
-
             }
         });
 
@@ -244,10 +221,11 @@ public class ResponseData extends AppCompatActivity {
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //    Toast.makeText(ResponseData.this, "Coming Soon", Toast.LENGTH_SHORT).show();
-                //  sendAnswersToServer();
+               if (isConnected(ResponseData.this)){
 
-                sendAnswersToServer1();
+                sendAnswersToServer1();}else{
+                   Toast.makeText(ResponseData.this, "Please Connect Your device to Internet", Toast.LENGTH_SHORT).show();
+               }
 
             }
         });
@@ -680,7 +658,37 @@ public class ResponseData extends AppCompatActivity {
                                 if (success) {
                                     // Display success message
                                     String message = response.getString("Message");
-                                    Toast.makeText(ResponseData.this, message, Toast.LENGTH_SHORT).show();
+                               //     Toast.makeText(ResponseData.this, message, Toast.LENGTH_SHORT).show();*/
+
+
+                                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ResponseData.this);
+                                    builder1.setIcon(R.drawable.logo);
+                                    builder1.setTitle(message);
+                                    builder1.setMessage(" ");
+                                    builder1.setCancelable(false);
+
+                                    builder1.setPositiveButton(
+                                            "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+
+                                                    Intent intent = new Intent(ResponseData.this,Query2.class);
+                                                    startActivity(intent);
+                                                    finish();
+
+                                                    //dialog.cancel();
+                                                }
+                                            });
+                                    AlertDialog alert11 = builder1.create();
+                                    alert11.show();
+
+
+
+
+
+
+
+
                                     // TODO: Display the success message
                                 } else {
                                     // Handle unsuccessful response
@@ -725,6 +733,24 @@ public class ResponseData extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+
+    private  boolean isConnected(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(connectivityManager.TYPE_WIFI);
+        NetworkInfo mobileInfo =connectivityManager.getNetworkInfo(connectivityManager.TYPE_MOBILE);
+
+        if((wifiInfo !=null && wifiInfo.isConnected())|| (mobileInfo !=null && mobileInfo.isConnected())){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
 
 
 

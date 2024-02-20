@@ -97,6 +97,11 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             view.btnOpen.setText(obj.getOption());
 
 
+           /* if (obj.getQuestionType()==3){
+                view.btnOpen.setText(obj.get);
+            }*/
+
+
             view.editbt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

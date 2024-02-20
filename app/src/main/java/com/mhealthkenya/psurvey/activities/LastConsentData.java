@@ -87,7 +87,7 @@ public class LastConsentData extends AppCompatActivity {
 
 
 
-    String[] basic_needs_met = {"Client", "Non-Client"};
+    String[] basic_needs_met = {"Client"};
     String  basic_needs_met_st_code;
     private String  basic_needs_met_st = "";
 
@@ -253,7 +253,7 @@ public class LastConsentData extends AppCompatActivity {
 
 
 
-                     long generatedId1 =save1(savedquestionnaireId, surveyUniqueID, Objects.requireNonNull(etxt_ccc_no.getText()).toString(), etxt_first_name.getText().toString(), 1, informb, privacyb, stateb);
+                     long generatedId1 =save1(savedquestionnaireId, surveyUniqueID, Objects.requireNonNull(etxt_ccc_no.getText()).toString(), etxt_first_name.getText().toString(), 1, true, true, true);
 
 
 

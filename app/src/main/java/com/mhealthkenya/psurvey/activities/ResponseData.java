@@ -80,6 +80,7 @@ public class ResponseData extends AppCompatActivity {
 
     Button btnsubmit;
     int IDvalue;
+    long ccid;
 
     String SesssionValue;
     AllQuestionDatabase allQuestionDatabase;
@@ -252,11 +253,11 @@ public class ResponseData extends AppCompatActivity {
             int questionnaireId = userResponseEntity.getQuestionnaireId();
             int questionId =  userResponseEntity.getQuestionId();
             String answer = userResponseEntity.getOption();
-            long ccid = userResponseEntity.getCccid();
+            ccid = userResponseEntity.getCccid();
             String answeiD =userResponseEntity.getAnswerId();
             String uniq = userResponseEntity.getUniqueIdentifier();
             String quetion = userResponseEntity.getQuetion_A();
-            int session = userResponseEntity.getSessionid();
+            int sessionId = userResponseEntity.getSessionid();
 
             int questionType= userResponseEntity.getQuestionType();
             boolean isRequired =userResponseEntity.isRequired();
@@ -265,7 +266,7 @@ public class ResponseData extends AppCompatActivity {
 
             // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
-            UserResponseEntity userResponseEntity1 =new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+            UserResponseEntity userResponseEntity1 =new UserResponseEntity(sessionId, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
 
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
             userResponseEntities.add(userResponseEntity1);
@@ -681,6 +682,7 @@ public class ResponseData extends AppCompatActivity {
                                             });
                                     AlertDialog alert11 = builder1.create();
                                     alert11.show();
+                                    deleteResponse(ccid);
 
 
 
@@ -752,7 +754,10 @@ public class ResponseData extends AppCompatActivity {
     }
 
 
-
+    private void deleteResponse(long sessionId){
+        allQuestionDatabase.userResponseDao().deleteUserResponseById(sessionId);
+        Log.i("-->Delete Response", String.valueOf(sessionId));
+    }
 
 
 }

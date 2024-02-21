@@ -69,4 +69,10 @@ public interface UserResponseDao {
     // Add more queries and operations as needed
     @Query("SELECT * FROM question_answers WHERE questionnaireId = :questionnaireId")
     LiveData<List<UserResponseEntity>> getDraftAnswers(int questionnaireId);
+
+    /**
+     * Deletes user response from the database.
+     */
+    @Query("DELETE FROM question_answers WHERE cccid = :cccId")
+    void deleteUserResponseById(long cccId);
 }

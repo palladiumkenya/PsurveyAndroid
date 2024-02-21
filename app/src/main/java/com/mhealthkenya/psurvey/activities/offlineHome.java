@@ -54,6 +54,7 @@ import com.mhealthkenya.psurvey.activities.auth.LoginActivity;
 import com.mhealthkenya.psurvey.adapters.QuestionnairesAdapterOffline;
 import com.mhealthkenya.psurvey.adapters.activeSurveyAdapter;
 import com.mhealthkenya.psurvey.depedancies.Constants;
+import com.mhealthkenya.psurvey.fragments.EditProfileFragment;
 import com.mhealthkenya.psurvey.interfaces.CurrentUserCallback;
 import com.mhealthkenya.psurvey.interfaces.CurrentUserDao;
 import com.mhealthkenya.psurvey.models.ActiveSurveys;
@@ -121,7 +122,7 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
 
     int countS;
 
-    TextView tv_completed_surveys1, tv_active_surveys;
+    TextView tv_completed_surveys1, tv_active_surveys, editProfile;
 
     CardView surveysID1, available;
 
@@ -187,8 +188,13 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
         txt_name= findViewById(R.id.tv_name);
         txt_email= findViewById(R.id.tv_email);
         tv_facility = findViewById(R.id.tv_facility);
+        editProfile = findViewById(R.id.editProfile);
 
-        loggedInUser = (auth) Stash.getObject(Constants.AUTH_TOKEN, auth.class);
+        try {
+            loggedInUser = (auth) Stash.getObject(Constants.AUTH_TOKEN, auth.class);
+        } catch (NullPointerException e){
+            Log.d("-->User Log", e.getMessage());
+        }
 
 
         tv_completed_surveys1 = findViewById(R.id.tv_completed_surveys);
@@ -207,6 +213,14 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
 
         surveysID1 = findViewById(R.id.surveysID);
         available = findViewById(R.id.availableID);
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editIntent = new Intent(offlineHome.this, EditProfileActivity.class);
+                startActivity(editIntent);
+            }
+        });
 
         available.setOnClickListener(new View.OnClickListener() {
             @Override

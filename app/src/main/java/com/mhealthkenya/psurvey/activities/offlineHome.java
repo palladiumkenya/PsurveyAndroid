@@ -200,8 +200,8 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
 
         if (Constants.AUTH_TOKEN == null) {
             // Throw an error or handle the situation appropriately
-           // throw new IllegalStateException("AUTH_TOKEN is null");
-            Toast.makeText(offlineHome.this, "Access Denied", Toast.LENGTH_SHORT).show();
+            throw new IllegalStateException("AUTH_TOKEN is null");
+           // Toast.makeText(offlineHome.this, "Access Denied", Toast.LENGTH_SHORT).show();
         }else{
 
 // Retrieve loggedInUser only if AUTH_TOKEN is not null
@@ -497,8 +497,8 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Log.d("SURVEYSSS", error.getMessage());
-                Toast.makeText(offlineHome.this, "Error occured"+ " "+ error.getMessage(), Toast.LENGTH_LONG).show();
+               // Log.d("SURVEYSSS", error.getMessage());
+                Toast.makeText(offlineHome.this, "Error occured"+ " "+ error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
 
             }
         }){

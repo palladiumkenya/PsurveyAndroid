@@ -227,6 +227,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         try {
                             String auth_token = response.has("auth_token") ? response.getString("auth_token") : "";
+
+
                             auth newUser = new auth(auth_token);
 
                             Stash.put(Constants.AUTH_TOKEN, newUser);
@@ -240,6 +242,8 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.has("auth_token")){
                             saveUserCredentialsLocally(phoneNumber, password);
                             successfulLogin();
+                        }else if(!response.has("auth_token")){
+                            Toast.makeText(LoginActivity.this, "Please Try again later!", Toast.LENGTH_SHORT).show();
                         }
                         else {
                             if (pDialog != null && pDialog.isShowing()) {
@@ -332,6 +336,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void successfulLogin() {
+
         Intent mint = new Intent(LoginActivity.this, offlineHome.class);
         mint.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mint);

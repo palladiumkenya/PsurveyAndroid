@@ -126,7 +126,7 @@ public class SessionList extends AppCompatActivity {
                 for (int x=0; x<_url.size(); x++){
                     IDvalue=_url.get(x).getQuetioonareID();
 
-                    Toast.makeText(SessionList.this, "Your Quetionnaire_ID is" + " " +IDvalue, Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(SessionList.this, "Your Quetionnaire_ID is" + " " +IDvalue, Toast.LENGTH_LONG).show();
                 }
             }
         }catch (Exception e){

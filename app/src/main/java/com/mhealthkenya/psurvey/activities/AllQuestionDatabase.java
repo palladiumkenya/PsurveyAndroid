@@ -25,7 +25,7 @@ import com.mhealthkenya.psurvey.models.UserResponseEntity;
 import com.mhealthkenya.psurvey.models.UserResponseEntity2;
 
 
-@Database(entities = {QuestionnaireEntity.class,QuestionEntity.class, AnswerEntity.class, UserResponseEntity.class, UserResponseEntity2.class, SessionOffline.class, UserCredentials.class, CurrentUser.class}, version =30)
+@Database(entities = {QuestionnaireEntity.class,QuestionEntity.class, AnswerEntity.class, UserResponseEntity.class, UserResponseEntity2.class, SessionOffline.class, UserCredentials.class, CurrentUser.class}, version =31)
 @TypeConverters(Converters.class)
 public abstract class AllQuestionDatabase extends RoomDatabase {
 

@@ -252,6 +252,7 @@ public class ResponseData extends AppCompatActivity {
             int questionnaireId = userResponseEntity.getQuestionnaireId();
             int questionId =  userResponseEntity.getQuestionId();
             String answer = userResponseEntity.getOption();
+            String anwermulti =userResponseEntity.getMulti();
             long ccid = userResponseEntity.getCccid();
             String answeiD =userResponseEntity.getAnswerId();
             String uniq = userResponseEntity.getUniqueIdentifier();
@@ -265,7 +266,7 @@ public class ResponseData extends AppCompatActivity {
 
             // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
-            UserResponseEntity userResponseEntity1 =new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+            UserResponseEntity userResponseEntity1 =new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer, anwermulti,   quetion);
 
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
             userResponseEntities.add(userResponseEntity1);

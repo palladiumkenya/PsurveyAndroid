@@ -35,6 +35,8 @@ public class UserResponseEntity  {
     private String dateValidation;
     private boolean isRepeatable;
 
+    String multi;
+
     //quetionAnswers
 
 
@@ -42,7 +44,7 @@ public class UserResponseEntity  {
     }
 
 
-    public UserResponseEntity(int Sessionid,long cccid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable,  String answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option, String Quetion_A) {
+    public UserResponseEntity(int Sessionid,long cccid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable,  String answerId, String uniqueIdentifier, int questionnaireId, int questionId, String option,  String multi, String Quetion_A) {
 
         this.questionnaireId = questionnaireId;
         this.uniqueIdentifier =uniqueIdentifier;
@@ -58,7 +60,9 @@ public class UserResponseEntity  {
 
         this.isRequired=isRequired;
         this.dateValidation=dateValidation;
-        this.isRepeatable=isRepeatable;
+
+        this.multi=multi;
+
 
 
 
@@ -176,5 +180,13 @@ public class UserResponseEntity  {
     public void setCccid(long cccid) {
         this.cccid = cccid;
         //return this.cccid;
+    }
+
+    public String getMulti() {
+        return multi;
+    }
+
+    public void setMulti(String multi) {
+        this.multi = multi;
     }
 }

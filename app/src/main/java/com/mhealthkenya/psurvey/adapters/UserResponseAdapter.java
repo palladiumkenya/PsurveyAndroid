@@ -94,12 +94,14 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
             view.surveyID.setText(obj.getQuetion_A());
-            view.btnOpen.setText(obj.getOption());
 
 
-           /* if (obj.getQuestionType()==3){
-                view.btnOpen.setText(obj.get);
-            }*/
+
+            if (obj.getQuestionType()==3   || obj.getQuestionType()==2){
+                view.btnOpen.setText(obj.getMulti());
+            }else{
+                view.btnOpen.setText(obj.getOption());
+            }
 
 
             view.editbt.setOnClickListener(new View.OnClickListener() {

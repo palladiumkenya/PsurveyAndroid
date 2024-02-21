@@ -254,6 +254,7 @@ public class ResponseData extends AppCompatActivity {
             int questionId =  userResponseEntity.getQuestionId();
             String answer = userResponseEntity.getOption();
             ccid = userResponseEntity.getCccid();
+            String anwermulti =userResponseEntity.getMulti();
             String answeiD =userResponseEntity.getAnswerId();
             String uniq = userResponseEntity.getUniqueIdentifier();
             String quetion = userResponseEntity.getQuetion_A();
@@ -266,7 +267,11 @@ public class ResponseData extends AppCompatActivity {
 
             // QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity(questionnaireId,questionnaireName, questionnaireDescription, questionnaireCreatedAt, questionnaireNumberOfQuestions, questionnaireActiveTill, questionnaireTargetApp);
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(session, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
-            UserResponseEntity userResponseEntity1 =new UserResponseEntity(sessionId, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+
+//            UserResponseEntity userResponseEntity1 =new UserResponseEntity(sessionId, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer,quetion);
+
+            UserResponseEntity userResponseEntity1 =new UserResponseEntity(sessionId, ccid, questionType, isRequired, dateValidation, isRepeatable, answeiD, uniq, questionnaireId, questionId, answer, anwermulti,   quetion);
+
 
             // UserResponseEntity userResponseEntity1 = new UserResponseEntity(userResponseEntity.getQuestionnaireId(), userResponseEntity.getQuestionId(), userResponseEntity.getOption());
             userResponseEntities.add(userResponseEntity1);

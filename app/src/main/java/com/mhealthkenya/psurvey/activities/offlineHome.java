@@ -150,7 +150,7 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         navigationView = findViewById(R.id.nav_view);

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mhealthkenya.psurvey.R;
+import com.mhealthkenya.psurvey.activities.AllQuestionDatabase;
 import com.mhealthkenya.psurvey.activities.ResponseData;
 import com.mhealthkenya.psurvey.activities.SessionList;
 import com.mhealthkenya.psurvey.depedancies.Tools;
@@ -22,6 +23,7 @@ import com.mhealthkenya.psurvey.models.ActiveSurveys;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
 import com.mhealthkenya.psurvey.models.QuetionnaireID;
 import com.mhealthkenya.psurvey.models.SessionID;
+import com.mhealthkenya.psurvey.models.UniqueIdentifierEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,8 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
 
     public List<QuestionnaireEntity> questionnaireEntities= new ArrayList<>();
     public Context context;
+    AllQuestionDatabase allQuestionDatabase;
+    List<UniqueIdentifierEntity> userResponses;
 
     int   IDvalue;
     public OnItemClickListener onItemClickListener;
@@ -60,11 +64,12 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
 
     public class OriginalViewHolder extends RecyclerView.ViewHolder {
         public TextView surveyTitle;
-        public TextView surveyDescription;
+        public TextView surveyDescription, tv_survey_count;
         public ImageButton bt_expand;
         public ImageButton bt_expand2;
         public View lyt_expand;
         public View lyt_parent;
+
 
 
 
@@ -76,6 +81,8 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
             bt_expand2 = (ImageButton) v.findViewById(R.id.bt_expand0);
             lyt_expand = (View) v.findViewById(R.id.lyt_expand);
             lyt_parent = (View) v.findViewById(R.id.lyt_parent);
+
+            tv_survey_count = (TextView) v.findViewById(R.id.tv_survey_count);
 
             surveyDescription.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -99,6 +106,7 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
         RecyclerView.ViewHolder vh;
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.offline_questionnaire_adapter, parent, false);
         vh = new QuestionnairesAdapterOffline.OriginalViewHolder(v);
+        allQuestionDatabase = AllQuestionDatabase.getInstance(context);
         return vh;
         //return null;
     }
@@ -110,6 +118,10 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
             QuestionnairesAdapterOffline.OriginalViewHolder view = (QuestionnairesAdapterOffline.OriginalViewHolder) holder;
 
             view.surveyTitle.setText(obj.getName());
+            userResponses = allQuestionDatabase.userResponseDao().getSessions(obj.getId());
+            view.tv_survey_count.setText(String.valueOf(userResponses.size()));
+
+
            // view.surveyDescription.setText(obj.getDescription());
             view.surveyDescription.setText(obj.getDescription());
 

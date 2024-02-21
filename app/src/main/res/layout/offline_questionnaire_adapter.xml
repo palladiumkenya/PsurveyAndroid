@@ -45,6 +45,15 @@
                 app:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
+            <TextView
+                android:id="@+id/tv_survey_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="0"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/grey_90" />
+
             <ImageButton
                 android:id="@+id/bt_expand"
                 android:layout_width="?attr/actionBarSize"

@@ -154,6 +154,20 @@
                         <View
                             android:layout_width="0dp"
                             android:layout_height="@dimen/spacing_middle" />
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tv_forgot_pass"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_medium"
+                            android:clickable="true"
+                            android:text="Forgot Password? Click here"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                            android:textColor="@color/grey_500"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/spacing_middle" />
 
 
                         <TextView

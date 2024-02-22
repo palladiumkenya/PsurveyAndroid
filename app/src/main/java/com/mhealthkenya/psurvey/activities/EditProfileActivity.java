@@ -139,11 +139,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        unbinder.unbind();
+//    }
 
     private void loadCurrentUser(){
 

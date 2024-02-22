@@ -75,7 +75,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.Unbinder;
@@ -188,17 +190,32 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
         txt_name= findViewById(R.id.tv_name);
         txt_email= findViewById(R.id.tv_email);
         tv_facility = findViewById(R.id.tv_facility);
+
         editProfile = findViewById(R.id.editProfile);
 
-        try {
-            loggedInUser = (auth) Stash.getObject(Constants.AUTH_TOKEN, auth.class);
-        } catch (NullPointerException e){
-            Log.d("-->User Log", e.getMessage());
-        }
+//        try {
+//            loggedInUser = (auth) Stash.getObject(Constants.AUTH_TOKEN, auth.class);
+//        } catch (NullPointerException e){
+//            Log.d("-->User Log", e.getMessage());
+//        }
 
 
         tv_completed_surveys1 = findViewById(R.id.tv_completed_surveys);
         tv_active_surveys = findViewById(R.id.tv_active_surveys);
+
+        if (Constants.AUTH_TOKEN == null) {
+            // Throw an error or handle the situation appropriately
+            throw new IllegalStateException("AUTH_TOKEN is null");
+           // Toast.makeText(offlineHome.this, "Access Denied", Toast.LENGTH_SHORT).show();
+        }else{
+
+// Retrieve loggedInUser only if AUTH_TOKEN is not null
+            try {
+                loggedInUser = (auth) Stash.getObject(Constants.AUTH_TOKEN, auth.class);
+            } catch (NullPointerException e){
+                Log.d("-->User Log", e.getMessage());
+            }
+        }
 
         if (isConnected(offlineHome.this)){
             try2();
@@ -348,6 +365,7 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
 
 
     private void try2(){
+        String auth_token = loggedInUser.getAuth_token();
 
 
 
@@ -497,10 +515,20 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressDialog.dismiss();
-                Log.d("SURVEYSSS", error.getMessage());
+               // Log.d("SURVEYSSS", error.getMessage());
+                Toast.makeText(offlineHome.this, "Error occured"+ " "+ error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
 
             }
-        });
+        }){
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization","Token "+ auth_token);
+                //    "Authorization","Token "+ auth_token
+                return headers;}
+
+        };
         requestQueue.add(jsonArrayRequest);
 
 

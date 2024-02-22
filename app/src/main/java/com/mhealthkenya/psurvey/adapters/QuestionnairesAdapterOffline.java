@@ -151,7 +151,7 @@ public class QuestionnairesAdapterOffline extends RecyclerView.Adapter<RecyclerV
 
 
                     context.startActivity(intent);
-                    Toast.makeText(context, "ID is" + obj.getId(), Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(context, "ID is" + obj.getId(), Toast.LENGTH_LONG).show();
                 }
             });
             view.bt_expand2.setOnClickListener(new View.OnClickListener() {

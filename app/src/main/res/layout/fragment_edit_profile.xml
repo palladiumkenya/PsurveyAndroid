@@ -317,7 +317,8 @@
                             android:drawSelectorOnTop="true"
                             android:minHeight="@dimen/spacing_xmlarge"
                             android:paddingLeft="@dimen/spacing_large"
-                            android:paddingRight="@dimen/spacing_large" />
+                            android:paddingRight="@dimen/spacing_large"
+                            android:visibility="gone"/>
 
                         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                             android:id="@+id/sub_county_spinner"
@@ -327,7 +328,8 @@
                             android:drawSelectorOnTop="true"
                             android:minHeight="@dimen/spacing_xmlarge"
                             android:paddingLeft="@dimen/spacing_large"
-                            android:paddingRight="@dimen/spacing_large" />
+                            android:paddingRight="@dimen/spacing_large"
+                            android:visibility="gone"/>
 
                         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                             android:id="@+id/facility_Spinner"
@@ -337,7 +339,8 @@
                             android:minHeight="@dimen/spacing_xmlarge"
                             android:paddingLeft="@dimen/spacing_large"
                             android:paddingRight="@dimen/spacing_large"
-                            android:drawSelectorOnTop="true" />
+                            android:drawSelectorOnTop="true"
+                            android:visibility="gone"/>
 
                         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                             android:id="@+id/designation_Spinner"

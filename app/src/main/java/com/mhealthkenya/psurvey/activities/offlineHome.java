@@ -365,10 +365,16 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
 
 
     private void try2(){
+        if (loggedInUser == null){
+            Log.e(TAG, "loggedInUser is null");
+            return;
+        }
         String auth_token = loggedInUser.getAuth_token();
 
-
-
+        if (auth_token == null) {
+            Log.e(TAG, "auth_token is null");
+            return;
+        }
 
         String url = "https://psurveyapitest.kenyahmis.org/api/questions/dep/all";
 
@@ -530,8 +536,6 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
 
         };
         requestQueue.add(jsonArrayRequest);
-
-
     }
 
     @Override

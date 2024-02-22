@@ -1,8 +1,11 @@
 package com.mhealthkenya.psurvey.activities.auth;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,6 +27,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.mhealthkenya.psurvey.R;
 import com.mhealthkenya.psurvey.depedancies.Constants;
+import com.mhealthkenya.psurvey.helper.DatabaseHelper;
 import com.mhealthkenya.psurvey.models.Designation;
 import com.mhealthkenya.psurvey.models.Facility;
 import com.mhealthkenya.psurvey.models.UrlTable;
@@ -58,6 +62,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     private int facilityID = 0;
     private int designationID = 0;
+
+    private static final int REQUEST_SELECT_FACILITY = 123;
+
 
     ArrayList<String> facilitiesList;
     ArrayList<Facility> facilities;
@@ -314,8 +321,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void setFacilityID(){
-        FacilitySpinnerUtils facilitySpinnerUtils = new FacilitySpinnerUtils();
-        facilityID = facilitySpinnerUtils.setupCountySpinner(countyAdapter,countySpinner,subCountyAdapter,subCountySpinner,facilityAdapter,facilitySpinner,this);
+        setupCountySpinner(countyAdapter,countySpinner,subCountyAdapter,subCountySpinner,facilityAdapter,facilitySpinner,this);
     }
 
     private void getFacilities() {
@@ -542,5 +548,110 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Sets up the County Spinner and its associated sub-components.
+     *
+     * @param countyAdapter       ArrayAdapter for County Spinner.
+     * @param countySpinner       SearchableSpinner for County selection.
+     * @param subCountyAdapter    ArrayAdapter for Sub-County Spinner.
+     * @param subCountySpinner    SearchableSpinner for Sub-County selection.
+     * @param facilityAdapter     ArrayAdapter for Facility Spinner.
+     * @param facilitySpinner     SearchableSpinner for Facility selection.
+     * @param context             Application context.
+     */
+    public void setupCountySpinner(ArrayAdapter<String> countyAdapter, SearchableSpinner countySpinner,
+                                   ArrayAdapter<String> subCountyAdapter, SearchableSpinner subCountySpinner,
+                                   ArrayAdapter<String> facilityAdapter, SearchableSpinner facilitySpinner,
+                                   Context context) {
+        // Initialize DatabaseHelper for database operations
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
+        // Retrieve distinct counties from the database
+        List<String> countyList = databaseHelper.getDistinctCounties();
+        if (countyList != null && !countyList.isEmpty()) {
+            countyList.remove(0);
+            countyList.add(0, "Select Your County");
+            countyAdapter.clear();
+            countyAdapter.addAll(countyList);
+
+            // Set up County Spinner item selection listener
+            countySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                    String selectedCounty = countyList.get(position);
+                    populateSubCountySpinner(selectedCounty, subCountyAdapter,
+                            subCountySpinner, facilityAdapter, facilitySpinner, context);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    // Handle nothing selected
+                }
+            });
+        }
+    }
+
+    private void populateSubCountySpinner(String selectedCounty, ArrayAdapter<String> subCountyAdapter,
+                                          SearchableSpinner subCountySpinner, ArrayAdapter<String> facilityAdapter,
+                                          SearchableSpinner facilitySpinner, Context context) {
+        // Initialize DatabaseHelper for database operations
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+
+        // Retrieve sub-counties based on the selected county
+        List<String> subCountyList = databaseHelper.getSubCountiesByCounty(selectedCounty);
+        if (subCountyList != null && !subCountyList.isEmpty()) {
+            subCountyList.remove(0);
+            subCountyList.add(0, "Select your Sub County");
+            subCountyAdapter.clear();
+            subCountyAdapter.addAll(subCountyList);
+
+            // Set up Sub-County Spinner item selection listener
+            subCountySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                    String selectedSubCounty = subCountyList.get(position);
+                    populateFacilitySpinner(selectedSubCounty, facilityAdapter,
+                            facilitySpinner, context);
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    // Handle nothing selected
+                }
+            });
+        }
+    }
+
+    private int populateFacilitySpinner(String selectedSubCounty, ArrayAdapter<String> facilityAdapter,
+                                        SearchableSpinner facilitySpinner, Context context) {
+        // Initialize DatabaseHelper for database operations
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
+
+        // Retrieve facility names based on the selected sub-county
+        List<String> facilitiesList = databaseHelper.getFacilityNamesBySubCounty(selectedSubCounty);
+        if (facilitiesList != null && !facilitiesList.isEmpty()) {
+            facilitiesList.remove(0);
+            facilitiesList.add(0, "Select your Facility");
+            facilityAdapter.clear();
+            facilityAdapter.addAll(facilitiesList);
+
+            // Set up Facility Spinner item selection listener
+            facilitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                    String selectedFacility = facilitiesList.get(position);
+                    int facility = databaseHelper.getFacilityId(selectedFacility);
+                    facilityID = facility;
+                    System.out.println("Facility ID: " + facilityID);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    // Handle nothing selected
+                }
+            });
+        }
+        return -1;
+    }
 }

@@ -87,6 +87,9 @@
         <activity android:name=".activities.EditProfileActivity"
             android:exported="false"/>
         <activity
+            android:name=".activities.auth.ForgetPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.SplashScreenActivity"
             android:exported="true"
             android:screenOrientation="locked"

@@ -101,6 +101,7 @@ public class LoginService extends IntentService {
                             // Handle successful login response
                             try {
                                 String authToken = response.getString("auth_token");
+                                saveUserCredentialsLocally(phoneNumber, password);
                                 // Send broadcast with the obtained token
                                 Intent broadcastIntent = new Intent();
                                 broadcastIntent.setAction("LOGIN_SUCCESS");
@@ -121,5 +122,11 @@ public class LoginService extends IntentService {
                         }
                     });
         }
+    }
+    private void saveUserCredentialsLocally(String phoneNumber, String password) {
+        UserCredentials userCredentials = new UserCredentials(phoneNumber, PasswordHasher.encryptPassword(password));
+        userCredentialsDao.deleteUserCredentials();
+        userCredentialsDao.insert(userCredentials);
+        Log.i("-->Save User", "Saving User");
     }
 }

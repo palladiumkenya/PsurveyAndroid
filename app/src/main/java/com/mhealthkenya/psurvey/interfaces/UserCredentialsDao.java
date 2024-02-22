@@ -2,6 +2,7 @@ package com.mhealthkenya.psurvey.interfaces;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.mhealthkenya.psurvey.models.UserCredentials;
@@ -18,7 +19,7 @@ public interface UserCredentialsDao {
      *
      * @param userCredentials The user credentials to insert.
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(UserCredentials userCredentials);
 
     /**

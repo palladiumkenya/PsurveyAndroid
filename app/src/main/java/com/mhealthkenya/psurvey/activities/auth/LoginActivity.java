@@ -160,6 +160,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent forgotIntent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                forgotIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(forgotIntent);
+            }
+        });
+
 
     }
 
@@ -170,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         sign_up = (TextView) findViewById(R.id.tv_sign_up);
         connect =(TextView) findViewById(R.id.connected_to);
-//        forgot_password = findViewById(R.id.tv_forgot_password);
+        forgot_password = findViewById(R.id.tv_forgot_pass);
 
         phoneNumber = (TextInputEditText) findViewById(R.id.edtxt_phone_no);
         password = (TextInputEditText) findViewById(R.id.edtxt_pass);
@@ -225,23 +235,21 @@ public class LoginActivity extends AppCompatActivity {
                             pDialog.cancel();
                         }
 
-//                        try {
-////                            String auth_token = response.has("auth_token") ? response.getString("auth_token") : "8576aacdee7d08f687fa82ba11dd490607010ac5";
-//
-//
-//
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-                        String auth_token = "8576aacdee7d08f687fa82ba11dd490607010ac5";
+                        try {
+                            String auth_token = response.has("auth_token") ? response.getString("auth_token") : "";
+
+                            System.out.println("this is token +++++ " + auth_token);
+                            auth newUser = new auth(auth_token);
+
+                            Stash.put(Constants.AUTH_TOKEN, newUser);
 
 
-                        auth newUser = new auth(auth_token);
-
-                        Stash.put(Constants.AUTH_TOKEN, newUser);
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                         if (response.has("auth_token")){
+                            clearUserCredentialsLocally();
                             saveUserCredentialsLocally(phoneNumber, password);
                             successfulLogin();
                         }else if(!response.has("auth_token")){

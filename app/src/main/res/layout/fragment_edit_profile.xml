@@ -331,16 +331,40 @@
                             android:paddingRight="@dimen/spacing_large"
                             android:visibility="gone"/>
 
-                        <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-                            android:id="@+id/facility_Spinner"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_facility"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/spacing_xxlarge"
+                            android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/spacing_medium"
-                            android:minHeight="@dimen/spacing_xmlarge"
-                            android:paddingLeft="@dimen/spacing_large"
-                            android:paddingRight="@dimen/spacing_large"
-                            android:drawSelectorOnTop="true"
-                            android:visibility="gone"/>
+                            app:endIconMode="clear_text"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etxt_facility"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/EditText.Flat.Grey"
+                                android:inputType="text"
+                                android:hint="Facility Name"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+<!--                        <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
+<!--                            android:id="@+id/facility_Spinner"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="@dimen/spacing_xxlarge"-->
+<!--                            android:layout_marginBottom="@dimen/spacing_medium"-->
+<!--                            android:minHeight="@dimen/spacing_xmlarge"-->
+<!--                            android:paddingLeft="@dimen/spacing_large"-->
+<!--                            android:paddingRight="@dimen/spacing_large"-->
+<!--                            android:drawSelectorOnTop="true"-->
+<!--                            android:clickable="false"-->
+<!--                            android:cursorVisible="false"-->
+<!--                            android:focusable="false"-->
+<!--                            android:focusableInTouchMode="false"/>-->
 
                         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                             android:id="@+id/designation_Spinner"
@@ -349,7 +373,11 @@
                             android:minHeight="@dimen/spacing_xmlarge"
                             android:paddingLeft="@dimen/spacing_large"
                             android:paddingRight="@dimen/spacing_large"
-                            android:drawSelectorOnTop="true" />
+                            android:drawSelectorOnTop="true"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"/>
 
 
                     </LinearLayout>

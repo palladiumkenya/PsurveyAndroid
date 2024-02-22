@@ -38,4 +38,12 @@
     <string name="consent_no">No</string>
     <string name="details">Type your answer here …</string>
     <string name="InformedStatement">Statement by the interviewer/person taking consent I have accurately read out the informed consent and privacy to the potential participant, and to the best of my ability made sure that the participant understands the survey.</string>
+    <string name="forget_password">Forgot Password</string>
+    <string name="phone_number">PHONE NUMBER</string>
+    <string name="email">EMAIL</string>
+    <string name="forget_pass_text">It\'s okay! reset your password</string>
+    <string name="reset_password">CONTINUE</string>
+    <string name="reset_pass">RESET PASSWORD</string>
+    <string name="pass_confirm">CONFIRM PASSWORD</string>
+    <string name="new_password">new password</string>
 </resources>

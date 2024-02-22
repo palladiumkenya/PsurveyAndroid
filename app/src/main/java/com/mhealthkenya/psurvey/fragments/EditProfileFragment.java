@@ -25,6 +25,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mhealthkenya.psurvey.R;
+import com.mhealthkenya.psurvey.activities.EditProfileActivity;
 import com.mhealthkenya.psurvey.activities.auth.LoginActivity;
 import com.mhealthkenya.psurvey.activities.auth.SignUpActivity;
 import com.mhealthkenya.psurvey.depedancies.Constants;
@@ -146,7 +147,7 @@ public class EditProfileFragment extends Fragment {
         facilityAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, new ArrayList<>());
 
         loadCurrentUser();
-        getFacilities();
+//        getFacilities();
         getDesignation();
 
 
@@ -244,10 +245,10 @@ public class EditProfileFragment extends Fragment {
     }
 
 
-    private void getFacilities() {
-        FacilitySpinnerUtils facilitySpinnerUtils = new FacilitySpinnerUtils();
-        facilityID = facilitySpinnerUtils.setupCountySpinner(countyAdapter,county_spinner,subCountyAdapter,sub_county_spinner,facilityAdapter,facility_Spinner,context);
-    }
+//    private void getFacilities() {
+//        FacilitySpinnerUtils facilitySpinnerUtils = new FacilitySpinnerUtils();
+//        facilityID = facilitySpinnerUtils.setupCountySpinner(countyAdapter,county_spinner,subCountyAdapter,sub_county_spinner,facilityAdapter,facility_Spinner,context, context);
+//    }
 
     private void getDesignation() {
 

@@ -271,6 +271,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Retrieves the facility Name based on the selected facility name.
+     *
+     * @param facilityId Selected facility name.
+     * @return Facility ID.
+     */
+    public String getFacilityName(int facilityId) {
+        String facilityName = null;
+
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = null;
+
+        try {
+            cursor = database.query(TABLE_FACILITIES, new String[]{COLUMN_NAME}, COLUMN_ID + " = ?", new String[]{String.valueOf(facilityId)}, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                facilityName = cursor.getString(cursor.getColumnIndex(COLUMN_NAME));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "-->Error getting facility name: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            database.close();
+        }
+
+        return facilityName;
+    }
+
+
+    /**
      * Called when the database needs to be upgraded. Handles database upgrades, if needed.
      *
      * @param db         SQLiteDatabase instance.

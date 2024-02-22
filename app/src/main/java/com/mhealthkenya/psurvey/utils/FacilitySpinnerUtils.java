@@ -1,6 +1,8 @@
 package com.mhealthkenya.psurvey.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,14 +28,12 @@ public class FacilitySpinnerUtils {
      * @param facilityAdapter     ArrayAdapter for Facility Spinner.
      * @param facilitySpinner     SearchableSpinner for Facility selection.
      * @param context             Application context.
-     * @return Facility ID associated with the selected facility.
+     * @param activityForResult   Activity to set the result.
      */
-    public int setupCountySpinner(ArrayAdapter<String> countyAdapter, SearchableSpinner countySpinner,
-                                  ArrayAdapter<String> subCountyAdapter, SearchableSpinner subCountySpinner,
-                                  ArrayAdapter<String> facilityAdapter, SearchableSpinner facilitySpinner,
-                                  Context context) {
-        final int[] facilityID = {0};
-
+    public void setupCountySpinner(ArrayAdapter<String> countyAdapter, SearchableSpinner countySpinner,
+                                   ArrayAdapter<String> subCountyAdapter, SearchableSpinner subCountySpinner,
+                                   ArrayAdapter<String> facilityAdapter, SearchableSpinner facilitySpinner,
+                                   Context context, Activity activityForResult) {
         // Initialize DatabaseHelper for database operations
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
@@ -50,8 +50,8 @@ public class FacilitySpinnerUtils {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                     String selectedCounty = countyList.get(position);
-                    facilityID[0] = populateSubCountySpinner(selectedCounty, subCountyAdapter,
-                            subCountySpinner, facilityAdapter, facilitySpinner, context);
+                    populateSubCountySpinner(selectedCounty, subCountyAdapter,
+                            subCountySpinner, facilityAdapter, facilitySpinner, context, activityForResult);
                 }
 
                 @Override
@@ -60,14 +60,11 @@ public class FacilitySpinnerUtils {
                 }
             });
         }
-        return facilityID[0];
     }
 
-    private int populateSubCountySpinner(String selectedCounty, ArrayAdapter<String> subCountyAdapter,
-                                         SearchableSpinner subCountySpinner, ArrayAdapter<String> facilityAdapter,
-                                         SearchableSpinner facilitySpinner, Context context) {
-        final int[] facilityID = {0};
-
+    private void populateSubCountySpinner(String selectedCounty, ArrayAdapter<String> subCountyAdapter,
+                                          SearchableSpinner subCountySpinner, ArrayAdapter<String> facilityAdapter,
+                                          SearchableSpinner facilitySpinner, Context context, Activity activityForResult) {
         // Initialize DatabaseHelper for database operations
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
@@ -84,8 +81,13 @@ public class FacilitySpinnerUtils {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                     String selectedSubCounty = subCountyList.get(position);
-                    facilityID[0] = populateFacilitySpinner(selectedSubCounty, facilityAdapter,
+                    int facilityID = populateFacilitySpinner(selectedSubCounty, facilityAdapter,
                             facilitySpinner, context);
+
+                    // Pass the selected facility ID to the activityForResult
+                    Intent intent = new Intent();
+                    intent.putExtra("facilityID", facilityID);
+                    activityForResult.setResult(Activity.RESULT_OK, intent);
                 }
 
                 @Override
@@ -94,19 +96,15 @@ public class FacilitySpinnerUtils {
                 }
             });
         }
-        return facilityID[0];
     }
 
     private int populateFacilitySpinner(String selectedSubCounty, ArrayAdapter<String> facilityAdapter,
                                         SearchableSpinner facilitySpinner, Context context) {
-        final int[] facilityID = {0};
-
         // Initialize DatabaseHelper for database operations
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
 
         // Retrieve facility names based on the selected sub-county
         List<String> facilitiesList = databaseHelper.getFacilityNamesBySubCounty(selectedSubCounty);
-
         if (facilitiesList != null && !facilitiesList.isEmpty()) {
             facilitiesList.remove(0);
             facilitiesList.add(0, "Select your Facility");
@@ -118,7 +116,7 @@ public class FacilitySpinnerUtils {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                     String selectedFacility = facilitiesList.get(position);
-                    facilityID[0] = databaseHelper.getFacilityId(selectedFacility);
+                    int facilityID = databaseHelper.getFacilityId(selectedFacility);
                 }
 
                 @Override
@@ -127,6 +125,6 @@ public class FacilitySpinnerUtils {
                 }
             });
         }
-        return facilityID[0];
+        return -1;
     }
 }

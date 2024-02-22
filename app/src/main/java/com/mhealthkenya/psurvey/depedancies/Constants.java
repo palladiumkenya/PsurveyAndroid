@@ -40,6 +40,8 @@ public class Constants extends AppCompatActivity {
   public static String UPDATE_USER = "/auth/users/me/";
   public static String LOGIN = "/auth/token/login";
   public static String LOGOUT = "/auth/token/logout/";
+  public  static String FORGET_PASSWORD = "/api/forgot-password/";
+  public  static String RESET_PASSWORD = "/auth/reset_password";
 
 
   //FACILITIES AND DESIGNATIONS

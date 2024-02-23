@@ -234,8 +234,12 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isConnected(offlineHome.this)) {
                 Intent editIntent = new Intent(offlineHome.this, EditProfileActivity.class);
                 startActivity(editIntent);
+                } else {
+                    Snackbar.make(findViewById(R.id.drawer_layout), "No internet connection. Please check your connection.", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
 

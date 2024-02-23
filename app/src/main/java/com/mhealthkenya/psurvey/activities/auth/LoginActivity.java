@@ -151,24 +151,32 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent mint = new Intent(LoginActivity.this, SignUpActivity.class);
-                mint.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mint);
+                if (isConnected(LoginActivity.this)) {
+                    Intent mint = new Intent(LoginActivity.this, SignUpActivity.class);
+                    mint.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(mint);
+                } else {
+                    Snackbar.make(findViewById(R.id.login_lyt), "No internet connection. Please check your connection.", Snackbar.LENGTH_LONG).show();
+                }
             }
         });
-            forgot_password.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
+        forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isConnected(LoginActivity.this)) {
                     Intent forgotIntent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                     forgotIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(forgotIntent);
+                } else {
+                    Snackbar.make(findViewById(R.id.login_lyt), "No internet connection. Please check your connection.", Snackbar.LENGTH_LONG).show();
                 }
-            });
+            }
+        });
     }
 
     private void initialise(){

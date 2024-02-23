@@ -1,6 +1,7 @@
 package com.mhealthkenya.psurvey.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mhealthkenya.psurvey.R;
+import com.mhealthkenya.psurvey.activities.AllQuestionDatabase;
 import com.mhealthkenya.psurvey.activities.EditActivity;
 import com.mhealthkenya.psurvey.activities.ResponseData;
 import com.mhealthkenya.psurvey.models.QuestionnaireEntity;
@@ -27,6 +30,8 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public List<UserResponseEntity> userResponseEntities= new ArrayList<>();
     public Context context;
+
+    AllQuestionDatabase allQuestionDatabase;
 
     public UserResponseAdapter.OnItemClickListener onItemClickListener;
 
@@ -42,6 +47,7 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     // Constructor to initialize userResponses
     public UserResponseAdapter(Context context) {
         this.context = context;
+        allQuestionDatabase = AllQuestionDatabase.getInstance(context);
     }
 
     public void setUser2(List<UserResponseEntity> userResponseEntities){
@@ -68,7 +74,7 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             surveyID = (TextView) v.findViewById(R.id.tv_survey_id);
             queryID = (TextView) v.findViewById(R.id.tv_query_id);
             btnOpen = (TextView) v.findViewById(R.id.tv_open_id);
-          //  bt_expand = (Button) v.findViewById(R.id.tv_btn);
+            //  bt_expand = (Button) v.findViewById(R.id.tv_btn);
 
             editbt = (ImageButton) v.findViewById(R.id.bt_edit);
             deletebt = (ImageButton) v.findViewById(R.id.bt_delete);
@@ -83,7 +89,7 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_response_item, parent, false);
         vh = new UserResponseAdapter.OriginalViewHolder(v);
         return vh;
-       // return null;
+        // return null;
     }
 
     @Override
@@ -110,11 +116,12 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     if (onItemClickListener != null) {
                         Toast.makeText(context,"Edit"+obj.getQuestionType(), Toast.LENGTH_LONG).show();
-               //         onItemClickListener.onItemClick(position);
+                        //         onItemClickListener.onItemClick(position);
 
                         Intent ii=new Intent(context, EditActivity.class);
-                         ResponseIntent responseIntent = new ResponseIntent(obj.getIdA(), obj.getSessionid(), obj.getAnswerId(), obj.getQuestionId(), obj.getQuestionType(), obj.getQuestionnaireId(), obj.getQuetion_A(), obj.getOption(), obj.getUniqueIdentifier(), obj.getDateValidation(), obj.isRequired(), obj.isRepeatable());
-                         responseIntent.save();
+                        ResponseIntent.deleteAll(ResponseIntent.class);
+                        ResponseIntent responseIntent = new ResponseIntent(obj.getIdA(),obj.getCccid(), obj.getSessionid(), obj.getAnswerId(), obj.getQuestionId(), obj.getQuestionType(), obj.getQuestionnaireId(), obj.getQuetion_A(), obj.getOption(), obj.getMulti(), obj.getUniqueIdentifier(), obj.getDateValidation(), obj.isRequired(), obj.isRepeatable());
+                        responseIntent.save();
                         context.startActivity(ii);
                     }
 
@@ -127,14 +134,50 @@ public class UserResponseAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View v) {
 
                     if (onItemClickListener != null) {
-                         Toast.makeText(context,"delete"+obj.getAnswerId(), Toast.LENGTH_LONG).show();
+
+
+
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+                        builder1.setIcon(R.drawable.logo);
+                        builder1.setTitle("Are You sure you want to Delete This Response?");
+                        builder1.setMessage(" ");
+                        builder1.setCancelable(false);
+
+                        builder1.setPositiveButton(
+                                "Yes",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        allQuestionDatabase.userResponseDao().deleteUserResponseById3(obj.getQuestionnaireId(), obj.getQuestionId());
+                                        int position = userResponseEntities.indexOf(obj);
+                                        userResponseEntities.remove(position);
+                                        notifyItemRemoved(position);
+
+
+
+                                    }
+                                }); builder1.setNegativeButton(
+                                "No",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // Handle negative button click (if needed)
+                                        dialog.cancel(); // Close the dialog without taking any action
+                                    }
+                                });
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                        //deleteResponse(ccid);
+
+                        //notifyDataSetChanged();
+                        // Toast.makeText(context,"delete"+obj.getAnswerId(), Toast.LENGTH_LONG).show();
+
                     }
 
                 }
             });
 
 
-}}
+        }}
 
     @Override
     public int getItemCount() {

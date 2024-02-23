@@ -57,6 +57,7 @@ public class EditActivity extends AppCompatActivity {
     int currentQuestionIndex;
     int questionnaireId;
     AnswerEntity answerEntity;
+    List<String> multiAnswerList1 = new ArrayList<>();
 
 
     DatePickerDialog datePickerDialog;
@@ -187,7 +188,8 @@ public class EditActivity extends AppCompatActivity {
     LinearLayout error_lyt;
 
     int ID_extra, session_extra, quetnID_extra, qtype_extra,QuestionnaireId_extra;
-    String Quetion_extra, Option_extra, UniqueIdentifier_extra, dateValidation_extra, answID_extra;
+    String Quetion_extra, Option_extra, Multi_extra, UniqueIdentifier_extra, dateValidation_extra, answID_extra;
+    long ccid_extra;
     boolean isRequired_extra, isRepeatable_extra;
 
     @Override
@@ -202,6 +204,7 @@ public class EditActivity extends AppCompatActivity {
             if (savedID.size()==1){
                 for (int x=0; x<savedID.size(); x++) {
                     ID_extra = savedID.get(x).getID_extra();
+                    ccid_extra = savedID.get(x).getCcid_extra();
                     session_extra = savedID.get(x).getSession_extra();
                     answID_extra = savedID.get(x).getAnswID_extra();
                     quetnID_extra = savedID.get(x).getQuetnID_extra();
@@ -211,6 +214,7 @@ public class EditActivity extends AppCompatActivity {
 
                     Quetion_extra = savedID.get(x).getQuetion_extra();
                     Option_extra = savedID.get(x).getOption_extra();
+                    Multi_extra =savedID.get(x).getMulti_extra();
                     UniqueIdentifier_extra = savedID.get(x).getUniqueIdentifier_extra();
                     dateValidation_extra = savedID.get(x).getDateValidation_extra();
                     isRequired_extra = savedID.get(x).isRequired_extra();;
@@ -427,46 +431,40 @@ public class EditActivity extends AppCompatActivity {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                     } else {
 
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
-                        //  SaveAnswers(question.getQuestionOrder(),question.getQuestionType(),question.isRequired(), question.getDateValidation(), question.isRepeatable(), answerEntity.getId(), surveyUniqueID, savedquestionnaireId, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
+                        //   allQuestionDatabase.userResponseDao().updateUserResponse2(quetnID_extra,ccid_extra,  openTextEtxt.getText().toString(), " ");
+                        updateperResponse2(quetnID_extra,ccid_extra,  openTextEtxt.getText().toString(), " ");
 
+                        //
 
 
                     }
                 } else if (qtype_extra == 1) {
-                    // SaveAnswers(question.getQuestionOrder(),answerEntity.getId(), surveyUniqueID, savedquestionnaireId, currentQuestionIndex, openTextEtxt.getText().toString(), question.getQuestion());
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex,  openTextEtxt.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  openTextEtxt.getText().toString(), " ");
 
                 } else if (qtype_extra == 4 && isRequired_extra) {
                     if (numericEditText.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         // }else{
                     } else {
-
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, numericEditText.getText().toString(), question.getQuestion());
-
+                        updateperResponse2(quetnID_extra,ccid_extra,  numericEditText.getText().toString(), " ");
                     }
                 } else if (qtype_extra == 4) {
-
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, numericEditText.getText().toString(),question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  numericEditText.getText().toString(), " ");
 
                 }
                 //datepicker none & not repeatable
                 else if (qtype_extra == 5 && isRequired_extra && dateValidation_extra.equals("none") && !isRepeatable_extra) {
                     if (dobEditText.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
-                        //&& questions.getDate_validation().contentEquals("none")
-                    }
-                    {
 
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
+                    }else
+                    {
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString(), " ");
 
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("none") && !isRepeatable_extra) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
-
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString(), " ");
 
                 }
 
@@ -474,32 +472,28 @@ public class EditActivity extends AppCompatActivity {
                 else if (qtype_extra== 5 && isRequired_extra && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count == 1) {
                     if (dobEditText.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
-                        //&& questions.getDate_validation().contentEquals("none")
-                    }
+                    }else
                     {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString(), " ");
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count == 1) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
-                    //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString(), " ");
 
                 }
                 //datepicker none & repeatable count2
                 else if (qtype_extra == 5 && isRequired_extra && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count == 2) {
                     if (dobEditText.getText().toString().equals("") || dobEditText2.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
-                        //&& questions.getDate_validation().contentEquals("none")
-                    }
+
+                    }else
                     {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), " ");
+
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count == 2) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
-                    //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString(), " ");
 
                 }
 
@@ -508,16 +502,15 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditText.getText().toString().equals("") || dobEditText2.getText().toString().equals("") || dobEditText3.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         //&& questions.getDate_validation().contentEquals("none")
-                    }
+                    }else
                     {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString()+ " ," + dobEditText3.getText().toString(), " ");
+
 
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count == 3) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString()+ " ," + dobEditText3.getText().toString(), " ");
 
 
                 }
@@ -526,34 +519,31 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditText.getText().toString().equals("") || dobEditText2.getText().toString().equals("") || dobEditText3.getText().toString().equals("") || dobEditText4.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         //&& questions.getDate_validation().contentEquals("none")
-                    }
+                    }else
                     {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
-                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString()+ " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString().equals(""), " ");
+                        //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString().equals(""), " ");
 
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count1.getRepeat_count() == 4) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
-                    //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals(""), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString()+ " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString().equals(""), " ");
+                    // updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString().equals(""), " ");
+
                 }
                 // datepicker none & repeatable count5
                 else if (qtype_extra == 5 && isRequired_extra && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count == 5) {
                     if (dobEditText.getText().toString().equals("") || dobEditText2.getText().toString().equals("") || dobEditText3.getText().toString().equals("") || dobEditText4.getText().toString().equals("") || dobEditText5.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         //&& questions.getDate_validation().contentEquals("none")
-                    }
+                    }else
                     {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
-                        // saveAnswersToDraft(savedquestionnaireI d, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString()+ " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString().equals("")+ " ," + dobEditText5.getText().toString().equals(""), " ");
+
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("none") && isRequired_extra && repeat_count == 5) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
-                    //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals(""), question.getQuestion());
-
-
-
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString()+ " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString().equals("")+ " ," + dobEditText5.getText().toString().equals(""), " ");
                 }
 
                 // datepicker none & repeatable count6
@@ -561,15 +551,15 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditText.getText().toString().equals("") || dobEditText2.getText().toString().equals("") || dobEditText3.getText().toString().equals("") || dobEditText4.getText().toString().equals("") || dobEditText4.getText().toString().equals("") || dobEditText5.getText().toString().equals("") || dobEditText6.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                         //&& questions.getDate_validation().contentEquals("none")
-                    }
+                    }else
                     {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString()+ " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString().equals("")+ " ," + dobEditText5.getText().toString().equals("")+ " ," + dobEditText6.getText().toString().equals(""), " ");
+                        //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), " ");
+
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("none") && isRepeatable_extra && repeat_count == 6) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
-                    //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString().equals("") + " ," + dobEditText3.getText().toString().equals("") + " ," + dobEditText4.getText().toString().equals("") + " ," + dobEditText5.getText().toString().equals("") + " ," + dobEditText6.getText().toString().equals(""), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditText.getText().toString() + " ," + dobEditText2.getText().toString()+ " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString().equals("")+ " ," + dobEditText5.getText().toString().equals("")+ " ," + dobEditText6.getText().toString().equals(""), " ");
 
                 }
 
@@ -579,13 +569,13 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditTextfuture.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                     } else {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString(), question.getQuestion());
-                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString(), " ");
+
+
                     }
 
                 } else if (qtype_extra == 5 && !isRequired_extra && dateValidation_extra.equals("restrict_future") && !isRepeatable_extra) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString(), question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString(), " ");
 
                 }
 
@@ -595,13 +585,13 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditTextfuture.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                     } else {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString(), question.getQuestion());
-                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString(), " ");
+
                     }
 
                 } else if (qtype_extra == 5 && !isRequired_extra && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 1) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
-
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString()+ " ," + dobEditTextfuture2.getText().toString(), " ");
+                    // updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), " ");
                 }
 
                 //datepicker restrict future repeat count 2
@@ -609,13 +599,14 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                     } else {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
-                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString()+ " ," + dobEditTextfuture2.getText().toString(), " ");
+                        //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), " ");
+
                     }
 
                 } else if (qtype_extra == 5 && !isRequired_extra && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 2) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString()+ " ," + dobEditTextfuture2.getText().toString(), " ");
+                    //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString(), " ");
 
                 }
                 //datepicker restrict future repeat count 3
@@ -623,14 +614,14 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("") || dobEditTextfuture3.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                     } else {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(), question.getQuestion());
-                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(), " ");
+                        //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(), " ");
+
                     }
 
                 } else if (qtype_extra == 5 && !isRequired_extra && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 3) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(),question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(),question.getQuestion());
-
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(), " ");
+                    //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString(), " ");
 
                 }
 
@@ -640,13 +631,15 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("") || dobEditTextfuture3.getText().toString().equals("") || dobEditTextfuture4.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                     } else {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString()+ " ," + dobEditTextfuture4.getText().toString(), " ");
+                        //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditText.getText().toString() + " ," + dobEditText2.getText().toString() + " ," + dobEditText3.getText().toString()+ " ," + dobEditText4.getText().toString(), " ");
+
                     }
 
                 } else if (qtype_extra == 5 && !isRequired_extra && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 4) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString()+ " ," + dobEditTextfuture4.getText().toString(), " ");
+                    //     updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString(), " ");
+
 
                 }
 
@@ -655,13 +648,14 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("") || dobEditTextfuture3.getText().toString().equals("") || dobEditTextfuture4.getText().toString().equals("") || dobEditTextfuture5.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                     } else {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
-                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString()+ " ," + dobEditTextfuture4.getText().toString()+ " ," + dobEditTextfuture5.getText().toString(), " ");
+                        //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), " ");
+
                     }
 
                 } else if (qtype_extra == 5 && !isRequired_extra && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 5) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString()+ " ," + dobEditTextfuture4.getText().toString()+ " ," + dobEditTextfuture5.getText().toString(), " ");
+                    //  updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString(), " ");
 
                 }
 
@@ -670,13 +664,14 @@ public class EditActivity extends AppCompatActivity {
                     if (dobEditTextfuture.getText().toString().equals("") || dobEditTextfuture2.getText().toString().equals("") || dobEditTextfuture3.getText().toString().equals("") || dobEditTextfuture4.getText().toString().equals("") || dobEditTextfuture5.getText().toString().equals("") || dobEditTextfuture6.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
                     } else {
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString()+ " ," + dobEditTextfuture4.getText().toString()+ " ," + dobEditTextfuture5.getText().toString()+ " ," + dobEditTextfuture5.getText().toString(), " ");
+                        //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), " ");
+
                     }
 
                 } else if (qtype_extra == 5 && !isRequired_extra && dateValidation_extra.equals("restrict_future") && isRepeatable_extra && repeat_count == 6) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
-                    //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra,  dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString()+ " ," + dobEditTextfuture4.getText().toString()+ " ," + dobEditTextfuture5.getText().toString()+ " ," + dobEditTextfuture5.getText().toString()+ " ," + dobEditTextfuture6.getText().toString(), " ");
+                    //    updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextfuture.getText().toString() + " ," + dobEditTextfuture2.getText().toString() + " ," + dobEditTextfuture3.getText().toString() + " ," + dobEditTextfuture4.getText().toString() + " ," + dobEditTextfuture5.getText().toString() + " ," + dobEditTextfuture6.getText().toString(), " ");
 
 
                 }
@@ -687,19 +682,14 @@ public class EditActivity extends AppCompatActivity {
 
                     if (dobEditTextpast.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
-                    }
+                    }else
 
                     {
-
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString(), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString(), question.getQuestion());
-
+                        updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString() , " ");
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && !isRepeatable_extra) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString(), question.getQuestion());
-
-                    //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString() , " ");
 
 
                 }
@@ -708,18 +698,17 @@ public class EditActivity extends AppCompatActivity {
 
                     if (dobEditTextpast.getText().toString().equals("") || dobEditTextpast2.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
-                    }
+                    }else
 
                     {
-
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString() , " ");
+                        //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra,  dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), " ");
 
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count == 2) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
-                    //  saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString() , " ");
+                    // updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString(), " ");
 
 
                 }
@@ -729,19 +718,16 @@ public class EditActivity extends AppCompatActivity {
 
                     if (dobEditTextpast.getText().toString().equals("") || dobEditTextpast2.getText().toString().equals("") || dobEditTextpast3.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
-                    }
+                    }else
 
                     {
-
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
-                        // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString()+ " ," + dobEditTextpast3.getText().toString() , " ");
+                        //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), " ");
 
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count == 3) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex,dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex,dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString(), question.getQuestion());
-
+                    updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString()+ " ," + dobEditTextpast3.getText().toString() , " ");
 
                 }
                 //restrict past date  repeat count 4
@@ -749,17 +735,16 @@ public class EditActivity extends AppCompatActivity {
 
                     if (dobEditTextpast.getText().toString().equals("") || dobEditTextpast2.getText().toString().equals("") || dobEditTextpast3.getText().toString().equals("") || dobEditTextpast4.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
-                    }
+                    }else
 
                     {
+                        updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString()+ " ," + dobEditTextpast3.getText().toString()+ " ," + dobEditTextpast4.getText().toString() , " ");
 
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
-                        //  saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 4) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString()+ " ," + dobEditTextpast3.getText().toString()+ " ," + dobEditTextpast4.getText().toString() , " ");
+                    //updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString(), " ");
 
                 }
                 //restrict past date  repeat count 5
@@ -767,18 +752,16 @@ public class EditActivity extends AppCompatActivity {
 
                     if (dobEditTextpast.getText().toString().equals("") || dobEditTextpast2.getText().toString().equals("") || dobEditTextpast3.getText().toString().equals("") || dobEditTextpast4.getText().toString().equals("") || dobEditTextpast5.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
-                    }
+                    }else
 
                     {
-
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
-                        //  saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString()+ " ," + dobEditTextpast3.getText().toString()+ " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), " ");
 
                     }
 
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count1.getRepeat_count() == 5) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString()+ " ," + dobEditTextpast3.getText().toString()+ " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), " ");
+                    //  updateperResponse(ID_extra, ccid_extra, quetnID_extra,  answID_extra, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString(), " ");
 
 
                 }
@@ -788,17 +771,14 @@ public class EditActivity extends AppCompatActivity {
 
                     if (dobEditTextpast.getText().toString().equals("") || dobEditTextpast2.getText().toString().equals("") || dobEditTextpast3.getText().toString().equals("") || dobEditTextpast4.getText().toString().equals("") || dobEditTextpast5.getText().toString().equals("") || dobEditTextpast6.getText().toString().equals("")) {
                         Toast.makeText(EditActivity.this, "Please ensure you pick an answer", Toast.LENGTH_SHORT).show();
-                    }
+                    }else
 
                     {
-
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
-                        //saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString()+ " ," + dobEditTextpast3.getText().toString()+ " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString()+ " ," + dobEditTextpast6.getText().toString(), " ");
 
                     }
                 } else if (qtype_extra == 5 && dateValidation_extra.equals("restrict_past") && isRepeatable_extra && repeat_count == 6) {
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
-                    // saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, dobEditTextpast.getText().toString() + " ," + dobEditTextpast2.getText().toString() + " ," + dobEditTextpast3.getText().toString() + " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString() + " ," + dobEditTextpast6.getText().toString(), question.getQuestion());
+                    updateperResponse2(quetnID_extra,ccid_extra, dobEditTextpast.getText().toString()+ " ," + dobEditTextpast2.getText().toString()+ " ," + dobEditTextpast3.getText().toString()+ " ," + dobEditTextpast4.getText().toString() + " ," + dobEditTextpast5.getText().toString()+ " ," + dobEditTextpast6.getText().toString(), " ");
 
 
                 } else if (qtype_extra == 2) {
@@ -814,10 +794,16 @@ public class EditActivity extends AppCompatActivity {
                         View radioButton = singleChoiceRadioGroup.findViewById(radioButtonID);
                         int idx = singleChoiceRadioGroup.indexOfChild(radioButton);
 
+                        RadioButton selectedRadioButton = findViewById(radioButtonID);
+
+// Get the        //get the text of the selected RadioButton
+                        String selectedText = selectedRadioButton.getText().toString();
+
+
+
 
                         //   SaveAnswers(savedquestionnaireId, currentQuestionIndex, openText);
-                        SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, String.valueOf(answerList.get(idx).getId()), question.getQuestion());
-                        //  saveAnswersToDraft(savedquestionnaireId, currentQuestionIndex, String.valueOf(answerList.get(idx).getId()), question.getQuestion());
+                        updateperResponse2(quetnID_extra,ccid_extra, String.valueOf(answerList.get(idx).getId()), selectedText);
 
                     }
 
@@ -831,19 +817,17 @@ public class EditActivity extends AppCompatActivity {
                             checkBox = (CheckBox) nextChild;
                             if (checkBox.isChecked()) {
                                 multiAnswerList.add(checkBox.getId());
+
+                                String checkedValue = checkBox.getText().toString();
+                                // Add the text value to your list
+                                multiAnswerList1.add(checkedValue);
                             }
                         }
 
                     }
 
                     //aNSER TYPE 3
-
-                    //SaveAnswers( questionnaireId, currentQuestionIndex, Integer.parseInt(String.valueOf(multiAnswerList)), openText);
-                    SaveAnswers(session_extra, qtype_extra, isRequired_extra, dateValidation_extra, isRepeatable_extra,  answID_extra, UniqueIdentifier_extra, QuestionnaireId_extra, currentQuestionIndex, openText, question.getQuestion());
-                    // saveAnswersToDraft(questionnaireId, currentQuestionIndex, openText, question.getQuestion());
-                    //startActivity(new Intent(QuetionsOffline.this, QuetionsOffline.class));
-
-//                    Toast.makeText(context, String.valueOf(multiAnswerList), Toast.LENGTH_SHORT).show();
+                    updateperResponse2(quetnID_extra,ccid_extra, String.valueOf(multiAnswerList),String.valueOf(multiAnswerList1));
 
                 }
                 else {
@@ -942,7 +926,7 @@ public class EditActivity extends AppCompatActivity {
             //   Toast.makeText(EditActivity.this, "quetnID_extra"+session_extra, Toast.LENGTH_SHORT).show();
 
 
-            List<AnswerEntity> answersA = allQuestionDatabase.answerDao().getAnswersForQuestion2(savedquestionnaireId, session_extra);
+            List<AnswerEntity> answersA = allQuestionDatabase.answerDao().getAnswersForQuestion2(QuestionnaireId_extra, quetnID_extra);
             // Log.d("Answer List", answersA.);
 
 
@@ -976,7 +960,7 @@ public class EditActivity extends AppCompatActivity {
             singleChoiceRadioGroup.setVisibility(View.GONE);
             multipleChoiceAns.setVisibility(View.VISIBLE);
             // List<AnswerEntity> answersB = allQuestionDatabase.answerDao().getAnswersForQuestion(question.getId());
-            List<AnswerEntity> answersB = allQuestionDatabase.answerDao().getAnswersForQuestion2(savedquestionnaireId, session_extra);
+            List<AnswerEntity> answersB = allQuestionDatabase.answerDao().getAnswersForQuestion2(QuestionnaireId_extra, quetnID_extra);
             List<Integer> answersB1 = allQuestionDatabase.answerDao().getAnswerIdsForQuestion(session_extra);
             for (AnswerEntity answers2 : answersB) {
                 int id = answers2.getId();
@@ -989,19 +973,20 @@ public class EditActivity extends AppCompatActivity {
                 answerEntity = new AnswerEntity(id, option, createdAt, questionI, questionnaire2, createdBy);
                 answerList.add(answerEntity);
 
+                checkBox = new CheckBox(this);
+                checkBox.setId(id);
+                checkBox.setText(option);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+                checkBox.setLayoutParams(params);
+                multipleChoiceAns.addView(checkBox);
+
+
             }
 
 
-            checkBox = new CheckBox(this);
-            checkBox.setId(answerEntity.getId());
-            checkBox.setText(answerEntity.getOption());
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-            checkBox.setLayoutParams(params);
-            multipleChoiceAns.addView(checkBox);
-
-            // }
 
         } else if (qtype_extra == 4) {
+            numericEditText.setText(Option_extra);
 
             numericText.setVisibility(View.VISIBLE);
             numericEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
@@ -1240,51 +1225,6 @@ public class EditActivity extends AppCompatActivity {
     }
 
 
-
-    public void SaveAnswers(int Sessionid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable, String answ_id, String uniqueIdentifier, int questionnaireId1, int questionId1, String option1, String quetion1){
-        // int Sessionid, int questionType, boolean isRequired, String dateValidation, boolean isRepeatable, int answ_id, String uniqueIdentifier, int questionnaireId1, int questionId1, String option1, String quetion1
-
-        // List<AnswerEntity> answers = allQuestionDatabase.answerDao().getAnswersForQuestion(surveyQuestion.getId());
-
-        UserResponseEntity userResponseEntity = allQuestionDatabase.userResponseDao().getUserResponseById(session_extra);
-
-        //  UserResponseEntity userResponseEntity = new UserResponseEntity();
-
-        if (userResponseEntity==null){
-            Toast.makeText(EditActivity.this, "Null to update", Toast.LENGTH_SHORT).show();
-
-        }else{
-
-
-            userResponseEntity.setSessionid(Sessionid);
-            userResponseEntity.setQuestionType(questionType);
-            userResponseEntity.setRequired(isRequired);
-            userResponseEntity.setDateValidation(dateValidation);
-            userResponseEntity.setRepeatable(isRepeatable);
-
-            userResponseEntity.setAnswerId(answ_id);
-            userResponseEntity.setUniqueIdentifier(uniqueIdentifier);
-            userResponseEntity.setQuestionnaireId(questionnaireId1);
-            userResponseEntity.setQuestionId(questionId1);
-            // userResponseEntity.setAnswerId(answeid1);
-            userResponseEntity.setOption(option1);
-            userResponseEntity.setQuetion_A(quetion1);
-
-            //      allQuestionDatabase.userResponseDao().insertResponse(userResponseEntity);
-
-            allQuestionDatabase.userResponseDao().updateResponse(userResponseEntity);
-
-            Intent intent = new Intent(EditActivity.this, SessionList.class);
-            startActivity(intent);
-
-        }
-
-
-
-    }
-
-
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -1300,5 +1240,20 @@ public class EditActivity extends AppCompatActivity {
     }
 
 
+    ///
+
+
+
+
+    public  void updateperResponse2(int questionId1, long ccid, String newOption, String newMulti) {
+        //UserResponseEntity userResponseEntity = allQuestionDatabase.userResponseDao().getUserResponsesForcccid(ccid, questionId1);
+        allQuestionDatabase.userResponseDao().updateUserResponse2(questionId1,ccid,  newOption, newMulti);
+
+        Intent intent = new Intent(EditActivity.this, ResponseData.class);
+        startActivity(intent);
+
+
+
+    }
 
 }

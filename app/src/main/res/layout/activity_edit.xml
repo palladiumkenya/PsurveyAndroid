@@ -824,7 +824,7 @@
                         android:id="@+id/btn_next"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/next"/>
+                        android:text="Update"/>
 
                 </LinearLayout>
 
@@ -833,5 +833,6 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -75,4 +75,12 @@ public interface UserResponseDao {
      */
     @Query("DELETE FROM question_answers WHERE cccid = :cccId")
     void deleteUserResponseById(long cccId);
+
+
+    @Query("UPDATE question_answers SET cccid=:cccid, option = :newOption, multi = :newMulti WHERE questionId = :questionId")
+    void  updateUserResponse2(int questionId, long cccid, String newOption, String newMulti);
+
+
+    @Query("DELETE FROM question_answers WHERE questionnaireId = :questionnaireId  AND  questionId =:questionId")
+    void deleteUserResponseById3(int questionnaireId, int questionId);
 }

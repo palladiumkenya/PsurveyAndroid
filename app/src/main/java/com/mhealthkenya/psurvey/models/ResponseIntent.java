@@ -5,8 +5,9 @@ import com.orm.SugarRecord;
 public class ResponseIntent extends SugarRecord {
 
     private int ID_extra,  session_extra,   quetnID_extra, qtype_extra, QuestionnaireId_extra;
-    private String Quetion_extra, Option_extra, UniqueIdentifier_extra, dateValidation_extra,answID_extra;
+    private String Quetion_extra, Option_extra, multi_extra,  UniqueIdentifier_extra, dateValidation_extra,answID_extra;
     boolean isRequired_extra, isRepeatable_extra;
+    long ccid_extra;
 
 
    /* ID_extra = intent2.getIntExtra("ID", 0); // Default to 0
@@ -27,16 +28,18 @@ public class ResponseIntent extends SugarRecord {
     public ResponseIntent() {
     }
 
-    public ResponseIntent(int ID_extra, int session_extra, String answID_extra, int quetnID_extra, int qtype_extra, int questionnaireId_extra, String quetion_extra, String option_extra, String uniqueIdentifier_extra, String dateValidation_extra, boolean isRequired_extra, boolean isRepeatable_extra) {
+    public ResponseIntent(int ID_extra, long ccid_extra, int session_extra, String answID_extra, int quetnID_extra, int qtype_extra, int questionnaireId_extra, String quetion_extra, String option_extra, String multi_extra,  String uniqueIdentifier_extra, String dateValidation_extra, boolean isRequired_extra, boolean isRepeatable_extra) {
         this.ID_extra = ID_extra;
+        this.ccid_extra = ccid_extra;
         this.session_extra = session_extra;
         this.answID_extra = answID_extra;
         this.quetnID_extra = quetnID_extra;
         this.qtype_extra = qtype_extra;
-        QuestionnaireId_extra = questionnaireId_extra;
-        Quetion_extra = quetion_extra;
-        Option_extra = option_extra;
-        UniqueIdentifier_extra = uniqueIdentifier_extra;
+        this.QuestionnaireId_extra = questionnaireId_extra;
+        this.Quetion_extra = quetion_extra;
+        this. Option_extra = option_extra;
+        this.multi_extra = multi_extra;
+        this. UniqueIdentifier_extra = uniqueIdentifier_extra;
         this.dateValidation_extra = dateValidation_extra;
         this.isRequired_extra = isRequired_extra;
         this.isRepeatable_extra = isRepeatable_extra;
@@ -144,5 +147,21 @@ public class ResponseIntent extends SugarRecord {
 
     public void setRepeatable_extra(boolean repeatable_extra) {
         isRepeatable_extra = repeatable_extra;
+    }
+
+    public long getCcid_extra() {
+        return ccid_extra;
+    }
+
+    public void setCcid_extra(long ccid_extra) {
+        this.ccid_extra = ccid_extra;
+    }
+
+    public String getMulti_extra() {
+        return multi_extra;
+    }
+
+    public void setMulti_extra(String multi_extra) {
+        this.multi_extra = multi_extra;
     }
 }

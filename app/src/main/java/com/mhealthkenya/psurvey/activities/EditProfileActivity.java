@@ -65,6 +65,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private int facilityID = 0;
     private int designationID = 0;
+    private AllQuestionDatabase allQuestionDatabase;
 
     ArrayList<String> facilitiesList;
     ArrayList<Facility> facilities;
@@ -126,6 +127,7 @@ public class EditProfileActivity extends AppCompatActivity {
         etxt_facility = (TextInputEditText) findViewById(R.id.etxt_facility);
         designation_Spinner = (SearchableSpinner) findViewById(R.id.designation_Spinner);
         btn_update_profile = (MaterialButton) findViewById(R.id.btn_update_profile);
+        allQuestionDatabase = AllQuestionDatabase.getInstance(this);
 
     }
 
@@ -489,6 +491,11 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                             if (response.has("id")){
+                                if (allQuestionDatabase.currentUserDao().getCurrentUser() != null) {
+
+                                    Log.i("-->Delete UserDetails ", allQuestionDatabase.currentUserDao().getCurrentUser().getFirstName());
+                                    allQuestionDatabase.currentUserDao().deleteUserDetails();
+                                }
                                 startLoginService();
 
                                 Intent mint = new Intent(EditProfileActivity.this, offlineHome.class);

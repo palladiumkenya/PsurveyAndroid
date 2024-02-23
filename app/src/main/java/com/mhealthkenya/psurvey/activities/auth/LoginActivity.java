@@ -44,8 +44,10 @@ import com.mhealthkenya.psurvey.activities.offlineHome;
 import com.mhealthkenya.psurvey.depedancies.Constants;
 
 import com.mhealthkenya.psurvey.interfaces.UserCredentialsDao;
+import com.mhealthkenya.psurvey.models.CurrentUser;
 import com.mhealthkenya.psurvey.models.UrlTable;
 import com.mhealthkenya.psurvey.models.UserCredentials;
+import com.mhealthkenya.psurvey.models.UserDetails;
 import com.mhealthkenya.psurvey.models.auth;
 import com.mhealthkenya.psurvey.service.LoginService;
 import com.mhealthkenya.psurvey.utils.PasswordHasher;
@@ -149,7 +151,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-
         sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,18 +160,15 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(mint);
             }
         });
+            forgot_password.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        forgot_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent forgotIntent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
-                forgotIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(forgotIntent);
-            }
-        });
-
-
+                    Intent forgotIntent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                    forgotIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(forgotIntent);
+                }
+            });
     }
 
     private void initialise(){
@@ -235,26 +233,79 @@ public class LoginActivity extends AppCompatActivity {
                             pDialog.cancel();
                         }
 
-                        try {
-                            String auth_token = response.has("auth_token") ? response.getString("auth_token") : "";
-
-                            auth newUser = new auth(auth_token);
-
-                            Stash.put(Constants.AUTH_TOKEN, newUser);
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
                         if (response.has("auth_token")){
+                            try {
+                                String auth_token = response.has("auth_token") ? response.getString("auth_token") : "";
 
-                            clearUserCredentialsLocally();
-                            saveUserCredentialsLocally(phoneNumber, password);
-                            successfulLogin();
+
+                                AndroidNetworking.get(z + Constants.CURRENT_USER_DETAILED)
+                                        .addHeaders("Authorization", "Token " + auth_token)
+                                        .addHeaders("Content-Type", "application.json")
+                                        .addHeaders("Accept", "*/*")
+                                        .addHeaders("Accept", "gzip, deflate, br")
+                                        .addHeaders("Connection", "keep-alive")
+                                        .setPriority(Priority.LOW)
+                                        .build()
+                                        .getAsJSONObject(new JSONObjectRequestListener() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
+
+                                                // do anything with response
+//                        Log.e(TAG, response.toString());
+
+                                                try {
+
+                                                    JSONObject user = response.getJSONObject("user");
+
+                                                    JSONObject designation = user.getJSONObject("designation");
+
+                                                    int designationId = designation.has("id") ? designation.getInt("id") : 0;
+                                                    String designationName = designation.has("name") ? designation.getString("name") : "";
+
+                                                    JSONObject facility = user.getJSONObject("facility");
+
+                                                    int mflCode = facility.has("mfl_code") ? facility.getInt("mfl_code") : 0;
+
+                                                    UserDetails currentUser = allQuestionDatabase.currentUserDao().getCurrentUser();
+
+                                                    if (currentUser != null){
+                                                        if (currentUser.getMflCode() != mflCode){
+                                                            Toast.makeText(LoginActivity.this, "This device is already logged in to !" + currentUser.getFacilityName(), Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            loginUser(auth_token, phoneNumber, password);
+                                                        }
+                                                    } else {
+                                                        loginUser(auth_token, phoneNumber, password);
+                                                    }
+
+//                            Stash.put(String.valueOf(Constants.MFL_CODE), mflCode);
+
+
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                            }
+
+                                            @Override
+                                            public void onError(ANError error) {
+
+                                                // handle error
+//                        Log.e(TAG, error.getErrorBody());
+
+                                            }
+                                        });
+
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                         }else if(!response.has("auth_token")){
                             Toast.makeText(LoginActivity.this, "Please Try again later!", Toast.LENGTH_SHORT).show();
                         }
+
                         else {
                             if (pDialog != null && pDialog.isShowing()) {
                                 pDialog.hide();
@@ -317,7 +368,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (allQuestionDatabase.currentUserDao().getCurrentUser() != null) {
 
-        Log.i("-->Delete UserDetails ", allQuestionDatabase.currentUserDao().getCurrentUser().getFirstName());
+        Log.i("-->Delete UserDetails ", String.valueOf(allQuestionDatabase.currentUserDao().getCurrentUser().getMflCode()));
             allQuestionDatabase.currentUserDao().deleteUserDetails();
         }
         userCredentialsDao.deleteUserCredentials();
@@ -362,5 +413,15 @@ public class LoginActivity extends AppCompatActivity {
     private void startLoginService() {
         Intent serviceIntent = new Intent(this, LoginService.class);
         startService(serviceIntent);
+    }
+
+    private void loginUser(String auth_token, String phoneNumber, String password){
+        auth newUser = new auth(auth_token);
+
+        Stash.put(Constants.AUTH_TOKEN, newUser);
+
+        clearUserCredentialsLocally();
+        saveUserCredentialsLocally(phoneNumber, password);
+        successfulLogin();
     }
 }

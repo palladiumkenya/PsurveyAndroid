@@ -489,9 +489,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                             if (response.has("id")){
+                                startLoginService();
+
                                 Intent mint = new Intent(EditProfileActivity.this, offlineHome.class);
                                 mint.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(mint);
+
                                 Toast.makeText(EditProfileActivity.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
 
 //                                NavHostFragment.findNavController(EditProfileActivity.this).navigate(com.mhealthkenya.psurvey.R.id.nav_home);
@@ -519,5 +522,10 @@ public class EditProfileActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void startLoginService() {
+        Intent serviceIntent = new Intent(this, LoginService.class);
+        startService(serviceIntent);
     }
 }

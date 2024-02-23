@@ -125,6 +125,11 @@ public class LoginService extends IntentService {
     }
     private void saveUserCredentialsLocally(String phoneNumber, String password) {
         UserCredentials userCredentials = new UserCredentials(phoneNumber, PasswordHasher.encryptPassword(password));
+        if (allQuestionDatabase.currentUserDao().getCurrentUser() != null) {
+
+            Log.i("-->Delete UserDetails ", allQuestionDatabase.currentUserDao().getCurrentUser().getFirstName());
+            allQuestionDatabase.currentUserDao().deleteUserDetails();
+        }
         userCredentialsDao.deleteUserCredentials();
         userCredentialsDao.insert(userCredentials);
         Log.i("-->Save User", "Saving User");

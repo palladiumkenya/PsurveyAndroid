@@ -785,6 +785,8 @@ public class offlineHome extends AppCompatActivity implements CurrentUserCallbac
 
     private void saveCurrentUserLocally(UserDetails userDetails) {
 
+        allQuestionDatabase.currentUserDao().deleteUserDetails();
+
         CurrentUser currentUser = new CurrentUser();
         currentUser.setEmail(userDetails.getEmail());
         currentUser.setFirstName(userDetails.getFirstName());

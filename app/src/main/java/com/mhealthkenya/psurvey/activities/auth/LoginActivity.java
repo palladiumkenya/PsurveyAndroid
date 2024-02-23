@@ -238,7 +238,6 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             String auth_token = response.has("auth_token") ? response.getString("auth_token") : "";
 
-                            System.out.println("this is token +++++ " + auth_token);
                             auth newUser = new auth(auth_token);
 
                             Stash.put(Constants.AUTH_TOKEN, newUser);
@@ -249,6 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                         if (response.has("auth_token")){
+
                             clearUserCredentialsLocally();
                             saveUserCredentialsLocally(phoneNumber, password);
                             successfulLogin();
@@ -314,6 +314,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void clearUserCredentialsLocally() {
+
+        if (allQuestionDatabase.currentUserDao().getCurrentUser() != null) {
+
+        Log.i("-->Delete UserDetails ", allQuestionDatabase.currentUserDao().getCurrentUser().getFirstName());
+            allQuestionDatabase.currentUserDao().deleteUserDetails();
+        }
         userCredentialsDao.deleteUserCredentials();
     }
 
@@ -355,8 +361,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startLoginService() {
         Intent serviceIntent = new Intent(this, LoginService.class);
-//        serviceIntent.putExtra("phoneNumber", phoneNumber);
-//        serviceIntent.putExtra("password", password);
         startService(serviceIntent);
     }
 }
